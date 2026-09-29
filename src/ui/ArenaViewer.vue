@@ -3,7 +3,7 @@
     <canvas ref="canvas" class="viewer__canvas" :data-active="sceneOpen" />
 
     <!-- Selection UI, hidden once an arena is on screen. -->
-    <div v-if="!sceneOpen" class="select">
+    <div v-if="!sceneOpen" class="select" :style="backgroundStyle">
       <h1 class="select__title">Arena Viewer</h1>
 
       <div class="select__layout">
@@ -65,8 +65,10 @@
 <script lang="ts">
 import { defineComponent, markRaw } from "vue";
 import { ArenaSummary, availableArenas } from "@/data/arenas";
+import { resolveAsset } from "@/data/assets";
 import { ArenaScene } from "@/renderer/ArenaScene";
 import { isMenuDown, isMenuUp, virtualInputFor } from "@/game/VirtualController";
+import { playMenuCue } from "@/audio/menuAudio";
 
 /** Inputs the camera responds to while a scene is open. */
 const CAMERA_INPUTS = [
@@ -112,6 +114,22 @@ export default defineComponent({
     previewUrl(): string | null {
       return this.selected?.previewUrl ?? null;
     },
+
+    /**
+     * The crowd art behind the selection screen.
+     *
+     * The scrim rides on top of the photo in the same property, so the menu
+     * text keeps its contrast over the bright spots in the crowd.
+     */
+    backgroundStyle(): Record<string, string> {
+      const url = resolveAsset("assets/artwork/crowd-1.png");
+      if (!url) return {};
+      return {
+        backgroundImage:
+          `linear-gradient(rgba(11, 14, 20, 0.66), rgba(11, 14, 20, 0.66)), ` +
+          `url(${url})`,
+      };
+    },
   },
 
   mounted() {
@@ -131,7 +149,10 @@ export default defineComponent({
       event.preventDefault();
 
       if (this.sceneOpen) {
-        if (input === "b") return this.closeScene();
+        if (input === "b") {
+          playMenuCue("back");
+          return this.closeScene();
+        }
         if (CAMERA_INPUTS.includes(input)) this.scene?.moveCamera(input);
         return;
       }
@@ -139,7 +160,10 @@ export default defineComponent({
       if (isMenuUp(input)) return this.move(-1);
       if (isMenuDown(input)) return this.move(1);
       if (input === "a") return this.choose(this.cursor);
-      if (input === "b") return this.$emit("back");
+      if (input === "b") {
+        playMenuCue("back");
+        return this.$emit("back");
+      }
       // Left and right stay inert, as they are in the menus.
     },
 
@@ -148,13 +172,19 @@ export default defineComponent({
       const count = this.arenas.length + 1;
       this.cursor = (this.cursor + delta + count) % count;
       this.status = "";
+      playMenuCue("move");
     },
 
     choose(index: number) {
       this.cursor = index;
-      if (index === this.backIndex) return this.$emit("back");
+      if (index === this.backIndex) {
+        playMenuCue("back");
+        return this.$emit("back");
+      }
       const arena = this.arenas[index];
-      if (arena) void this.open(arena.id);
+      if (!arena) return;
+      playMenuCue("select");
+      void this.open(arena.id);
     },
 
     async open(arenaId: string) {
@@ -179,6 +209,7 @@ export default defineComponent({
         if (token !== this.loadToken) return;
         this.sceneOpen = false;
         this.status = `Could not load ${arenaId}: ${String(error)}`;
+        playMenuCue("deny");
       } finally {
         if (token === this.loadToken) this.loading = false;
       }
@@ -226,6 +257,9 @@ export default defineComponent({
 .select {
   position: absolute;
   inset: 0;
+  background-color: #0b0e14;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;

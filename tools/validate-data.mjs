@@ -63,6 +63,7 @@ function schemaTargets() {
   return [
     ["data/schemas/main-menu.schema.json", ["data/ui/main-menu.json"]],
     ["data/schemas/arenas.schema.json", arenas],
+    ["data/schemas/stages.schema.json", ["data/stages.json"]],
     ["data/schemas/moves.schema.json", ["data/moves/moves.json"]],
     ["data/schemas/move-slots.schema.json", ["data/moves/move-slots.json"]],
   ];
@@ -120,7 +121,10 @@ function assetReferences() {
     }
   };
 
-  const files = ["data/ui/main-menu.json", ...schemaTargets()[1][1]];
+  const arenaFiles =
+    schemaTargets().find(([schema]) => schema.endsWith("arenas.schema.json"))?.[1] ??
+    [];
+  const files = ["data/ui/main-menu.json", "data/stages.json", ...arenaFiles];
   for (const file of files) visit(load(file), file);
   return refs;
 }

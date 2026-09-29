@@ -1,4 +1,5 @@
 import { resolveAsset } from "./assets";
+import { PieceKind, defaultPiece, stageById } from "./stages";
 
 /**
  * Arena definitions, loaded from data/arenas/*.json.
@@ -26,8 +27,17 @@ export interface ArenaData {
   id: string;
   displayName: string;
   previewImage?: string;
-  /** Legacy single-GLB field, superseded by arenaParts. */
+  /** Stage id from data/stages.json. The current way to describe an arena. */
+  stage?: string;
+  /** Ringside floor GLB. One of the pieces the stage lists. */
+  floor?: string;
+  /** Ringside barricade GLB. One of the pieces the stage lists. */
+  barricade?: string;
+  /** Outer bowl GLB, crowd included. One of the pieces the stage lists. */
+  outer?: string;
+  /** Legacy single-GLB field, superseded by the stage fields. */
   arenaGlb?: string;
+  /** Legacy free-form part list, superseded by the stage fields. */
   arenaParts?: (string | ArenaPartSpec)[];
   arenaTextures?: MaterialTextures;
   ringTextures?: MaterialTextures;
@@ -70,14 +80,40 @@ export function arenaById(id: string): ArenaData | null {
   return byId.get(id) ?? null;
 }
 
+/** The piece fields an arena fills in, in the order they are loaded. */
+const PIECE_FIELDS: PieceKind[] = ["floor", "barricade", "outer"];
+
 /**
  * The GLB parts of an arena, in a single shape.
  *
- * Entries may be written as a bare path or as an object with a placement, and
- * the older `arenaGlb` field is still accepted, so this collapses all three
- * into one list.
+ * Three spellings reach this function. The current one names a `stage` and its
+ * three pieces, which is what the editor writes. Before that an arena listed
+ * `arenaParts` freely - a bare path or an object with a placement - and before
+ * that a single `arenaGlb`. All three collapse into one placed list, so nothing
+ * downstream needs to know which spelling a file happened to use.
+ *
+ * The stage form is checked first, so an arena carrying both (a file migrated
+ * by hand, say) renders from the fields the editor maintains.
  */
 export function arenaParts(arena: ArenaData): Required<ArenaPartSpec>[] {
+  if (arena.stage) {
+    const stage = stageById(arena.stage);
+    const paths: string[] = [];
+    for (const field of PIECE_FIELDS) {
+      // A piece the arena does not name falls back to the stage's default, so
+      // a file that only sets `stage` still renders as a complete arena.
+      const glb = arena[field] || defaultPiece(arena.stage, field);
+      if (glb) paths.push(glb);
+    }
+    // The stage loads last, matching the order the old arenaParts lists used.
+    if (stage?.glb) paths.push(stage.glb);
+    return paths.map((glb) => ({
+      glb,
+      position: [0, 0, 0] as [number, number, number],
+      rotation: [0, 0, 0] as [number, number, number],
+    }));
+  }
+
   const normalise = (
     part: string | ArenaPartSpec
   ): Required<ArenaPartSpec> | null => {

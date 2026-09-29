@@ -68,6 +68,7 @@ import {
 } from "@/data/mainMenu";
 import { resolveAsset } from "@/data/assets";
 import { isMenuDown, isMenuUp, virtualInputFor } from "@/game/VirtualController";
+import { playMenuCue } from "@/audio/menuAudio";
 import ControlMapper from "./ControlMapper.vue";
 import SceneLoading from "./SceneLoading.vue";
 
@@ -166,7 +167,10 @@ export default defineComponent({
       event.preventDefault();
 
       if (this.showInstructions) {
-        if (input === "z" || input === "b") this.showInstructions = false;
+        if (input === "z" || input === "b") {
+          this.showInstructions = false;
+          playMenuCue("toggle");
+        }
         return;
       }
 
@@ -183,10 +187,13 @@ export default defineComponent({
       const count = this.page.menuItems.length;
       this.cursor = (this.cursor + delta + count) % count;
       this.status = "";
+      playMenuCue("move");
     },
 
     toggleInstructions() {
-      if (this.active) this.showInstructions = !this.showInstructions;
+      if (!this.active) return;
+      this.showInstructions = !this.showInstructions;
+      playMenuCue("toggle");
     },
 
     select(index: number) {
@@ -200,37 +207,45 @@ export default defineComponent({
       if (target.kind === "page") {
         this.stack.push(target.key);
         this.cursor = 0;
+        playMenuCue("select");
         return;
       }
 
       if (target.id === ROUTE_CONTROLS) {
         this.mapperOpen = true;
+        playMenuCue("select");
         return;
       }
 
       if (target.id === ROUTE_ARENA_VIEWER) {
         this.arenaViewerOpen = true;
+        playMenuCue("select");
         return;
       }
 
       if (target.id === ROUTE_ARENA_EDITOR) {
         this.arenaEditorOpen = true;
+        playMenuCue("select");
         return;
       }
 
       if (target.id === ROUTE_COMBAT_TEST) {
         this.$emit("launch", target.id);
+        playMenuCue("select");
         return;
       }
 
       this.status = `${item.displayName} is not implemented yet.`;
+      playMenuCue("deny");
     },
 
     back() {
-      if (!this.canGoBack) return;
+      // The root page has nowhere to go, so the refusal is what is heard.
+      if (!this.canGoBack) return playMenuCue("deny");
       this.stack.pop();
       this.cursor = 0;
       this.status = "";
+      playMenuCue("back");
     },
 
     closeMapper() {

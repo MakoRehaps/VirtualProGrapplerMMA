@@ -58,13 +58,13 @@ const MANIFEST = [
   },
   {
     from: "assets/source/glb/arena/arena-floor.glb",
-    to: "assets/glb/arena/arena-floor.glb",
-    why: "arenaParts in every data/arenas/*.json",
+    to: "assets/glb/arena/floor/arena_floor.glb",
+    why: "the RAW stage's ringside floor, listed in data/stages.json",
   },
   {
     from: "assets/source/glb/arena/barricade.glb",
-    to: "assets/glb/arena/barricade.glb",
-    why: "arenaParts in every data/arenas/*.json",
+    to: "assets/glb/arena/barricade/barricade.glb",
+    why: "the RAW stage's ringside barricade, listed in data/stages.json",
   },
   {
     from: "assets/source/characters/steve_austin.glb",

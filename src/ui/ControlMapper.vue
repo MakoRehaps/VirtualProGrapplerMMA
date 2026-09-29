@@ -73,6 +73,7 @@ import {
   resetBindings,
 } from "@/data/controls";
 import { eventCode, isMenuDown, isMenuUp, virtualInputFor } from "@/game/VirtualController";
+import { playMenuCue } from "@/audio/menuAudio";
 
 type Row =
   | { kind: "binding"; key: string; label: string; control: PadControl }
@@ -177,6 +178,7 @@ export default defineComponent({
       if (code === "Escape") {
         this.listeningFor = null;
         this.status = "Rebinding cancelled.";
+        playMenuCue("back");
         return;
       }
 
@@ -185,6 +187,7 @@ export default defineComponent({
       if (owner) {
         this.conflict = { control, code, owner };
         this.listeningFor = null;
+        playMenuCue("deny");
         return;
       }
 
@@ -204,7 +207,10 @@ export default defineComponent({
       if (isMenuUp(input)) return this.move(-1);
       if (isMenuDown(input)) return this.move(1);
       if (input === "a") return this.activate(this.cursor);
-      if (input === "b") return this.$emit("back");
+      if (input === "b") {
+        playMenuCue("back");
+        return this.$emit("back");
+      }
       // Left and right deliberately do nothing here, matching the menus.
     },
 
@@ -212,6 +218,7 @@ export default defineComponent({
       const count = this.rows.length;
       this.cursor = (this.cursor + delta + count) % count;
       this.status = "";
+      playMenuCue("move");
     },
 
     activate(index: number) {
@@ -221,10 +228,15 @@ export default defineComponent({
       if (row.kind === "binding") {
         this.listeningFor = row.control;
         this.status = "";
+        playMenuCue("select");
         return;
       }
 
-      if (row.action === "back") return this.$emit("back");
+      if (row.action === "back") {
+        playMenuCue("back");
+        return this.$emit("back");
+      }
+      playMenuCue("select");
       if (row.action === "reset") return this.reset();
       if (row.action === "export") return this.exportJson();
     },
@@ -236,6 +248,7 @@ export default defineComponent({
       this.status = displaced
         ? `${this.friendlyKey(code)} bound to ${this.label(control)}, taken from ${this.label(displaced)}.`
         : `${this.friendlyKey(code)} bound to ${this.label(control)}.`;
+      playMenuCue("confirm");
     },
 
     confirmConflict() {
@@ -248,12 +261,14 @@ export default defineComponent({
     cancelConflict() {
       this.conflict = null;
       this.status = "Rebinding cancelled.";
+      playMenuCue("back");
     },
 
     reset() {
       resetBindings();
       this.revision += 1;
       this.status = "Bindings restored to defaults.";
+      playMenuCue("confirm");
     },
 
     exportJson() {
@@ -267,6 +282,7 @@ export default defineComponent({
       link.click();
       URL.revokeObjectURL(url);
       this.status = "Exported control-mappings.json.";
+      playMenuCue("confirm");
     },
   },
 });

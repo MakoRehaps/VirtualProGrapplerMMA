@@ -2,24 +2,24 @@
   "id": "raw",
   "displayName": "RAW is WAR",
   "previewImage": "assets/textures/arena/previews/preview-rawiswar.png",
-  "arenaParts": [
-    "assets/glb/arena/arena-floor.glb",
-    "assets/glb/arena/barricade.glb",
-    "assets/glb/arena/shared/arena_outer.glb",
-    "assets/glb/arena/raw_is_war/raw_stage.glb"
-  ],
+  "stage": "raw_is_war",
+  "floor": "assets/glb/arena/floor/arena_floor.glb",
+  "barricade": "assets/glb/arena/barricade/barricade.glb",
+  "outer": "assets/glb/arena/outer/arena_outer.glb",
   "arenaTextures": {
-    "mat_floor_ringside": "assets/textures/arena/floor_mat_1_double.png",
-    "mat_ringside_barricade": "assets/textures/arena/floor_mat_1_double.png",
-    "mat_ceiling_banners": "assets/textures/arena/raw_is_war/raw_is_war_banner_512.png"
+    "mat_floor_ringside": "assets/textures/arena/floor_ringside/floor_mat_1_double.png",
+    "mat_ringside_barricade": "assets/textures/arena/floor_ringside/floor_mat_1_double.png",
+    "mat_ceiling_banners": "assets/textures/arena/ceiling_banners/raw_is_war_banner.png"
   },
   "ringTextures": {
-    "mat_canvas": "assets/textures/ring/shared/canvas.png",
-    "mat_apron": "assets/textures/ring/apron_raw.png",
-    "mat_rope_top": "assets/textures/ring/shared/rope.png",
-    "mat_rope_middle": "assets/textures/ring/shared/rope.png",
-    "mat_rope_bottom": "assets/textures/ring/shared/rope.png",
-    "ropeColor": "rgba(255, 0, 0, 0.4)",
+    "mat_canvas": "assets/textures/ring/canvas/canvas.png",
+    "mat_apron": "assets/textures/ring/apron/apron_raw.png",
+    "mat_rope_top": "assets/textures/ring/rope/rope.png",
+    "mat_rope_middle": "assets/textures/ring/rope/rope.png",
+    "mat_rope_bottom": "assets/textures/ring/rope/rope.png",
+    "ropeTopColor": "rgba(255, 0, 0, 0.4)",
+    "ropeMiddleColor": "rgba(255, 0, 0, 0.4)",
+    "ropeBottomColor": "rgba(255, 0, 0, 0.4)",
     "postColor": "rgba(0, 0, 0, 0)",
     "turnbucklePadColor": "rgba(0, 0, 0, 1)",
     "turnbuckleBoltCoverColor": "rgba(0, 0, 0, 0)"

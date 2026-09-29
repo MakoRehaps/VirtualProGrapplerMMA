@@ -8,6 +8,7 @@ import { defineAsyncComponent, defineComponent, h } from 'vue';
 import MainMenu from './MainMenu.vue';
 import SceneLoading from './SceneLoading.vue';
 import { loadSavedBindings } from '@/data/controls';
+import { loadSavedAudioSettings } from '@/audio/menuAudio';
 
 /**
  * The combat screen pulls in Babylon, which dwarfs everything else in the
@@ -60,6 +61,8 @@ export default defineComponent({
     // Applied before any screen reads a binding, so a saved remap is in force
     // from the first keypress.
     loadSavedBindings();
+    // Likewise for mute and volume: the first cue must already obey them.
+    loadSavedAudioSettings();
   },
 
   methods: {

@@ -1,36 +1,59 @@
 <template>
   <div class="editor">
     <!-- Pick what to work on. -->
-    <div v-if="!draft" class="start">
+    <div v-if="!draft" class="start" :style="backgroundStyle">
       <h1 class="start__title">Arena Editor</h1>
 
-      <ul class="rows">
-        <li
-          v-for="(arena, index) in arenas"
-          :key="arena.id"
-          class="row"
-          :class="{ 'row--active': index === startCursor }"
-          @click="editArena(arena.id)"
-          @mouseenter="startCursor = index"
-        >
-          <span class="row__name">{{ arena.displayName }}</span>
-          <span class="row__id">{{ arena.id }}</span>
-          <button class="row__clone" @click.stop="startClone(arena.id)">
-            Clone
-          </button>
-        </li>
-      </ul>
+      <div class="start__layout">
+        <ul class="rows">
+          <li
+            v-for="(arena, index) in arenas"
+            :key="arena.id"
+            class="row"
+            :class="{ 'row--active': index === startCursor }"
+            @click="chooseStart(index)"
+            @mouseenter="startCursor = index"
+          >
+            <span class="row__name">{{ arena.displayName }}</span>
+            <button
+              v-if="index === startCursor"
+              class="row__clone"
+              @click.stop="startClone(arena.id)"
+            >
+              Clone
+            </button>
+          </li>
+          <li
+            class="row row--back"
+            :class="{ 'row--active': startCursor === backIndex }"
+            @click="chooseStart(backIndex)"
+            @mouseenter="startCursor = backIndex"
+          >
+            <span class="row__name">Back</span>
+          </li>
+        </ul>
 
-      <p v-if="!canSave" class="start__warning">
-        Saving is unavailable: the editor writes arena files through the dev
-        server. Run <code>npm run serve</code> to enable it.
-      </p>
+        <div class="preview">
+          <img
+            v-if="startPreviewUrl"
+            class="preview__image"
+            :src="startPreviewUrl"
+            :alt="`${startSelected?.displayName} preview`"
+          />
+          <div v-else class="preview__empty">No preview</div>
+        </div>
+      </div>
 
       <p class="start__hint">
         <kbd>&uarr;</kbd><kbd>&darr;</kbd> move &middot;
         <kbd>{{ keyFor("a") }}</kbd> edit &middot;
         <kbd>{{ keyFor("z") }}</kbd> clone &middot;
         <kbd>{{ keyFor("b") }}</kbd> back
+      </p>
+
+      <p v-if="!canSave" class="start__warning">
+        Saving is unavailable: the editor writes arena files through the dev
+        server. Run <code>npm run serve</code> to enable it.
       </p>
     </div>
 
@@ -89,120 +112,112 @@
             </label>
           </section>
 
-          <!-- Parts -->
+          <!-- Environment. The stage decides which pieces fit. -->
           <section class="group">
-            <h3 class="group__title">
-              Parts
-              <span class="group__count">{{ draft.parts.length }}</span>
-            </h3>
+            <h3 class="group__title">Stage</h3>
 
-            <div v-for="(part, index) in draft.parts" :key="index" class="part">
-              <div class="part__row">
-                <select v-model="part.glb" class="field__input">
-                  <option v-for="g in glbs" :key="g" :value="g">
-                    {{ shortPath(g) }}
-                  </option>
-                </select>
-                <button
-                  class="btn btn--icon"
-                  :disabled="index === 0"
-                  title="Move up"
-                  @click="movePart(index, -1)"
-                >
-                  &uarr;
-                </button>
-                <button
-                  class="btn btn--icon"
-                  :disabled="index === draft.parts.length - 1"
-                  title="Move down"
-                  @click="movePart(index, 1)"
-                >
-                  &darr;
-                </button>
-                <button
-                  class="btn btn--icon btn--danger"
-                  title="Remove"
-                  @click="removePart(index)"
-                >
-                  &times;
-                </button>
-              </div>
-
-              <div class="part__vectors">
-                <label class="vec">
-                  <span class="vec__label">pos</span>
-                  <input
-                    v-for="axis in 3"
-                    :key="`p${axis}`"
-                    v-model.number="part.position[axis - 1]"
-                    type="number"
-                    step="0.1"
-                    class="vec__input"
-                  />
-                </label>
-                <label class="vec">
-                  <span class="vec__label">rot</span>
-                  <input
-                    v-for="axis in 3"
-                    :key="`r${axis}`"
-                    v-model.number="part.rotation[axis - 1]"
-                    type="number"
-                    step="0.05"
-                    class="vec__input"
-                  />
-                </label>
-              </div>
-            </div>
-
-            <button class="btn" @click="addPart">Add part</button>
-          </section>
-
-          <!-- Textures, driven by the materials actually in the scene. -->
-          <section v-for="map in textureGroups" :key="map.key" class="group">
-            <h3 class="group__title">{{ map.title }}</h3>
-
-            <p v-if="!map.materials.length" class="field__note">
-              No materials yet &mdash; they are read from the loaded parts.
-            </p>
-
-            <label
-              v-for="name in map.materials"
-              :key="name"
-              class="field"
-            >
-              <span class="field__label">{{ name }}</span>
+            <label class="field">
+              <span class="field__label">Stage</span>
               <select
-                :value="map.model[name] ?? ''"
                 class="field__input"
-                @change="setTexture(map.key, name, $event)"
+                :value="draft.stage"
+                @change="onStageChange($event)"
               >
-                <option value="">(from the model)</option>
-                <option v-for="t in textures" :key="t" :value="t">
-                  {{ shortPath(t) }}
+                <option v-for="s in stages" :key="s.id" :value="s.id">
+                  {{ s.displayName }}
                 </option>
               </select>
             </label>
 
-            <!-- Colour keys are typed in the file, not found on a mesh. -->
-            <label
-              v-for="name in map.colorKeys"
-              :key="name"
-              class="field"
-            >
-              <span class="field__label">{{ name }}</span>
-              <input
-                :value="map.model[name] ?? ''"
+            <label v-for="piece in pieceFields" :key="piece.kind" class="field">
+              <span class="field__label">{{ piece.label }}</span>
+              <select
+                v-model="draft[piece.kind]"
                 class="field__input"
-                placeholder="rgba(0, 0, 0, 1)"
-                @change="setTexture(map.key, name, $event)"
-              />
+                :disabled="piece.options.length < 2"
+              >
+                <option v-for="g in piece.options" :key="g" :value="g">
+                  {{ shortPath(g) }}
+                </option>
+              </select>
             </label>
 
-            <p v-if="map.unmatched.length" class="field__error">
-              No material in the scene is named:
-              {{ map.unmatched.join(", ") }}. These keys do nothing.
+            <p class="field__note">
+              The floor, barricade and outer bowl are modelled to meet this
+              stage, so only the pieces that fit it are offered. Changing the
+              stage re-picks all three.
             </p>
           </section>
+
+          <!-- One row per slot: its texture and the colours that tint it. -->
+          <section
+            v-for="section in slotSections"
+            :key="section.title"
+            class="group"
+          >
+            <h3 class="group__title">{{ section.title }}</h3>
+
+            <div v-for="slot in section.slots" :key="slot.id" class="slot">
+              <label v-if="slot.folders.length" class="field">
+                <span class="field__label">{{ slot.label }}</span>
+                <select
+                  :value="textureValue(slot)"
+                  class="field__input"
+                  @change="setTexture(slot, $event)"
+                >
+                  <option value="">(from the model)</option>
+                  <option v-for="t in textureOptions[slot.id]" :key="t" :value="t">
+                    {{ fileLabel(t) }}
+                  </option>
+                </select>
+              </label>
+              <span v-else class="field__label slot__label">
+                {{ slot.label }}
+              </span>
+
+              <div v-if="slot.colors.length" class="tints">
+                <label
+                  v-for="color in slot.colors"
+                  :key="color.key"
+                  class="tint"
+                  :title="color.key"
+                >
+                  <span v-if="color.label" class="tint__label">
+                    {{ color.label }}
+                  </span>
+                  <input
+                    type="color"
+                    class="tint__swatch"
+                    :value="swatchValue(slot, color.key)"
+                    @input="setColor(slot, color.key, $event)"
+                  />
+                  <input
+                    type="range"
+                    class="tint__alpha"
+                    min="0"
+                    max="100"
+                    :value="alphaValue(slot, color.key)"
+                    :title="`Strength ${alphaValue(slot, color.key)}%`"
+                    @input="setAlpha(slot, color.key, $event)"
+                  />
+                  <button
+                    class="btn btn--icon"
+                    title="Clear this tint"
+                    :disabled="!hasColor(slot, color.key)"
+                    @click="clearColor(slot, color.key)"
+                  >
+                    &times;
+                  </button>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <p v-if="strayKeys.length" class="field__error">
+            This file sets keys the editor has no control for:
+            {{ strayKeys.join(", ") }}. Stage materials are baked into the
+            stage GLB now, so saving will drop them.
+          </p>
         </div>
 
         <p class="panel__hint">
@@ -255,18 +270,24 @@ import { defineComponent, markRaw } from "vue";
 import { ArenaSummary, arenaById, availableArenas } from "@/data/arenas";
 import {
   ArenaDraft,
-  availableGlbs,
+  PIECE_KINDS,
+  TextureSlot,
   availablePreviews,
-  availableTextures,
   cloneArena,
   draftFromArena,
   draftToArenaData,
   draftToJson,
   existingIds,
   idProblem,
-  isColorKey,
+  pieceOptions,
+  selectStage,
+  slotTextureOptions,
+  unknownKeys,
 } from "@/data/arenaDraft";
+import { slotSections } from "@/data/textureSlots";
+import { PieceKind, availableStages } from "@/data/stages";
 import { saveArena, saveAvailable } from "@/data/arenaStore";
+import { resolveAsset } from "@/data/assets";
 import { ArenaScene } from "@/renderer/ArenaScene";
 import {
   VirtualInput,
@@ -275,6 +296,7 @@ import {
   virtualInputFor,
 } from "@/game/VirtualController";
 import { PadControl, keysForControl } from "@/data/controls";
+import { playMenuCue } from "@/audio/menuAudio";
 
 /** Inputs the camera responds to while the preview is up. */
 const CAMERA_INPUTS = [
@@ -309,16 +331,66 @@ const PREVIEW_DEBOUNCE_MS = 600;
  */
 const DRAFT_KEY = "vpg.arenaEditor.draft";
 
-interface TextureGroup {
-  key: "arenaTextures" | "ringTextures";
-  title: string;
-  model: Record<string, string>;
-  /** Material names found in the loaded scene. */
-  materials: string[];
-  /** `*Color` keys already set in the file. */
-  colorKeys: string[];
-  /** Keys set in the file that match no material in the scene. */
-  unmatched: string[];
+/** How the three piece dropdowns are labelled. */
+const PIECE_LABELS: Record<PieceKind, string> = {
+  floor: "Floor",
+  barricade: "Barricade",
+  outer: "Arena outer",
+};
+
+/**
+ * A tint the arena files write as `rgba(r, g, b, a)`.
+ *
+ * The panel edits it as a colour swatch plus a strength slider, because that is
+ * what the value means in practice - the overlay is multiplied over the
+ * texture, so alpha reads as "how much of this colour" rather than opacity.
+ */
+interface Tint {
+  hex: string;
+  /** 0-100, as the slider carries it. */
+  alpha: number;
+}
+
+const NO_TINT: Tint = { hex: "#ffffff", alpha: 0 };
+
+function parseTint(value: string | undefined): Tint {
+  if (!value) return NO_TINT;
+
+  const hex = value.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (hex) {
+    const digits =
+      hex[1].length === 3
+        ? [...hex[1]].map((c) => c + c).join("")
+        : hex[1];
+    return { hex: `#${digits.toLowerCase()}`, alpha: 100 };
+  }
+
+  const rgb = value
+    .trim()
+    .match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)$/i);
+  if (!rgb) return NO_TINT;
+
+  const channel = (n: string) =>
+    Math.min(255, Number(n)).toString(16).padStart(2, "0");
+  return {
+    hex: `#${channel(rgb[1])}${channel(rgb[2])}${channel(rgb[3])}`,
+    alpha: Math.round((rgb[4] === undefined ? 1 : Number(rgb[4])) * 100),
+  };
+}
+
+/**
+ * A tint back as the schema spells it.
+ *
+ * Alpha is written as `0`, `1` or a leading-zero decimal, which is the only
+ * form `css_color` in the arena schema accepts - `1.0` would be rejected on
+ * save by the dev server's validator.
+ */
+function formatTint(tint: Tint): string {
+  const n = parseInt(tint.hex.slice(1), 16);
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const a = Math.round(tint.alpha) / 100;
+  const alpha = a === 0 ? "0" : a === 1 ? "1" : String(a);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 export default defineComponent({
@@ -332,10 +404,10 @@ export default defineComponent({
       draft: null as ArenaDraft | null,
       /** The id being edited, or null while creating a new arena. */
       editingId: null as string | null,
-      glbs: availableGlbs(),
-      textures: availableTextures(),
       previews: availablePreviews(),
-      sceneMaterials: { arena: [] as string[], ring: [] as string[] },
+      stages: availableStages(),
+      slotSections: slotSections(),
+      textureOptions: slotTextureOptions() as Record<string, string[]>,
       canSave: false,
       saving: false,
       loading: false,
@@ -361,6 +433,35 @@ export default defineComponent({
       return this.editingId === null;
     },
 
+    /** The Back row sits after the arenas. */
+    backIndex(): number {
+      return this.arenas.length;
+    },
+
+    startSelected(): ArenaSummary | null {
+      return this.arenas[this.startCursor] ?? null;
+    },
+
+    startPreviewUrl(): string | null {
+      return this.startSelected?.previewUrl ?? null;
+    },
+
+    /**
+     * The crowd art behind the arena list, matching the viewer's.
+     *
+     * The scrim rides on top of the photo in the same property, so the menu
+     * text keeps its contrast over the bright spots in the crowd.
+     */
+    backgroundStyle(): Record<string, string> {
+      const url = resolveAsset("assets/artwork/crowd-1.png");
+      if (!url) return {};
+      return {
+        backgroundImage:
+          `linear-gradient(rgba(11, 14, 20, 0.66), rgba(11, 14, 20, 0.66)), ` +
+          `url(${url})`,
+      };
+    },
+
     /** Ids that would collide with this draft's. */
     takenIds(): string[] {
       const ids = existingIds();
@@ -372,35 +473,20 @@ export default defineComponent({
       return idProblem(this.draft.id, this.takenIds);
     },
 
-    textureGroups(): TextureGroup[] {
+    /** The three piece dropdowns, with the options this stage allows. */
+    pieceFields(): { kind: PieceKind; label: string; options: string[] }[] {
       const draft = this.draft;
       if (!draft) return [];
+      return PIECE_KINDS.map((kind) => ({
+        kind,
+        label: PIECE_LABELS[kind],
+        options: pieceOptions(draft, kind),
+      }));
+    },
 
-      const build = (
-        key: "arenaTextures" | "ringTextures",
-        title: string,
-        materials: string[]
-      ): TextureGroup => {
-        const model = draft[key];
-        const keys = Object.keys(model);
-        return {
-          key,
-          title,
-          model,
-          materials,
-          colorKeys: keys.filter(isColorKey).sort(),
-          // Only meaningful once something is loaded; before that every key
-          // would look unmatched simply because the scene is empty.
-          unmatched: this.previewReady
-            ? keys.filter((k) => !isColorKey(k) && !materials.includes(k))
-            : [],
-        };
-      };
-
-      return [
-        build("arenaTextures", "Arena textures", this.sceneMaterials.arena),
-        build("ringTextures", "Ring textures", this.sceneMaterials.ring),
-      ];
+    /** Texture keys in the file that no slot owns. */
+    strayKeys(): string[] {
+      return this.draft ? unknownKeys(this.draft) : [];
     },
   },
 
@@ -447,6 +533,7 @@ export default defineComponent({
         if (input === "b") {
           event.preventDefault();
           this.stopFieldEditing();
+          playMenuCue("toggle");
         }
         return;
       }
@@ -468,17 +555,19 @@ export default defineComponent({
         return this.moveStartCursor(1);
       }
 
-      const arena = this.arenas[this.startCursor];
-      if (input === "a" && arena) {
+      if (input === "a") {
         event.preventDefault();
-        return this.editArena(arena.id);
+        return this.chooseStart(this.startCursor);
       }
+
+      const arena = this.arenas[this.startCursor];
       if (input === "z" && arena) {
         event.preventDefault();
         return this.startClone(arena.id);
       }
       if (input === "b") {
         event.preventDefault();
+        playMenuCue("back");
         return this.$emit("back");
       }
     },
@@ -556,9 +645,20 @@ export default defineComponent({
     },
 
     moveStartCursor(delta: number) {
-      const count = this.arenas.length;
-      if (!count) return;
+      // The arenas plus the Back row.
+      const count = this.arenas.length + 1;
       this.startCursor = (this.startCursor + delta + count) % count;
+      playMenuCue("move");
+    },
+
+    chooseStart(index: number) {
+      this.startCursor = index;
+      if (index === this.backIndex) {
+        playMenuCue("back");
+        return this.$emit("back");
+      }
+      const arena = this.arenas[index];
+      if (arena) this.editArena(arena.id);
     },
 
     /**
@@ -581,6 +681,7 @@ export default defineComponent({
       if (!items.length) return;
       const next = (this.focusIndex + delta + items.length) % items.length;
       this.focusAt(next, items);
+      playMenuCue("move");
     },
 
     focusAt(index: number, items?: HTMLElement[]) {
@@ -599,10 +700,12 @@ export default defineComponent({
 
       if (el instanceof HTMLSelectElement) {
         const next = el.selectedIndex + delta;
-        if (next < 0 || next >= el.options.length) return;
+        // Either end of the list is a refusal, not a silent no-op.
+        if (next < 0 || next >= el.options.length) return playMenuCue("deny");
         el.selectedIndex = next;
         // v-model and @change listen for the event, not the assignment.
         el.dispatchEvent(new Event("change", { bubbles: true }));
+        playMenuCue("move");
         return;
       }
 
@@ -610,6 +713,7 @@ export default defineComponent({
         if (el.type === "checkbox") {
           el.checked = !el.checked;
           el.dispatchEvent(new Event("change", { bubbles: true }));
+          playMenuCue("toggle");
           return;
         }
         if (el.type === "number") {
@@ -619,6 +723,7 @@ export default defineComponent({
           // accumulate floating-point noise into the saved file.
           el.value = String(Number(value.toFixed(4)));
           el.dispatchEvent(new Event("input", { bubbles: true }));
+          playMenuCue("move");
           return;
         }
       }
@@ -629,22 +734,31 @@ export default defineComponent({
       const el = this.panelFocusables()[this.focusIndex];
       if (!el) return;
 
-      if (el instanceof HTMLButtonElement) return el.click();
+      if (el instanceof HTMLButtonElement) {
+        playMenuCue("select");
+        return el.click();
+      }
 
       if (el instanceof HTMLInputElement) {
         if (el.type === "checkbox") {
           el.checked = !el.checked;
           el.dispatchEvent(new Event("change", { bubbles: true }));
+          playMenuCue("toggle");
           return;
         }
         // Text and number fields need real characters, so hand the keyboard
         // over until Back gives it back.
         this.startFieldEditing(el);
+        return;
       }
+
+      // A dropdown, which is driven with left and right rather than pressed.
+      playMenuCue("deny");
     },
 
     startFieldEditing(el: HTMLInputElement) {
       this.fieldEditing = true;
+      playMenuCue("toggle");
       el.focus({ preventScroll: true });
       el.select();
     },
@@ -684,9 +798,21 @@ export default defineComponent({
       return path.replace(/^assets\/(glb|textures)\//, "");
     },
 
+    /**
+     * A texture's filename alone, without its folder or extension.
+     *
+     * The folder is already implied by the row the dropdown sits on - every
+     * option under "Canvas" comes from the canvas folder - so repeating it
+     * would only make the names harder to tell apart.
+     */
+    fileLabel(path: string): string {
+      return path.split("/").pop()?.replace(/\.[^.]+$/, "") ?? path;
+    },
+
     editArena(id: string) {
       const arena = arenaById(id);
-      if (!arena) return;
+      if (!arena) return playMenuCue("deny");
+      playMenuCue("select");
       this.editingId = id;
       this.draft = draftFromArena(arena);
       this.beginEditing();
@@ -695,7 +821,8 @@ export default defineComponent({
 
     startClone(id: string) {
       const source = arenaById(id);
-      if (!source) return;
+      if (!source) return playMenuCue("deny");
+      playMenuCue("select");
       // Suggested rather than final - the id field is editable while creating,
       // and the save is blocked until it is both valid and free.
       const suggested = `${id}_copy`;
@@ -706,6 +833,7 @@ export default defineComponent({
     },
 
     closeDraft() {
+      playMenuCue("back");
       this.clearPersistedDraft();
       window.clearTimeout(this.previewTimer);
       this.loadToken += 1;
@@ -717,45 +845,82 @@ export default defineComponent({
       this.loading = false;
       this.status = "";
       this.warnings = [];
-      this.sceneMaterials = { arena: [], ring: [] };
     },
 
-    addPart() {
-      this.draft?.parts.push({
-        glb: this.glbs[0] ?? "",
-        position: [0, 0, 0],
-        rotation: [0, 0, 0],
-      });
-    },
-
-    removePart(index: number) {
-      this.draft?.parts.splice(index, 1);
-    },
-
-    movePart(index: number, delta: number) {
-      const parts = this.draft?.parts;
-      if (!parts) return;
-      const next = index + delta;
-      if (next < 0 || next >= parts.length) return;
-      const [part] = parts.splice(index, 1);
-      parts.splice(next, 0, part);
-    },
-
-    setTexture(
-      group: "arenaTextures" | "ringTextures",
-      name: string,
-      event: Event
-    ) {
+    onStageChange(event: Event) {
       const draft = this.draft;
       if (!draft) return;
-      const value = (event.target as HTMLInputElement | HTMLSelectElement).value;
-      if (value) {
-        draft[group][name] = value;
-      } else {
-        // Removing the key leaves the GLB's own texture in place, which is a
-        // different outcome from setting it to an empty string.
-        delete draft[group][name];
+      const stage = (event.target as HTMLSelectElement).value;
+      // Pieces are per-stage, so this re-picks the floor, barricade and outer
+      // rather than leaving three fields pointing at parts that no longer fit.
+      selectStage(draft, stage);
+    },
+
+    /** The texture a slot currently shows, read from its first material. */
+    textureValue(slot: TextureSlot): string {
+      const draft = this.draft;
+      if (!draft || !slot.materials.length) return "";
+      return draft[slot.map][slot.materials[0]] ?? "";
+    },
+
+    setTexture(slot: TextureSlot, event: Event) {
+      const draft = this.draft;
+      if (!draft) return;
+      const value = (event.target as HTMLSelectElement).value;
+      for (const material of slot.materials) {
+        if (value) {
+          // One choice covers every material the slot names, which is what
+          // makes the three ropes a single control.
+          draft[slot.map][material] = value;
+        } else {
+          // Removing the key leaves the GLB's own texture in place, which is a
+          // different outcome from setting it to an empty string.
+          delete draft[slot.map][material];
+        }
       }
+    },
+
+    hasColor(slot: TextureSlot, key: string): boolean {
+      return !!this.draft && key in this.draft[slot.map];
+    },
+
+    tint(slot: TextureSlot, key: string): { hex: string; alpha: number } {
+      const draft = this.draft;
+      return parseTint(draft ? draft[slot.map][key] : undefined);
+    },
+
+    swatchValue(slot: TextureSlot, key: string): string {
+      return this.tint(slot, key).hex;
+    },
+
+    alphaValue(slot: TextureSlot, key: string): number {
+      return this.tint(slot, key).alpha;
+    },
+
+    setColor(slot: TextureSlot, key: string, event: Event) {
+      const hex = (event.target as HTMLInputElement).value;
+      const current = this.tint(slot, key);
+      // Picking a colour on an untinted slot would otherwise write a fully
+      // transparent overlay and appear to do nothing, so it takes effect.
+      const alpha = this.hasColor(slot, key) ? current.alpha : 100;
+      this.writeColor(slot, key, { hex, alpha });
+    },
+
+    setAlpha(slot: TextureSlot, key: string, event: Event) {
+      const alpha = Number((event.target as HTMLInputElement).value);
+      this.writeColor(slot, key, { hex: this.tint(slot, key).hex, alpha });
+    },
+
+    writeColor(slot: TextureSlot, key: string, tint: { hex: string; alpha: number }) {
+      const draft = this.draft;
+      if (!draft) return;
+      draft[slot.map][key] = formatTint(tint);
+    },
+
+    clearColor(slot: TextureSlot, key: string) {
+      const draft = this.draft;
+      if (!draft) return;
+      delete draft[slot.map][key];
     },
 
     schedulePreview() {
@@ -791,12 +956,12 @@ export default defineComponent({
         if (token !== this.loadToken) return;
 
         this.warnings = report.warnings;
-        this.sceneMaterials = this.scene.materialNames();
         this.previewReady = true;
       } catch (error) {
         if (token !== this.loadToken) return;
         this.previewReady = false;
         this.setStatus(`Preview failed: ${String(error)}`, true);
+        playMenuCue("deny");
       } finally {
         if (token === this.loadToken) this.loading = false;
       }
@@ -804,12 +969,14 @@ export default defineComponent({
 
     async save() {
       const draft = this.draft;
-      if (!draft || this.idError) return;
+      // A save blocked by a bad id is silent on screen, so it says so here.
+      if (!draft || this.idError) return playMenuCue("deny");
 
       this.saving = true;
       try {
         const result = await saveArena(draftToJson(draft));
         this.setStatus(`${result.created ? "Created" : "Saved"} ${result.path}`, false);
+        playMenuCue("confirm");
         // The file now exists, so this is no longer a new arena: fixing the id
         // stops a second save from writing a duplicate under another name. The
         // hot update that follows the write reloads the registry, so the new
@@ -817,6 +984,7 @@ export default defineComponent({
         if (result.created) this.editingId = draft.id;
       } catch (error) {
         this.setStatus(String(error instanceof Error ? error.message : error), true);
+        playMenuCue("deny");
       } finally {
         this.saving = false;
       }
@@ -899,62 +1067,92 @@ export default defineComponent({
 .start {
   position: absolute;
   inset: 0;
+  background-color: #0b0e14;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3vh 4vw;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
   overflow-y: auto;
 }
 
 .start__title {
-  margin: 0 0 2vh;
+  margin: 0;
   font-family: var(--vpg-font-display);
-  font-size: clamp(28px, 3.4vw, 44px);
-  letter-spacing: 0.04em;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.start__layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 26vw) minmax(280px, 30rem);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
 }
 
 .rows {
-  list-style: none;
   margin: 0;
   padding: 0;
-  width: min(640px, 100%);
+  list-style: none;
 }
 
 .row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border: var(--vpg-frame-width) solid rgba(255, 255, 255, 0.18);
-  border-radius: 4px;
-  margin-bottom: 6px;
+  gap: 10px;
+  padding: 4px 12px;
+  color: var(--vpg-item-color-idle);
+  font-family: var(--vpg-font-menu-item);
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: var(--vpg-item-stroke);
   cursor: pointer;
-  transition: background var(--vpg-state-transition);
+  transition: -webkit-text-fill-color var(--vpg-state-transition),
+    -webkit-text-stroke-width var(--vpg-state-transition);
 }
 
-.row:hover,
-.row--active {
-  background: var(--vpg-panel-bg);
+.row--back {
+  margin-top: 0.5rem;
 }
 
 .row--active {
-  border-color: var(--vpg-panel-glow);
+  -webkit-text-fill-color: var(--vpg-item-color-active);
+  -webkit-text-stroke-width: 1.5px;
+  animation: glowPulse 1s ease-in-out infinite;
 }
 
 .row__name {
   flex: 1;
-  font-size: 18px;
 }
 
-.row__id {
-  font-size: 13px;
-  opacity: 0.55;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+.preview__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.preview__empty {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  opacity: 0.5;
+  font-size: 0.85rem;
 }
 
 .start__hint,
 .start__warning {
-  margin-top: 2vh;
+  margin: 0;
   font-size: 14px;
   opacity: 0.75;
   text-align: center;
@@ -1202,13 +1400,66 @@ export default defineComponent({
 
 .row__clone {
   padding: 3px 9px;
-  font: inherit;
+  font-family: var(--vpg-font-body);
   font-size: 12px;
-  color: inherit;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #f2f5f8;
+  -webkit-text-fill-color: #f2f5f8;
+  -webkit-text-stroke-width: 0;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 3px;
   cursor: pointer;
+}
+
+.slot {
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.slot:last-child {
+  border-bottom: 0;
+}
+
+.slot__label {
+  display: block;
+  padding: 3px 0;
+}
+
+/* The tints sit under the texture they modify, indented to read as its own. */
+.tints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 3px 0 4px 10px;
+}
+
+.tint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tint__label {
+  font-size: 12px;
+  opacity: 0.7;
+  min-width: 42px;
+}
+
+.tint__swatch {
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tint__alpha {
+  width: 70px;
+  accent-color: var(--vpg-panel-glow);
 }
 
 .toggle {

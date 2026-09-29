@@ -19,6 +19,7 @@ import "@babylonjs/loaders/glTF";
 import { RING } from "../game/config";
 import { resolveAsset } from "../data/assets";
 import { ArenaData, arenaById, arenaParts } from "../data/arenas";
+import { colorTargets } from "../data/textureSlots";
 import { cssColorToRgb } from "./cssColor";
 
 /**
@@ -371,30 +372,6 @@ export class ArenaScene {
     return warnings;
   }
 
-  /** Which material each `*Color` key paints. */
-  private colorTargets(key: string): string[] {
-    switch (key) {
-      case "canvasColor":
-        return ["mat_canvas"];
-      case "postColor":
-        return ["mat_post"];
-      case "turnbucklePadColor":
-        return ["mat_turnbuckle"];
-      case "turnbuckleBoltCoverColor":
-        return ["mat_turnbuckle_bolt_cover"];
-      case "ropeColor":
-        return ["mat_rope_top", "mat_rope_middle", "mat_rope_bottom"];
-      case "ropeTopColor":
-        return ["mat_rope_top"];
-      case "ropeMiddleColor":
-        return ["mat_rope_middle"];
-      case "ropeBottomColor":
-        return ["mat_rope_bottom"];
-      default:
-        return [];
-    }
-  }
-
   private applyColor(
     byName: Map<string, Set<Material>>,
     key: string,
@@ -403,7 +380,9 @@ export class ArenaScene {
     const rgb = cssColorToRgb(cssColor);
     if (!rgb) return;
 
-    for (const name of this.colorTargets(key)) {
+    // The slot registry owns the key -> material mapping, so a new colour
+    // control works here without the renderer being told about it.
+    for (const name of colorTargets(key)) {
       const materials = byName.get(name);
       if (!materials) continue;
       for (const material of materials) {

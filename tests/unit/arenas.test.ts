@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { arenaById, arenaParts, availableArenas } from "@/data/arenas";
 import { cssColorToRgb } from "@/renderer/cssColor";
 import { resolveAsset } from "@/data/assets";
+import { availableStages, pieceFitsStage, stageById } from "@/data/stages";
 
 const GLB_HEADER_BYTES = 12;
 const GLB_CHUNK_HEADER_BYTES = 8;
@@ -71,11 +72,11 @@ describe("arena parts", () => {
     const parts = arenaParts({
       id: "x",
       displayName: "X",
-      arenaParts: ["assets/glb/arena/arena-floor.glb"],
+      arenaParts: ["assets/glb/arena/floor/arena_floor.glb"],
     });
     expect(parts).toEqual([
       {
-        glb: "assets/glb/arena/arena-floor.glb",
+        glb: "assets/glb/arena/floor/arena_floor.glb",
         position: [0, 0, 0],
         rotation: [0, 0, 0],
       },
@@ -87,7 +88,7 @@ describe("arena parts", () => {
       id: "x",
       displayName: "X",
       arenaParts: [
-        { glb: "assets/glb/arena/barricade.glb", position: [1, 2, 3], rotation: [0, 1, 0] },
+        { glb: "assets/glb/arena/barricade/barricade.glb", position: [1, 2, 3], rotation: [0, 1, 0] },
       ],
     });
     expect(parts[0].position).toEqual([1, 2, 3]);
@@ -98,10 +99,10 @@ describe("arena parts", () => {
     const parts = arenaParts({
       id: "x",
       displayName: "X",
-      arenaGlb: "assets/glb/arena/arena-floor.glb",
+      arenaGlb: "assets/glb/arena/floor/arena_floor.glb",
     });
     expect(parts).toHaveLength(1);
-    expect(parts[0].glb).toBe("assets/glb/arena/arena-floor.glb");
+    expect(parts[0].glb).toBe("assets/glb/arena/floor/arena_floor.glb");
   });
 
   it("drops malformed entries instead of loading undefined", () => {
@@ -116,6 +117,90 @@ describe("arena parts", () => {
 
   it("reports no parts when the arena lists none", () => {
     expect(arenaParts({ id: "x", displayName: "X" })).toEqual([]);
+  });
+});
+
+describe("arena parts from a stage", () => {
+  it("expands a stage into its three pieces plus the stage itself", () => {
+    const stage = stageById("royal_rumble")!;
+    const parts = arenaParts({
+      id: "x",
+      displayName: "X",
+      stage: "royal_rumble",
+    }).map((p) => p.glb);
+
+    expect(parts).toEqual([
+      stage.floors[0],
+      stage.barricades[0],
+      stage.outers[0],
+      stage.glb,
+    ]);
+  });
+
+  it("prefers the pieces the arena names over the stage's defaults", () => {
+    const parts = arenaParts({
+      id: "x",
+      displayName: "X",
+      stage: "raw_is_war",
+      floor: "assets/glb/arena/floor/arena_floor.glb",
+    }).map((p) => p.glb);
+    expect(parts[0]).toBe("assets/glb/arena/floor/arena_floor.glb");
+  });
+
+  it("prefers the stage fields over a legacy part list on the same file", () => {
+    const parts = arenaParts({
+      id: "x",
+      displayName: "X",
+      stage: "royal_rumble",
+      arenaParts: ["assets/glb/arena/ceiling_trusses.glb"],
+    }).map((p) => p.glb);
+    expect(parts).not.toContain("assets/glb/arena/ceiling_trusses.glb");
+  });
+
+  it("yields nothing for a stage the manifest does not know", () => {
+    expect(
+      arenaParts({ id: "x", displayName: "X", stage: "no_such_stage" })
+    ).toEqual([]);
+  });
+});
+
+describe("the stage manifest", () => {
+  it("bundles every GLB it offers", () => {
+    const unresolved: string[] = [];
+    for (const stage of availableStages()) {
+      for (const glb of [
+        stage.glb,
+        ...stage.floors,
+        ...stage.barricades,
+        ...stage.outers,
+      ]) {
+        if (!resolveAsset(glb)) unresolved.push(`${stage.id}: ${glb}`);
+      }
+    }
+    expect(unresolved).toEqual([]);
+  });
+
+  it("gives every arena a stage the manifest knows", () => {
+    const unknown = availableArenas()
+      .map((s) => arenaById(s.id)!)
+      .filter((arena) => arena.stage && !stageById(arena.stage))
+      .map((arena) => `${arena.id}: ${arena.stage}`);
+    expect(unknown).toEqual([]);
+  });
+
+  it("pairs every arena with pieces its stage actually lists", () => {
+    const mismatched: string[] = [];
+    for (const summary of availableArenas()) {
+      const arena = arenaById(summary.id)!;
+      if (!arena.stage) continue;
+      for (const kind of ["floor", "barricade", "outer"] as const) {
+        const glb = arena[kind];
+        if (glb && !pieceFitsStage(arena.stage, kind, glb)) {
+          mismatched.push(`${summary.id}.${kind}: ${glb}`);
+        }
+      }
+    }
+    expect(mismatched).toEqual([]);
   });
 });
 
