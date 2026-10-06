@@ -793,11 +793,16 @@ export class GameScene {
 
     this.match.onResolved = (_attacker, defender, resolution) => {
       if (defender !== "opponent") return;
-      if (resolution.knockedDown) {
-        this.opponent?.playReaction("STATE_KNOCKDOWN_SEATED");
-      } else {
+      if (!resolution.knockedDown) {
         this.opponent?.playReaction(`REACT_${resolution.targetRegion}`);
       }
+    };
+
+    this.match.onGroundedWindowChanged = (side, active) => {
+      if (side !== "opponent") return;
+      this.opponent?.playReaction(
+        active ? "STATE_KNOCKDOWN_SEATED" : "STATE_TECHNICAL_STANDUP"
+      );
     };
 
     const movement = deriveMovementPhysics(player.body, player.stanceId);
