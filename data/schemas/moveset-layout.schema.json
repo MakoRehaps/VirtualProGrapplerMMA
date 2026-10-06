@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "buttons",
+    "contexts",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "buttons": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "a",
+          "b",
+          "x",
+          "y"
+        ]
+      },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "contexts": {
+      "type": "object",
+      "required": [
+        "standing",
+        "clinch",
+        "grounded_opponent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "standing": {
+          "$ref": "#/$defs/context"
+        },
+        "clinch": {
+          "$ref": "#/$defs/context"
+        },
+        "grounded_opponent": {
+          "$ref": "#/$defs/context"
+        }
+      }
+    },
+    "rules": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "context": {
+      "type": "object",
+      "required": [
+        "position_ids",
+        "technique_contexts",
+        "slots"
+      ],
+      "properties": {
+        "position_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "technique_contexts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "slots": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "slot_id",
+              "button",
+              "label"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
