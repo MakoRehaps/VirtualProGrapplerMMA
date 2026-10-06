@@ -247,15 +247,19 @@ export class MayQuvMatch {
   }
 
   private recoverStamina(frame: number): void {
-    const elapsedFrames = Math.max(0, frame - this.lastStepFrame);
+    const previousFrame = this.lastStepFrame;
     this.lastStepFrame = frame;
-    if (elapsedFrames <= 0) return;
+    if (frame <= previousFrame) return;
 
     const basePerSecond = 8;
     const idleDelayFrames = 30;
 
     for (const side of ["player", "opponent"] as CombatSide[]) {
-      if (frame - this.lastTechniqueFrame[side] < idleDelayFrames) continue;
+      const recoveryStartsAt =
+        this.lastTechniqueFrame[side] + idleDelayFrames;
+      const fromFrame = Math.max(previousFrame, recoveryStartsAt);
+      const recoverableFrames = Math.max(0, frame - fromFrame);
+      if (recoverableFrames <= 0) continue;
 
       const state = this.stateOf(side);
       if (state.condition.stamina >= 100) continue;
@@ -264,7 +268,7 @@ export class MayQuvMatch {
         regionConsequences(state.condition).staminaCostScale;
       const recoveryScale = 1 / Math.max(1, bodyPenalty);
       const recovered =
-        (elapsedFrames / 60) * basePerSecond * recoveryScale;
+        (recoverableFrames / 60) * basePerSecond * recoveryScale;
 
       state.condition.stamina = Math.min(
         100,
