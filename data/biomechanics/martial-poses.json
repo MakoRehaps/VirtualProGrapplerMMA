@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "description": "Source-backed biomechanical pose and motion profiles for procedural MAY' QUV animation. Measured values preserve study units; solver parameters are explicitly marked as derived or synthesized.",
+  "coordinate_convention": {
+    "forward": "+Z",
+    "right": "+X",
+    "up": "+Y",
+    "joint_angle_degrees": "anatomical flexion/extension unless otherwise noted",
+    "yaw_degrees": "positive rotates toward fighter's right",
+    "normalized_time": "0=start, 1=end"
+  },
+  "solver_defaults": {
+    "support_polygon_margin_m": 0.025,
+    "max_foot_slide_m": 0.035,
+    "ik_iterations": 8,
+    "pelvis_follow_smoothing": 0.18,
+    "torso_follow_smoothing": 0.14,
+    "recovery_smoothing": 0.12
+  },
+  "formulas": {
+    "knee_angle_from_leg_geometry": "acos(clamp((L1^2 + L2^2 - d^2) / (2*L1*L2), -1, 1))",
+    "weighted_com_target": "sum(contact_position_i * support_weight_i) / sum(support_weight_i)",
+    "balance_error": "distance(project(COM, ground), nearest_point_on_support_polygon)",
+    "segment_tip_velocity": "parent_linear_velocity + cross(angular_velocity, segment_radius_vector)",
+    "normalized_stride": "stance_length_m / fighter_height_m",
+    "normalized_width": "stance_width_m / pelvis_width_m"
+  },
+  "sources": [
+    {
+      "source_id": "karate_zenkutsu_2015",
+      "title": "Assessment of Correlation between Electrogoniometer Measurements and Sports-Specific Movement in Karate Elites",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4374612/",
+      "evidence": "measured_and_described"
+    },
+    {
+      "source_id": "karate_stances_gojuryu_2026",
+      "title": "Applying Principles of Biomechanics of the Spine to Martial Arts: A Review on Balance of Stances in Goju-Ryu Karate-Do",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12821703/",
+      "evidence": "review_and_described"
+    },
+    {
+      "source_id": "karate_fatigue_zenkutsu_2020",
+      "title": "Fatigue-Related and Timescale-Dependent Changes in Individual Movement Patterns Identified Using Support Vector Machine",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7554555/",
+      "evidence": "measured_protocol"
+    },
+    {
+      "source_id": "karate_sidekick_2026",
+      "title": "Biomechanical and Signal-Based Characterization of Karate Lateral Kicks Using Videogrammetry Analysis",
+      "url": "https://www.mdpi.com/2075-1702/14/3/339",
+      "evidence": "measured_protocol"
+    },
+    {
+      "source_id": "roundhouse_2017",
+      "title": "A biomechanical analysis of the roundhouse kicking technique of expert practitioners",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5571909/",
+      "evidence": "measured_3d_kinematics"
+    },
+    {
+      "source_id": "boxing_straights_2026",
+      "title": "Kinematic and kinetic differences between lead and rear straight punches in elite boxers",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13285485/",
+      "evidence": "measured_3d_kinetics"
+    },
+    {
+      "source_id": "boxing_dumbbell_2025",
+      "title": "The acute effects of boxing-specific dumbbell activity on punch performance in male amateur boxers",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12313678/",
+      "evidence": "review_with_reported_kinematics"
+    },
+    {
+      "source_id": "sanda_boxing_lead_2023",
+      "title": "Biomechanics of the lead straight punch and related indexes between sanda fighters and boxers",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9885259/",
+      "evidence": "measured_3d_kinetics"
+    },
+    {
+      "source_id": "judo_com_2006",
+      "title": "A Three-Dimensional Analysis Of The Center Of Mass For Three Different Judo Throwing Techniques",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3863919/",
+      "evidence": "measured_3d_kinematics"
+    }
+  ],
+  "stance_profiles": [
+    {
+      "pose_id": "karate_zenkutsu_dachi",
+      "family": "karate",
+      "label": "Zenkutsu-dachi",
+      "evidence_level": "measured",
+      "sources": [
+        "karate_zenkutsu_2015",
+        "karate_fatigue_zenkutsu_2020"
+      ],
+      "geometry": {
+        "stance_length_shoulder_widths": 2,
+        "stance_width_basis": "pelvis_to_shoulder_width",
+        "lead_foot_yaw_deg": 0,
+        "rear_foot_yaw_deg": {
+          "min": 20,
+          "max": 45,
+          "nominal": 30
+        },
+        "lead_knee_internal_angle_deg": {
+          "nominal": 135
+        },
+        "rear_knee_target": "extended",
+        "rear_heel": "grounded"
+      },
+      "support": {
+        "lead_weight": 0.6,
+        "rear_weight": 0.4,
+        "com_bias": "forward_over_lead_leg"
+      },
+      "solver": {
+        "pelvis_height_mode": "solve_from_knee_target",
+        "torso_pitch_deg": 0,
+        "keep_lead_knee_over_foot": true
+      }
+    },
+    {
+      "pose_id": "karate_sanchin_dachi",
+      "family": "karate",
+      "label": "Sanchin-dachi",
+      "evidence_level": "described",
+      "sources": [
+        "karate_stances_gojuryu_2026"
+      ],
+      "geometry": {
+        "front_foot_inward_yaw_deg": 20,
+        "both_feet_inward": true,
+        "heel_to_rear_toe_alignment": true
+      },
+      "support": {
+        "lead_weight": 0.52,
+        "rear_weight": 0.48,
+        "weight_distribution_evidence": "solver approximation from described midline/slightly-forward COG"
+      },
+      "solver": {
+        "com_target": "midline_slightly_forward",
+        "pelvis_height_mode": "slightly_lowered"
+      }
+    },
+    {
+      "pose_id": "karate_shiko_dachi",
+      "family": "karate",
+      "label": "Shiko-dachi",
+      "evidence_level": "described",
+      "sources": [
+        "karate_stances_gojuryu_2026"
+      ],
+      "geometry": {
+        "stance_width_shoulder_widths": 2,
+        "left_foot_yaw_deg": -45,
+        "right_foot_yaw_deg": 45,
+        "hip_rotation": "outward",
+        "knees_track_over_toes": true
+      },
+      "support": {
+        "left_weight": 0.5,
+        "right_weight": 0.5,
+        "com_bias": "centered"
+      },
+      "solver": {
+        "pelvis_height_mode": "maximally_lowered_without_joint_limit_violation",
+        "torso_pitch_deg": 0
+      }
+    },
+    {
+      "pose_id": "karate_neko_ashi_dachi",
+      "family": "karate",
+      "label": "Neko-ashi-dachi",
+      "evidence_level": "described_plus_conventional_distribution",
+      "sources": [
+        "karate_stances_gojuryu_2026"
+      ],
+      "geometry": {
+        "front_leg_role": "light_contact",
+        "rear_leg_role": "primary_support"
+      },
+      "support": {
+        "lead_weight": 0.2,
+        "rear_weight": 0.8,
+        "com_bias": "rear"
+      },
+      "solver": {
+        "pelvis_target": "over_rear_support",
+        "front_heel_load": 0.05,
+        "pelvis_height_mode": "lowered"
+      }
+    }
+  ],
+  "motion_profiles": [
+    {
+      "motion_id": "boxing_lead_straight",
+      "family": "boxing",
+      "technique_ids": [
+        "jab"
+      ],
+      "evidence_level": "measured",
+      "sources": [
+        "boxing_straights_2026"
+      ],
+      "duration_s": {
+        "mean": 0.442,
+        "sd": 0.056
+      },
+      "kinematics": {
+        "trunk_rotation_rom_deg": {
+          "mean": 42.67,
+          "sd": 7.72
+        },
+        "peak_trunk_forward_rotation_deg_s": {
+          "mean": 220.44,
+          "sd": 34.91
+        },
+        "peak_fist_velocity_m_s": {
+          "mean": 6.76,
+          "sd": 0.61
+        },
+        "impact_fist_velocity_m_s": {
+          "mean": 5.24,
+          "sd": 0.61
+        }
+      },
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "guard_start"
+        },
+        {
+          "t": 0.18,
+          "event": "lead_leg_brace"
+        },
+        {
+          "t": 0.28,
+          "event": "trunk_rotation_begins"
+        },
+        {
+          "t": 0.42,
+          "event": "shoulder_protraction"
+        },
+        {
+          "t": 0.62,
+          "event": "elbow_extension_accelerates"
+        },
+        {
+          "t": 0.78,
+          "event": "peak_fist_speed_window"
+        },
+        {
+          "t": 0.88,
+          "event": "impact_window"
+        },
+        {
+          "t": 1,
+          "event": "recover_guard"
+        }
+      ]
+    },
+    {
+      "motion_id": "boxing_rear_straight",
+      "family": "boxing",
+      "technique_ids": [
+        "cross"
+      ],
+      "evidence_level": "measured",
+      "sources": [
+        "boxing_straights_2026",
+        "boxing_dumbbell_2025"
+      ],
+      "duration_s": {
+        "mean": 0.667,
+        "sd": 0.07
+      },
+      "kinematics": {
+        "trunk_rotation_rom_deg": {
+          "mean": 73.01,
+          "sd": 7.99
+        },
+        "peak_trunk_forward_rotation_deg_s": {
+          "mean": 269.64,
+          "sd": 71.46
+        },
+        "peak_fist_velocity_m_s": {
+          "mean": 7.75,
+          "sd": 0.66
+        },
+        "impact_fist_velocity_m_s": {
+          "mean": 6.18,
+          "sd": 0.8
+        },
+        "reported_peak_shoulder_angular_velocity_deg_s": {
+          "mean": 534.5,
+          "sd": 207.8
+        },
+        "reported_peak_elbow_angular_velocity_deg_s": {
+          "mean": 399.6,
+          "sd": 171.8
+        }
+      },
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "guard_start"
+        },
+        {
+          "t": 0.1,
+          "event": "rear_leg_drive"
+        },
+        {
+          "t": 0.2,
+          "event": "pelvis_rotation"
+        },
+        {
+          "t": 0.3,
+          "event": "trunk_rotation"
+        },
+        {
+          "t": 0.42,
+          "event": "shoulder_rotation"
+        },
+        {
+          "t": 0.58,
+          "event": "elbow_extension"
+        },
+        {
+          "t": 0.76,
+          "event": "peak_fist_speed_window"
+        },
+        {
+          "t": 0.86,
+          "event": "impact_window"
+        },
+        {
+          "t": 1,
+          "event": "recover_guard"
+        }
+      ]
+    },
+    {
+      "motion_id": "roundhouse_muay_thai",
+      "family": "muay_thai",
+      "technique_ids": [
+        "roundhouse_body",
+        "roundhouse_head",
+        "low_kick"
+      ],
+      "evidence_level": "measured",
+      "sources": [
+        "roundhouse_2017"
+      ],
+      "duration_s": {
+        "mean": 1.02,
+        "sd": 0.15
+      },
+      "kinematics": {
+        "max_foot_velocity_m_s": {
+          "mean": 13.24,
+          "sd": 2.3
+        },
+        "impact_foot_velocity_m_s": {
+          "mean": 7.22,
+          "sd": 1.47
+        },
+        "max_knee_flexion_deg": {
+          "mean": 99,
+          "sd": 11
+        },
+        "knee_flexion_at_impact_deg": {
+          "mean": 43,
+          "sd": 7
+        },
+        "hip_abduction_at_impact_deg": {
+          "mean": 53,
+          "sd": 3
+        },
+        "pelvis_axial_rotation_rom_deg": {
+          "mean": 92,
+          "sd": 23
+        },
+        "max_pelvis_axial_rotation_deg_s": {
+          "mean": 493,
+          "sd": 206
+        },
+        "max_knee_extension_velocity_deg_s": {
+          "mean": -706,
+          "sd": 200
+        }
+      },
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "stance"
+        },
+        {
+          "t": 0.16,
+          "event": "support_pivot_and_pelvis_start"
+        },
+        {
+          "t": 0.3,
+          "event": "hip_abduction"
+        },
+        {
+          "t": 0.45,
+          "event": "knee_chamber"
+        },
+        {
+          "t": 0.6,
+          "event": "pelvis_rotation_peak_window"
+        },
+        {
+          "t": 0.72,
+          "event": "knee_extension_peak_window"
+        },
+        {
+          "t": 0.82,
+          "event": "impact_window"
+        },
+        {
+          "t": 1,
+          "event": "recovery"
+        }
+      ]
+    },
+    {
+      "motion_id": "roundhouse_karate",
+      "family": "karate",
+      "technique_ids": [
+        "roundhouse_body",
+        "roundhouse_head"
+      ],
+      "evidence_level": "measured",
+      "sources": [
+        "roundhouse_2017"
+      ],
+      "duration_s": {
+        "mean": 1.29,
+        "sd": 0.28
+      },
+      "kinematics": {
+        "max_foot_velocity_m_s": {
+          "mean": 13.66,
+          "sd": 1.06
+        },
+        "impact_foot_velocity_m_s": {
+          "mean": 5.57,
+          "sd": 0.8
+        },
+        "max_knee_flexion_deg": {
+          "mean": 99,
+          "sd": 6
+        },
+        "knee_flexion_at_impact_deg": {
+          "mean": 15,
+          "sd": 6
+        },
+        "hip_abduction_at_impact_deg": {
+          "mean": 50,
+          "sd": 7
+        },
+        "pelvis_axial_rotation_rom_deg": {
+          "mean": 114,
+          "sd": 30
+        },
+        "max_pelvis_axial_rotation_deg_s": {
+          "mean": 452,
+          "sd": 71
+        },
+        "max_knee_extension_velocity_deg_s": {
+          "mean": -947,
+          "sd": 94
+        }
+      }
+    },
+    {
+      "motion_id": "roundhouse_taekwondo",
+      "family": "taekwondo",
+      "technique_ids": [
+        "roundhouse_body",
+        "roundhouse_head"
+      ],
+      "evidence_level": "measured",
+      "sources": [
+        "roundhouse_2017"
+      ],
+      "duration_s": {
+        "mean": 1.54,
+        "sd": 0.52
+      },
+      "kinematics": {
+        "max_foot_velocity_m_s": {
+          "mean": 14.66,
+          "sd": 1.18
+        },
+        "impact_foot_velocity_m_s": {
+          "mean": 6.36,
+          "sd": 0.89
+        },
+        "max_knee_flexion_deg": {
+          "mean": 96,
+          "sd": 2
+        },
+        "knee_flexion_at_impact_deg": {
+          "mean": 16,
+          "sd": 10
+        },
+        "hip_abduction_at_impact_deg": {
+          "mean": 51,
+          "sd": 4
+        },
+        "pelvis_axial_rotation_rom_deg": {
+          "mean": 122,
+          "sd": 27
+        },
+        "max_pelvis_axial_rotation_deg_s": {
+          "mean": 448,
+          "sd": 30
+        },
+        "max_knee_extension_velocity_deg_s": {
+          "mean": -943,
+          "sd": 106
+        }
+      }
+    },
+    {
+      "motion_id": "karate_side_kick",
+      "family": "karate",
+      "technique_ids": [
+        "side_kick"
+      ],
+      "evidence_level": "measured_protocol",
+      "sources": [
+        "karate_sidekick_2026"
+      ],
+      "kinematics": {
+        "support_foot_rotation_deg": {
+          "min": 95,
+          "max": 100
+        },
+        "chamber_knee_flexion_deg": {
+          "min": 90,
+          "max": 130
+        }
+      },
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "neutral"
+        },
+        {
+          "t": 0.18,
+          "event": "support_foot_pivot"
+        },
+        {
+          "t": 0.34,
+          "event": "knee_chamber"
+        },
+        {
+          "t": 0.58,
+          "event": "hip_drive"
+        },
+        {
+          "t": 0.76,
+          "event": "leg_extension"
+        },
+        {
+          "t": 0.84,
+          "event": "impact_window"
+        },
+        {
+          "t": 0.92,
+          "event": "re_chamber"
+        },
+        {
+          "t": 1,
+          "event": "return"
+        }
+      ]
+    },
+    {
+      "motion_id": "judo_harai_goshi",
+      "family": "judo",
+      "technique_ids": [
+        "harai_goshi"
+      ],
+      "evidence_level": "measured_phase_structure",
+      "sources": [
+        "judo_com_2006"
+      ],
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "kuzushi_start"
+        },
+        {
+          "t": 0.3,
+          "event": "kuzushi_peak"
+        },
+        {
+          "t": 0.34,
+          "event": "tsukuri_start"
+        },
+        {
+          "t": 0.68,
+          "event": "fit_and_collision"
+        },
+        {
+          "t": 0.7,
+          "event": "kake_start"
+        },
+        {
+          "t": 1,
+          "event": "throw_completion"
+        }
+      ],
+      "solver": {
+        "defender_com_goal": "move_outside_support_polygon_before_kake",
+        "attacker_contact_priority": "hip_and_trunk",
+        "highest_impulse_phases": [
+          "kuzushi",
+          "tsukuri"
+        ]
+      }
+    },
+    {
+      "motion_id": "judo_osoto_gari",
+      "family": "judo",
+      "technique_ids": [
+        "osoto_gari"
+      ],
+      "evidence_level": "measured_phase_structure",
+      "sources": [
+        "judo_com_2006"
+      ],
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "kuzushi_start"
+        },
+        {
+          "t": 0.32,
+          "event": "kuzushi_peak"
+        },
+        {
+          "t": 0.36,
+          "event": "tsukuri_start"
+        },
+        {
+          "t": 0.66,
+          "event": "reaping_leg_entry"
+        },
+        {
+          "t": 0.72,
+          "event": "kake_start"
+        },
+        {
+          "t": 1,
+          "event": "throw_completion"
+        }
+      ],
+      "solver": {
+        "defender_com_goal": "posterior_outside_support_polygon",
+        "highest_impulse_phases": [
+          "kuzushi",
+          "tsukuri"
+        ]
+      }
+    },
+    {
+      "motion_id": "judo_seoi_nage",
+      "family": "judo",
+      "technique_ids": [
+        "seoi_nage"
+      ],
+      "evidence_level": "measured_phase_structure",
+      "sources": [
+        "judo_com_2006"
+      ],
+      "phase_curve": [
+        {
+          "t": 0,
+          "event": "kuzushi_start"
+        },
+        {
+          "t": 0.3,
+          "event": "kuzushi_peak"
+        },
+        {
+          "t": 0.34,
+          "event": "tsukuri_turn_in"
+        },
+        {
+          "t": 0.66,
+          "event": "load_opponent_com"
+        },
+        {
+          "t": 0.72,
+          "event": "kake_start"
+        },
+        {
+          "t": 1,
+          "event": "throw_completion"
+        }
+      ],
+      "solver": {
+        "defender_com_goal": "forward_and_above_attacker_support_axis",
+        "attacker_turn_in_required": true
+      }
+    }
+  ],
+  "style_motion_aliases": [
+    {
+      "style_family": "boxing",
+      "stance_pose": "neutral_fighting",
+      "motion_family": "boxing"
+    },
+    {
+      "style_family": "sanda",
+      "stance_pose": "neutral_fighting",
+      "motion_family": "sanda_boxing_hybrid"
+    },
+    {
+      "style_family": "karate",
+      "stance_pose": "karate_zenkutsu_dachi",
+      "motion_family": "karate"
+    },
+    {
+      "style_family": "goju_ryu",
+      "stance_pose": "karate_sanchin_dachi",
+      "motion_family": "karate"
+    },
+    {
+      "style_family": "muay_thai",
+      "stance_pose": "muay_thai_square",
+      "motion_family": "muay_thai"
+    },
+    {
+      "style_family": "taekwondo",
+      "stance_pose": "taekwondo_side_on",
+      "motion_family": "taekwondo"
+    },
+    {
+      "style_family": "judo",
+      "stance_pose": "judo_grip_ready",
+      "motion_family": "judo"
+    }
+  ]
+}
