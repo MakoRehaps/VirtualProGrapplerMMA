@@ -46,7 +46,7 @@ import { normalizeFighterSetup, type FighterSetupInput } from "../game/fighterSe
 import { FixedStep } from "../sim/FixedStep";
 import { createDefaultMoveset, techniqueForMovesetInput, validateMoveset, type FighterMoveset, type MovesetButton } from "../combat/moveset";
 import { listMovesets } from "../combat/movesetStore";
-import { BotBrain } from "../ai/BotBrain";
+import { BotBrain, type BotDifficultyId } from "../ai/BotBrain";
 import { InputBuffer } from "../sim/InputBuffer";
 import {
   MODEL_ROOT,
@@ -852,7 +852,8 @@ export class GameScene {
   async loadCharacter(
     definition: CharacterDefinition,
     playerSetup?: FighterSetupInput,
-    opponentSetup?: FighterSetupInput
+    opponentSetup?: FighterSetupInput,
+    botDifficulty: BotDifficultyId = "club"
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -1004,7 +1005,8 @@ export class GameScene {
       definition.id,
       opponentDef.id,
       normalizedSetup ?? undefined,
-      normalizedOpponentSetup ?? undefined
+      normalizedOpponentSetup ?? undefined,
+      botDifficulty
     );
 
     // The camera is deliberately not re-aimed at the character: it stays on
@@ -1044,7 +1046,8 @@ export class GameScene {
     playerId: string,
     opponentId: string,
     playerOverride?: FighterLoadout,
-    opponentOverride?: FighterLoadout
+    opponentOverride?: FighterLoadout,
+    botDifficulty: BotDifficultyId = "club"
   ): void {
     this.clock.reset();
     this.inputBuffer.clear();
@@ -1057,7 +1060,7 @@ export class GameScene {
     this.botBrain = new BotBrain(
       this.match,
       "opponent",
-      "club",
+      botDifficulty,
       (techniqueId) => this.tryOpponentTechnique(techniqueId),
       () => {
         if (!this.playerRoot || !this.opponent || !this.match) return false;
