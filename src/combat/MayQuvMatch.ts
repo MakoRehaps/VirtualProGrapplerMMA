@@ -61,6 +61,7 @@ export class MayQuvMatch {
 
   canConnect: ((attacker: CombatSide, technique: TechniqueRuntime) => boolean) | null = null;
   contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => keyof FighterCondition["regions"] | null) | null = null;
+  onResolved: ((attacker: CombatSide, defender: CombatSide, resolution: CombatResolution) => void) | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -138,6 +139,7 @@ export class MayQuvMatch {
       connected: true,
       resolution: result,
     });
+    this.onResolved?.(hit.attacker, defenderSide, result);
 
     if (result.knockedOut) {
       this.winner = hit.attacker;
