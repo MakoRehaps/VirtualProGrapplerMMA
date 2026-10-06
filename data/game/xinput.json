@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "primary_device": "xinput",
+  "gameplay_players_max": 2,
+  "keyboard_role": "development_and_accessibility_fallback",
+  "deterministic_input_buffer": true,
+  "controls": {
+    "left_stick": "movement and stance footwork",
+    "right_stick": "contextual sway, grappling transitions and positional control",
+    "button_a": "contextual technique 1",
+    "button_b": "contextual technique 2",
+    "button_x": "contextual technique 3",
+    "button_y": "contextual technique 4",
+    "left_bumper": "defense/modifier",
+    "right_bumper": "clinch/grapple modifier",
+    "left_trigger": "guard/defensive modifier",
+    "right_trigger": "power/commit modifier",
+    "dpad": "stance utilities and non-combat selections",
+    "menu": "pause"
+  },
+  "rule": "The same control language changes by stance, range and combat position; styles change available techniques, not controller complexity."
+}
