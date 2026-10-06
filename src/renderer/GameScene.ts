@@ -44,6 +44,7 @@ import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
 import { createDefaultMoveset, techniqueForMovesetInput, validateMoveset, type FighterMoveset, type MovesetButton } from "../combat/moveset";
 import { listMovesets } from "../combat/movesetStore";
+import { BotBrain } from "../ai/BotBrain";
 import { InputBuffer } from "../sim/InputBuffer";
 import {
   MODEL_ROOT,
@@ -77,10 +78,12 @@ export class GameScene {
   private controller: CharacterController | null = null;
   private animations: AnimationController | null = null;
   private playerProcedural: ProceduralMartialAnimator | null = null;
+  private opponentProcedural: ProceduralMartialAnimator | null = null;
   private playerStanceProcedural: ProceduralStanceAnimator | null = null;
   private playerRig: SkeletonRig | null = null;
   private opponentRig: SkeletonRig | null = null;
   private pairedProcedural: PairedMartialAnimator | null = null;
+  private opponentPairedProcedural: PairedMartialAnimator | null = null;
   private playerCollision: FighterCollisionRig | null = null;
   private opponentCollision: FighterCollisionRig | null = null;
   private opponentReactions: ProceduralHitReactionAnimator | null = null;
@@ -111,6 +114,7 @@ export class GameScene {
   private readonly inputBuffer = new InputBuffer();
   private match: MayQuvMatch | null = null;
   private playerMoveset: FighterMoveset | null = null;
+  private botBrain: BotBrain | null = null;
 
   private readonly onResize: () => void;
 
@@ -163,8 +167,15 @@ export class GameScene {
         this.input.swayHorizontal,
         this.input.swayVertical
       );
-      // The opponent has no AI, but it always squares up to the player.
-      this.opponent?.update(dt, this.playerRoot?.position ?? null);
+      const opponentPosition = this.match?.opponent.positionId ?? "standing_open";
+      const botPressure =
+        opponentPosition === "standing_open" ||
+        opponentPosition === "standing_close";
+      this.opponent?.update(
+        dt,
+        this.playerRoot?.position ?? null,
+        botPressure ? 1.0 : null
+      );
       // Ropes keep oscillating after the wrestler has left them.
       this.ropes?.update(dt);
       this.collisionDebug?.update(this.playerCollision, this.opponentCollision);
@@ -172,6 +183,7 @@ export class GameScene {
       // ...while combat advances on a fixed clock, so hit frames and reversal
       // windows are counted in equal, reproducible steps.
       this.clock.advance(dt, (frame) => {
+        this.botBrain?.step(frame);
         this.match?.step(frame);
         this.inputBuffer.prune(frame);
       });
@@ -295,6 +307,76 @@ export class GameScene {
       button
     );
     return techniqueId ? this.tryPlayerTechnique(techniqueId) : false;
+  }
+
+    private tryOpponentTechnique(techniqueId: string): boolean {
+    if (!this.match || !this.opponent) return false;
+
+    const technique = techniqueById(techniqueId);
+    if (!technique) return false;
+
+    let animationName: string | null = null;
+
+    if (
+      techniqueId === "osoto_gari" ||
+      techniqueId === "harai_goshi" ||
+      techniqueId === "seoi_nage" ||
+      techniqueId === "inside_trip" ||
+      techniqueId === "outside_trip" ||
+      techniqueId === "body_lock_trip" ||
+      techniqueId === "double_leg" ||
+      techniqueId === "single_leg" ||
+      techniqueId === "high_crotch"
+    ) {
+      const group = this.opponentPairedProcedural?.buildThrow(techniqueId);
+      if (group) {
+        this.opponent.registerAnimations([group]);
+        animationName = group.name;
+      }
+    } else {
+      const styleId = this.match.opponent.loadout.styleId;
+      const styleRecord = styleById(styleId);
+      const familyText = [styleId, ...(styleRecord?.family ?? [])]
+        .join(" ")
+        .toLowerCase();
+      const preferredMotionFamily =
+        familyText.includes("muay") ? "muay_thai" :
+        familyText.includes("taekwondo") ? "taekwondo" :
+        familyText.includes("karate") ? "karate" :
+        familyText.includes("boxing") ? "boxing" :
+        undefined;
+
+      const group = this.opponentProcedural?.buildTechnique(
+        techniqueId,
+        preferredMotionFamily
+      );
+      if (group) {
+        this.opponent.registerAnimations([group]);
+        animationName = group.name;
+      }
+    }
+
+    const relativeVelocityMps =
+      technique.weapon.includes("leg") || technique.weapon.includes("knee")
+        ? 8.0
+        : technique.weapon.includes("elbow")
+          ? 7.0
+          : 6.2;
+
+    const queued = this.match.throwTechnique(
+      "opponent",
+      technique,
+      this.clock.frame,
+      {
+        relativeVelocityMps,
+        contactQuality: "clean",
+        guard: "none",
+      }
+    );
+
+    if (!queued) return false;
+    if (animationName) this.opponent.playReaction(animationName);
+    return true;
   }
 
     tryPlayerTechnique(techniqueId: string): boolean {
@@ -737,6 +819,7 @@ export class GameScene {
     this.opponent = new Opponent(other.root, other.animations);
     this.opponentNodes = other.nodes;
     this.opponentRig = other.rig;
+    this.opponentProcedural = other.procedural;
     this.opponentReactions = new ProceduralHitReactionAnimator(this.scene, other.rig);
     this.opponent.registerAnimations(this.opponentReactions.buildAll());
     this.opponentKnockdown = new ProceduralKnockdownAnimator(this.scene, other.rig);
@@ -755,6 +838,13 @@ export class GameScene {
         this.playerRig,
         other.root,
         this.opponentRig
+      );
+      this.opponentPairedProcedural = new PairedMartialAnimator(
+        this.scene,
+        other.root,
+        this.opponentRig,
+        root,
+        this.playerRig
       );
       this.clinchProcedural = new ProceduralClinchAnimator(
         this.scene,
@@ -844,6 +934,7 @@ export class GameScene {
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
+    this.botBrain = new BotBrain(this.match, "opponent", "club", (techniqueId) => this.tryOpponentTechnique(techniqueId));
     this.playerCollision = this.playerRig ? new FighterCollisionRig(this.playerRig, player.body.heightM) : null;
     this.opponentCollision = this.opponentRig ? new FighterCollisionRig(this.opponentRig, opponent.body.heightM) : null;
 
@@ -1146,6 +1237,8 @@ export class GameScene {
   private disposeCharacter(): void {
     this.pairedProcedural?.dispose();
     this.pairedProcedural = null;
+    this.opponentPairedProcedural?.dispose();
+    this.opponentPairedProcedural = null;
     this.clinchProcedural?.dispose();
     this.clinchProcedural = null;
     this.grappleDefenseProcedural?.dispose();
@@ -1153,6 +1246,8 @@ export class GameScene {
     this.currentClinchPose = null;
     this.playerProcedural?.dispose();
     this.playerProcedural = null;
+    this.opponentProcedural?.dispose();
+    this.opponentProcedural = null;
     this.playerStanceProcedural?.dispose();
     this.playerStanceProcedural = null;
     this.defensiveOverlay?.reset();
@@ -1170,6 +1265,7 @@ export class GameScene {
     this.animations = null;
     this.controller = null;
     this.playerMoveset = null;
+    this.botBrain = null;
 
     for (const node of this.loadedNodes) {
       node.dispose(false, true);
