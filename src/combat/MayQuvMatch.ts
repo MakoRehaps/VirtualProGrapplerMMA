@@ -196,12 +196,22 @@ export class MayQuvMatch {
     if (!this.techniqueLegalFromPosition(state, technique)) return false;
     if (state.condition.stamina < technique.staminaCost) return false;
 
+    const counterStartupBonusFrames =
+      technique.type === "strike" && this.isCounterWindow(attacker, currentFrame)
+        ? 2
+        : 0;
+
     this.pending.push({
       attacker,
       technique,
-      landsOnFrame: currentFrame + technique.startupFrames,
+      landsOnFrame:
+        currentFrame + Math.max(1, technique.startupFrames - counterStartupBonusFrames),
       sample,
     });
+
+    if (counterStartupBonusFrames > 0) {
+      delete this.counterWindowUntil[attacker];
+    }
     return true;
   }
 
