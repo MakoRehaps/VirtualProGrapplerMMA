@@ -517,7 +517,9 @@ export default defineComponent({
           setup,
           opponentSetup,
           this.botDifficulty,
-          startingCondition
+          startingCondition,
+          competitionModeById(this.competitionMode)?.ruleset_id ??
+            "may_quv_standard"
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
@@ -571,7 +573,9 @@ export default defineComponent({
           this.selectedSetup ?? undefined,
           this.selectedOpponentSetup ?? undefined,
           this.selectedBotDifficulty,
-          startingCondition
+          startingCondition,
+          competitionModeById(this.competitionMode)?.ruleset_id ??
+            "may_quv_standard"
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
