@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "profile_id": "may_quv_standup_pride",
+  "name": "MAY' QUV Stand-Up Kumite",
+  "description": "Default competitive combat profile: standing, clinch, throws/takedowns, brief grounded-opponent offense, then stand-up. No sustained ground grappling.",
+  "active_positions": [
+    "standing_open",
+    "standing_close",
+    "single_collar_tie",
+    "thai_plum",
+    "over_under",
+    "double_underhooks",
+    "rear_clinch",
+    "front_headlock",
+    "seated_guard",
+    "standing_over_grounded",
+    "scramble"
+  ],
+  "disabled_positions": [
+    "open_guard",
+    "closed_guard",
+    "half_guard",
+    "side_control",
+    "north_south",
+    "mount",
+    "back_control",
+    "turtle",
+    "leg_entanglement"
+  ],
+  "allowed_technique_contexts": [
+    "standing",
+    "clinch",
+    "takedown",
+    "grounded_opponent"
+  ],
+  "disabled_technique_types": [
+    "submission"
+  ],
+  "disabled_technique_ids": [
+    "guard_pull",
+    "closed_guard",
+    "half_guard",
+    "side_control",
+    "mount_control",
+    "back_control",
+    "guard_pass",
+    "half_guard_pass",
+    "bridge_escape",
+    "shrimp_escape",
+    "armbar",
+    "kimura",
+    "americana",
+    "rear_naked_choke",
+    "guillotine",
+    "triangle_choke",
+    "heel_hook",
+    "kneebar",
+    "ankle_lock",
+    "ground_punch",
+    "ground_elbow",
+    "upkick"
+  ],
+  "grounded_window": {
+    "enabled": true,
+    "max_seconds": 4,
+    "defender_can_technical_stand": true,
+    "attacker_can_disengage": true,
+    "allowed_attacks": [
+      "soccer_kick_head",
+      "stomp_head",
+      "stomp_body",
+      "grounded_knee_head",
+      "leg_kick_grounded"
+    ],
+    "prohibited_actions": [
+      "guard_pass",
+      "mount",
+      "back_take",
+      "submission_entry",
+      "ground_control"
+    ],
+    "timeout_result": "standing_open"
+  },
+  "takedown_resolution": {
+    "successful_result": "seated_guard",
+    "attacker_result": "standing_over_grounded",
+    "no_follow_to_ground": true
+  },
+  "finishes": [
+    "knockout",
+    "decision",
+    "forfeit"
+  ]
+}
