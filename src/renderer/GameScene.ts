@@ -38,7 +38,7 @@ import { GamepadTechniqueInput } from "../game/GamepadTechniqueInput";
 import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
-import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
+import type { CombatSide, FighterCondition, FighterLoadout } from "../combat/mayQuvTypes";
 import { canSustainWhizzer, guardLevelFromArmCondition, regionConsequences } from "../combat/regionalCondition";
 import { BODY_PHYSICS, preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
@@ -853,7 +853,8 @@ export class GameScene {
     definition: CharacterDefinition,
     playerSetup?: FighterSetupInput,
     opponentSetup?: FighterSetupInput,
-    botDifficulty: BotDifficultyId = "club"
+    botDifficulty: BotDifficultyId = "club",
+    playerCondition?: FighterCondition
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -1006,7 +1007,8 @@ export class GameScene {
       opponentDef.id,
       normalizedSetup ?? undefined,
       normalizedOpponentSetup ?? undefined,
-      botDifficulty
+      botDifficulty,
+      playerCondition
     );
 
     // The camera is deliberately not re-aimed at the character: it stays on
@@ -1047,7 +1049,8 @@ export class GameScene {
     opponentId: string,
     playerOverride?: FighterLoadout,
     opponentOverride?: FighterLoadout,
-    botDifficulty: BotDifficultyId = "club"
+    botDifficulty: BotDifficultyId = "club",
+    playerCondition?: FighterCondition
   ): void {
     this.clock.reset();
     this.inputBuffer.clear();
@@ -1055,7 +1058,12 @@ export class GameScene {
     const player = playerOverride ?? this.fighterLoadout(playerId, "player");
     const opponent =
       opponentOverride ?? this.fighterLoadout(opponentId, "opponent");
-    this.match = new MayQuvMatch(player, opponent);
+    this.match = new MayQuvMatch(
+      player,
+      opponent,
+      0x4d415951,
+      playerCondition
+    );
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
     this.botBrain = new BotBrain(
       this.match,
@@ -1354,6 +1362,18 @@ export class GameScene {
     if (delta > Math.PI) delta -= Math.PI * 2;
     if (delta < -Math.PI) delta += Math.PI * 2;
     return Math.abs(delta) <= Tuning.strikeArc;
+  }
+
+  playerConditionSnapshot(): FighterCondition | null {
+    if (!this.match) return null;
+    const condition = this.match.player.condition;
+    return {
+      hp: condition.hp,
+      stamina: condition.stamina,
+      consciousness: condition.consciousness,
+      balance: condition.balance,
+      regions: { ...condition.regions },
+    };
   }
 
   /** Live combat state for the debug overlay. */
