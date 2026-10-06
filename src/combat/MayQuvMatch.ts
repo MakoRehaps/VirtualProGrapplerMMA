@@ -1,4 +1,6 @@
 import { Rng } from "@/sim/Rng";
+import rulesetsJson from "#data/game/rulesets.json";
+import { freshJudgingStats, scoreWholeFight, type JudgingScore, type JudgingStats } from "./judging";
 import { resolveTechniqueImpact } from "./mayQuvDamage";
 import { regionConsequences } from "./regionalCondition";
 import { ACTIVE_COMBAT_PROFILE, isPositionActive, isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
@@ -49,6 +51,9 @@ export interface MayQuvMatchSnapshot {
   draws: number;
   winner: CombatSide | null;
   finish: "ko" | "submission" | "decision" | "forfeit" | null;
+  elapsedFrames: number;
+  timeLimitFrames: number | null;
+  decision: JudgingScore | null;
 }
 
 export class MayQuvMatch {
@@ -76,6 +81,10 @@ export class MayQuvMatch {
   grappleDefenseState: ((side: CombatSide) => { sprawl: boolean; whizzer: boolean }) | null = null;
   onDefended: ((defender: CombatSide, kind: "evade" | "sprawl" | "whizzer") => void) | null = null;
   private counterWindowUntil: Partial<Record<CombatSide, number>> = {};
+  private readonly judgingStats: Record<CombatSide, JudgingStats> =
+    freshJudgingStats();
+  private readonly timeLimitFrames: number | null;
+  private decision: JudgingScore | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -85,6 +94,13 @@ export class MayQuvMatch {
     opponentCondition?: FighterCondition
   ) {
     this.rng = new Rng(seed);
+    const standardRuleset = rulesetsJson.rulesets.find(
+      (r) => r.ruleset_id === "may_quv_standard"
+    );
+    const roundSeconds =
+      standardRuleset?.rounds?.reduce((sum, seconds) => sum + seconds, 0) ?? 0;
+    this.timeLimitFrames = roundSeconds > 0 ? roundSeconds * 60 : null;
+
     this.player = createFighterState(playerLoadout);
     this.opponent = createFighterState(opponentLoadout);
     if (playerCondition) this.player.condition = structuredClone(playerCondition);
@@ -237,9 +253,18 @@ export class MayQuvMatch {
   }
 
   step(frame: number): void {
-    if (this.winner) return;
+    if (this.finish) return;
     this.recoverStamina(frame);
     this.updateGroundedWindow(frame);
+
+    if (
+      this.timeLimitFrames !== null &&
+      frame >= this.timeLimitFrames
+    ) {
+      this.finishByDecision(frame);
+      return;
+    }
+
     if (!this.pending.length) return;
     const due = this.pending.filter((p) => p.landsOnFrame <= frame);
     this.pending = this.pending.filter((p) => p.landsOnFrame > frame);
@@ -303,6 +328,7 @@ export class MayQuvMatch {
         techniqueName: hit.technique.name,
         connected: false,
         missReason: "out of range",
+      // Logged misses/defenses remain visible but do not score as damage.
       });
       return;
     }
@@ -331,6 +357,7 @@ export class MayQuvMatch {
         techniqueName: hit.technique.name,
         connected: false,
         missReason: "evaded",
+      // Logged misses/defenses remain visible but do not score as damage.
       });
       return;
     }
@@ -357,6 +384,7 @@ export class MayQuvMatch {
         techniqueName: hit.technique.name,
         connected: false,
         missReason: "sprawled",
+      // Logged misses/defenses remain visible but do not score as damage.
       });
       return;
     }
@@ -370,6 +398,7 @@ export class MayQuvMatch {
         techniqueName: hit.technique.name,
         connected: false,
         missReason: "whizzered",
+      // Logged misses/defenses remain visible but do not score as damage.
       });
       return;
     }
@@ -380,6 +409,7 @@ export class MayQuvMatch {
     }
 
     if (hit.technique.type === "defense") {
+      this.judgingStats[hit.attacker].defendedOffense += 1;
       this.record({
         frame,
         attacker: hit.attacker,
@@ -405,6 +435,14 @@ export class MayQuvMatch {
       connected: true,
       resolution: result,
     });
+
+    const judge = this.judgingStats[hit.attacker];
+    judge.effectiveDamage += result.hpDamage;
+    judge.consciousnessDamage += result.consciousnessDamage;
+    judge.regionalDamage += result.regionalDamage;
+    judge.connectedOffense += 1;
+    if (result.knockedDown) judge.knockdowns += 1;
+
     this.onResolved?.(hit.attacker, defenderSide, result);
 
     if (result.knockedOut) {
@@ -511,6 +549,9 @@ export class MayQuvMatch {
       draws: this.rng.draws,
       winner: this.winner,
       finish: this.finish,
+      elapsedFrames: this.lastStepFrame,
+      timeLimitFrames: this.timeLimitFrames,
+      decision: this.decision ? { ...this.decision } : null,
     };
   }
 }
