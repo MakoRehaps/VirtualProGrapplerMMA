@@ -26,6 +26,7 @@ import { ProceduralMartialAnimator } from "./ProceduralMartialAnimator";
 import { ProceduralStanceAnimator } from "./ProceduralStanceAnimator";
 import { PairedMartialAnimator } from "./PairedMartialAnimator";
 import { FighterCollisionRig, firstHitRegion } from "./FighterCollisionRig";
+import { ProceduralHitReactionAnimator } from "./ProceduralHitReactionAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -73,6 +74,7 @@ export class GameScene {
   private pairedProcedural: PairedMartialAnimator | null = null;
   private playerCollision: FighterCollisionRig | null = null;
   private opponentCollision: FighterCollisionRig | null = null;
+  private opponentReactions: ProceduralHitReactionAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -522,6 +524,8 @@ export class GameScene {
     this.opponent = new Opponent(other.root, other.animations);
     this.opponentNodes = other.nodes;
     this.opponentRig = other.rig;
+    this.opponentReactions = new ProceduralHitReactionAnimator(this.scene, other.rig);
+    this.opponent.registerAnimations(this.opponentReactions.buildAll());
 
     if (this.playerRig && this.opponentRig) {
       this.pairedProcedural = new PairedMartialAnimator(
@@ -617,6 +621,11 @@ export class GameScene {
 
       if (!strike) return null;
       return firstHitRegion(strike, defendRig.hurtVolumes());
+    };
+
+    this.match.onResolved = (_attacker, defender, resolution) => {
+      if (defender !== "opponent") return;
+      this.opponent?.playReaction(`REACT_${resolution.targetRegion}`);
     };
 
     const movement = deriveMovementPhysics(player.body, player.stanceId);
@@ -787,6 +796,8 @@ export class GameScene {
     this.opponentRig = null;
     this.playerCollision = null;
     this.opponentCollision = null;
+    this.opponentReactions?.dispose();
+    this.opponentReactions = null;
 
     this.animations?.dispose();
     this.animations = null;
