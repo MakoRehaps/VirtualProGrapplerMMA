@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "name",
+    "persistent_npc",
+    "generated_with_player",
+    "changes_player_stats",
+    "causes_persistent_damage",
+    "purpose",
+    "observes",
+    "lesson_order",
+    "adaptation",
+    "feedback"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "persistent_npc": {
+      "const": true
+    },
+    "generated_with_player": {
+      "const": true
+    },
+    "changes_player_stats": {
+      "const": false
+    },
+    "causes_persistent_damage": {
+      "const": false
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "observes": {
+      "type": "array"
+    },
+    "lesson_order": {
+      "type": "array"
+    },
+    "adaptation": {
+      "type": "object",
+      "properties": {
+        "future_input_reading": {
+          "const": false
+        },
+        "hidden_damage_bonus": {
+          "const": false
+        },
+        "hidden_health_bonus": {
+          "const": false
+        }
+      }
+    },
+    "feedback": {
+      "type": "object"
+    }
+  }
+}
