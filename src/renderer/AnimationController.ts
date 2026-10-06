@@ -133,6 +133,17 @@ export class AnimationController {
     }
   }
 
+  stopAll(): void {
+    for (const track of this.tracks.values()) {
+      track.target = 0;
+      track.weight = 0;
+      track.group.weight = 0;
+      track.group.stop();
+    }
+    this.activeName = null;
+    this.endCallback = null;
+  }
+
   dispose(): void {
     for (const track of this.tracks.values()) {
       track.group.stop();
