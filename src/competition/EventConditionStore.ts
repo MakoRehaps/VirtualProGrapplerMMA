@@ -9,7 +9,7 @@ function cloneCondition(c: FighterCondition): FighterCondition {
     stamina: c.stamina,
     consciousness: c.consciousness,
     balance: c.balance,
-    limbs: { ...c.limbs },
+    regions: { ...c.regions },
   };
 }
 
