@@ -281,7 +281,11 @@ export class GameScene {
     return true;
   }
 
-  technicalStandup(side: CombatSide = "player"): boolean {
+  forfeitPlayer(): boolean {
+    return this.match?.forfeit("player") ?? false;
+  }
+
+    technicalStandup(side: CombatSide = "player"): boolean {
     const stood = this.match?.requestTechnicalStandup(side) ?? false;
     if (stood && side === "opponent") {
       this.opponent?.playReaction("STATE_TECHNICAL_STANDUP");
