@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "power_policy": {
+    "moves_unlocked_from_start": true,
+    "styles_unlocked_from_start": true,
+    "stances_unlocked_from_start": true,
+    "practice_tools_unlocked_from_start": true,
+    "fighter_reroll_free": true,
+    "stat_progression": false,
+    "cosmetic_power_bonuses": false
+  },
+  "tokens": {
+    "earned_from": [
+      "completed_normal_mp",
+      "weekly_qualifier",
+      "weekly_tournament",
+      "monthly_qualifiers",
+      "monthly_grand_tournament",
+      "multiplayer_challenges"
+    ],
+    "not_earned_from": [
+      "practice_coach",
+      "local_vs"
+    ],
+    "spent_on": [
+      "clothing",
+      "wraps",
+      "gloves",
+      "shorts",
+      "robes",
+      "jackets",
+      "boots",
+      "masks",
+      "banners",
+      "entrance_cosmetics",
+      "patterns",
+      "colors"
+    ]
+  },
+  "cosmetic_tiers": [
+    {
+      "tier": 1,
+      "name": "Fighter",
+      "requirement": "complete multiplayer fights"
+    },
+    {
+      "tier": 2,
+      "name": "Competitor",
+      "requirement": "weekly event achievements"
+    },
+    {
+      "tier": 3,
+      "name": "Veteran",
+      "requirement": "multiplayer milestones"
+    },
+    {
+      "tier": 4,
+      "name": "Kumite",
+      "requirement": "monthly event achievements"
+    },
+    {
+      "tier": 5,
+      "name": "Champion",
+      "requirement": "monthly championship/prestige achievements"
+    }
+  ]
+}
