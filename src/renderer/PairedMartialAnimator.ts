@@ -52,6 +52,12 @@ export class PairedMartialAnimator {
       | "double_leg"
       | "single_leg"
       | "high_crotch"
+      | "ouchi_gari"
+      | "uchi_mata"
+      | "hip_toss"
+      | "suplex"
+      | "lateral_drop"
+      | "snapdown"
   ): AnimationGroup | null {
     const existing = this.groups.get(techniqueId);
     if (existing) return existing;
@@ -64,6 +70,12 @@ export class PairedMartialAnimator {
       "double_leg",
       "single_leg",
       "high_crotch",
+      "ouchi_gari",
+      "uchi_mata",
+      "hip_toss",
+      "suplex",
+      "lateral_drop",
+      "snapdown",
     ].includes(techniqueId);
     if (!profile && !synthesized) return null;
 
@@ -85,8 +97,18 @@ export class PairedMartialAnimator {
       this.buildDoubleLeg(group);
     } else if (techniqueId === "single_leg") {
       this.buildSingleLeg(group);
-    } else {
+    } else if (techniqueId === "high_crotch") {
       this.buildHighCrotch(group);
+    } else if (techniqueId === "ouchi_gari") {
+      this.buildInsideTrip(group);
+    } else if (techniqueId === "uchi_mata") {
+      this.buildHarai(group, profile ?? {});
+    } else if (techniqueId === "hip_toss") {
+      this.buildSeoi(group, profile ?? {});
+    } else if (techniqueId === "suplex" || techniqueId === "lateral_drop") {
+      this.buildBodyLockTrip(group);
+    } else {
+      this.buildSnapdown(group);
     }
 
     if (!group.targetedAnimations.length) {
@@ -277,6 +299,49 @@ export class PairedMartialAnimator {
       { t: 0.62, position: [0, 0.32, -0.28], yaw: 28 },
       { t: 0.82, position: [0.10, 0.62, -0.46], yaw: 64 },
       { t: 1, position: [0.34, 0.12, -0.72], yaw: 108 },
+    ], duration);
+  }
+
+  private buildSnapdown(group: AnimationGroup): void {
+    const duration = 48;
+
+    this.addBone(group, this.attackerRig, "chest", [
+      { t: 0, pitch: 6 },
+      { t: 0.28, pitch: 18 },
+      { t: 0.56, pitch: 34 },
+      { t: 0.80, pitch: 42 },
+      { t: 1, pitch: 18 },
+    ], duration);
+    this.addBone(group, this.attackerRig, "leftUpperArm", [
+      { t: 0, pitch: -28, roll: -26 },
+      { t: 0.34, pitch: -48, roll: -42 },
+      { t: 0.68, pitch: -62, roll: -54 },
+      { t: 1, pitch: -30, roll: -24 },
+    ], duration);
+    this.addBone(group, this.attackerRig, "rightUpperArm", [
+      { t: 0, pitch: -28, roll: 26 },
+      { t: 0.34, pitch: -48, roll: 42 },
+      { t: 0.68, pitch: -62, roll: 54 },
+      { t: 1, pitch: -30, roll: 24 },
+    ], duration);
+
+    this.addBone(group, this.defenderRig, "head", [
+      { t: 0, pitch: 0 },
+      { t: 0.34, pitch: 18 },
+      { t: 0.64, pitch: 42 },
+      { t: 1, pitch: 58 },
+    ], duration);
+    this.addBone(group, this.defenderRig, "chest", [
+      { t: 0, pitch: 8 },
+      { t: 0.32, pitch: 28 },
+      { t: 0.64, pitch: 58 },
+      { t: 1, pitch: 76 },
+    ], duration);
+    this.addRoot(group, this.defenderRoot, [
+      { t: 0, position: [0, 0, 0], yaw: 0 },
+      { t: 0.40, position: [0, 0, -0.08], yaw: 0 },
+      { t: 0.72, position: [0, -0.02, -0.24], yaw: 0 },
+      { t: 1, position: [0, -0.04, -0.38], yaw: 0 },
     ], duration);
   }
 
