@@ -58,6 +58,11 @@ export class MayQuvMatch {
   private pending: PendingTechnique[] = [];
   private log: MayQuvExchange[] = [];
   private groundedUntil: Partial<Record<CombatSide, number>> = {};
+  private lastStepFrame = 0;
+  private lastTechniqueFrame: Record<CombatSide, number> = {
+    player: -10_000,
+    opponent: -10_000,
+  };
   winner: CombatSide | null = null;
   finish: MayQuvMatchSnapshot["finish"] = null;
 
@@ -210,6 +215,7 @@ export class MayQuvMatch {
       0,
       Math.round((state.condition.stamina - staminaCommitted) * 10) / 10
     );
+    this.lastTechniqueFrame[attacker] = currentFrame;
 
     const counterStartupBonusFrames =
       technique.type === "strike" && this.isCounterWindow(attacker, currentFrame)
@@ -232,11 +238,39 @@ export class MayQuvMatch {
 
   step(frame: number): void {
     if (this.winner) return;
+    this.recoverStamina(frame);
     this.updateGroundedWindow(frame);
     if (!this.pending.length) return;
     const due = this.pending.filter((p) => p.landsOnFrame <= frame);
     this.pending = this.pending.filter((p) => p.landsOnFrame > frame);
     for (const hit of due) this.resolve(hit, frame);
+  }
+
+  private recoverStamina(frame: number): void {
+    const elapsedFrames = Math.max(0, frame - this.lastStepFrame);
+    this.lastStepFrame = frame;
+    if (elapsedFrames <= 0) return;
+
+    const basePerSecond = 8;
+    const idleDelayFrames = 30;
+
+    for (const side of ["player", "opponent"] as CombatSide[]) {
+      if (frame - this.lastTechniqueFrame[side] < idleDelayFrames) continue;
+
+      const state = this.stateOf(side);
+      if (state.condition.stamina >= 100) continue;
+
+      const bodyPenalty =
+        regionConsequences(state.condition).staminaCostScale;
+      const recoveryScale = 1 / Math.max(1, bodyPenalty);
+      const recovered =
+        (elapsedFrames / 60) * basePerSecond * recoveryScale;
+
+      state.condition.stamina = Math.min(
+        100,
+        Math.round((state.condition.stamina + recovered) * 10) / 10
+      );
+    }
   }
 
   private updateGroundedWindow(frame: number): void {
