@@ -504,6 +504,11 @@ export class GameScene {
             onEnd: () => this.resumeClinchPose(),
           });
         }
+      } else if (this.humanOpponent) {
+        this.setOpponentPoseLock(true);
+        this.opponent.playReaction(animationName, () => {
+          this.setOpponentPoseLock(false);
+        });
       } else {
         this.opponent.playReaction(animationName);
       }
@@ -1308,6 +1313,11 @@ export class GameScene {
       const clip = `REACT_${resolution.targetRegion}`;
       if (defender === "player") {
         this.animations?.play(clip, { loop: false, restart: true });
+      } else if (this.humanOpponent) {
+        this.setOpponentPoseLock(true);
+        this.opponent?.playReaction(clip, () => {
+          this.setOpponentPoseLock(false);
+        });
       } else {
         this.opponent?.playReaction(clip);
       }
@@ -1335,7 +1345,18 @@ export class GameScene {
         return;
       }
 
-      this.opponent?.playReaction(clip);
+      if (this.humanOpponent) {
+        if (active) {
+          this.setOpponentPoseLock(true);
+          this.opponent?.playReaction(clip);
+        } else {
+          this.opponent?.playReaction(clip, () => {
+            this.setOpponentPoseLock(false);
+          });
+        }
+      } else {
+        this.opponent?.playReaction(clip);
+      }
     };
 
     this.match.onFinished = (_finish, _winner) => {
