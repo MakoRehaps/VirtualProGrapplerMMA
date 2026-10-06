@@ -29,6 +29,7 @@ import { FighterCollisionRig, firstHitRegion } from "./FighterCollisionRig";
 import { ProceduralHitReactionAnimator } from "./ProceduralHitReactionAnimator";
 import { ProceduralKnockdownAnimator } from "./ProceduralKnockdownAnimator";
 import { CollisionDebugView } from "./CollisionDebugView";
+import { ProceduralClinchAnimator, type ClinchPoseId } from "./ProceduralClinchAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -79,6 +80,7 @@ export class GameScene {
   private opponentReactions: ProceduralHitReactionAnimator | null = null;
   private opponentKnockdown: ProceduralKnockdownAnimator | null = null;
   private collisionDebug: CollisionDebugView | null = null;
+  private clinchProcedural: ProceduralClinchAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -181,24 +183,32 @@ export class GameScene {
     return true;
   }
 
-  tryEnterClinch(
-    position:
-      | "single_collar_tie"
-      | "thai_plum"
-      | "over_under"
-      | "double_underhooks"
-      | "rear_clinch"
-      | "front_headlock" = "over_under"
-  ): boolean {
+  tryEnterClinch(position: ClinchPoseId = "over_under"): boolean {
     if (!this.match || !this.playerRoot || !this.opponent) return false;
     const dx = this.opponent.position.x - this.playerRoot.position.x;
     const dz = this.opponent.position.z - this.playerRoot.position.z;
     if (Math.hypot(dx, dz) > 1.05) return false;
-    return this.match.enterClinch("player", position);
+
+    if (!this.match.enterClinch("player", position)) return false;
+
+    const group = this.clinchProcedural?.build(position);
+    if (group && this.animations) {
+      this.clinchProcedural?.alignRoots();
+      this.controller?.setExternalPoseLock(true);
+      this.opponent.setExternalPoseLock(true);
+      this.animations.register(group);
+      this.animations.play(group.name, { loop: true, restart: true });
+    }
+    return true;
   }
 
   exitClinch(): boolean {
-    return this.match?.exitClinch() ?? false;
+    const exited = this.match?.exitClinch() ?? false;
+    if (!exited) return false;
+
+    this.controller?.setExternalPoseLock(false);
+    this.opponent?.setExternalPoseLock(false);
+    return true;
   }
 
   technicalStandup(side: CombatSide = "player"): boolean {
@@ -657,6 +667,13 @@ export class GameScene {
         other.root,
         this.opponentRig
       );
+      this.clinchProcedural = new ProceduralClinchAnimator(
+        this.scene,
+        root,
+        this.playerRig,
+        other.root,
+        this.opponentRig
+      );
       for (const id of ["osoto_gari", "harai_goshi", "seoi_nage"] as const) {
         const group = this.pairedProcedural.buildThrow(id);
         if (group) this.animations.register(group);
@@ -918,6 +935,8 @@ export class GameScene {
   private disposeCharacter(): void {
     this.pairedProcedural?.dispose();
     this.pairedProcedural = null;
+    this.clinchProcedural?.dispose();
+    this.clinchProcedural = null;
     this.playerProcedural?.dispose();
     this.playerProcedural = null;
     this.playerStanceProcedural?.dispose();
