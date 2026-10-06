@@ -6,6 +6,15 @@
       <span v-if="snapshot.winner">{{ snapshot.winner }} / {{ snapshot.finish }}</span>
     </div>
 
+    <div v-if="moveset" class="moveset">
+      <strong>{{ moveset.movesetName }}</strong>
+      <span>{{ moveset.positionId }}</span>
+      <span v-for="button in (['a','b','x','y'] as const)" :key="button">
+        {{ button.toUpperCase() }}:
+        {{ moveset.buttons[button]?.name ?? '—' }}
+      </span>
+    </div>
+
     <div class="fighters">
       <section v-for="side in (['player', 'opponent'] as const)" :key="side">
         <header>{{ snapshot[side].name }} · {{ snapshot[side].styleId }}</header>
@@ -54,11 +63,25 @@ export default defineComponent({
       type: Function as PropType<() => number>,
       required: true,
     },
+    movesetSource: {
+      type: Function as PropType<() => {
+        movesetName: string;
+        positionId: string;
+        buttons: Record<string, { techniqueId: string; name: string } | null>;
+      } | null>,
+      required: false,
+      default: null,
+    },
   },
   data() {
     return {
       snapshot: null as MayQuvMatchSnapshot | null,
       frame: 0,
+      moveset: null as {
+        movesetName: string;
+        positionId: string;
+        buttons: Record<string, { techniqueId: string; name: string } | null>;
+      } | null,
       timer: 0,
       bars: [
         { key: "hp" as BarKey, label: "HP" },
@@ -80,6 +103,7 @@ export default defineComponent({
     this.timer = window.setInterval(() => {
       this.snapshot = this.source();
       this.frame = this.frameSource();
+      this.moveset = this.movesetSource ? this.movesetSource() : null;
     }, 100);
   },
   beforeUnmount() {
@@ -111,6 +135,15 @@ export default defineComponent({
   grid-template-columns: auto auto 1fr;
   margin-bottom: 0.55rem;
 }
+.moveset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
 .fighters {
   display: grid;
   grid-template-columns: 1fr 1fr;
