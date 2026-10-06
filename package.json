@@ -1,5 +1,5 @@
 {
-  "name": "virtual-pro-grappler",
+  "name": "may-quv",
   "version": "0.2.0",
   "scripts": {
     "serve": "vite",
@@ -39,6 +39,6 @@
     "vue-tsc": "^3.3.9"
   },
   "type": "module",
-  "description": "Virtual Pro Grappler - an AKI-style pro wrestling engine built on Babylon.js",
+  "description": "MAY' QUV - a global style-vs-style Kumite combat game built on the Virtual Pro Grappler engine",
   "private": true
 }
