@@ -1143,6 +1143,11 @@ export class GameScene {
       this.opponent?.playReaction(clip);
     };
 
+    this.match.onFinished = (_finish, _winner) => {
+      this.controller?.setExternalPoseLock(true);
+      this.opponent?.setExternalPoseLock(true);
+    };
+
     this.match.onDefended = (defender, kind) => {
       if (kind === "evade" || !this.animations) return;
 
