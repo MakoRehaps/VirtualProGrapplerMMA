@@ -25,6 +25,21 @@ const sample = {
 };
 
 describe("MAY' QUV fight finishes", () => {
+  it("practice has no decision clock", () => {
+    const match = new MayQuvMatch(
+      fighter("a"),
+      fighter("b"),
+      123,
+      undefined,
+      undefined,
+      "practice"
+    );
+
+    expect(match.snapshot().timeLimitFrames).toBeNull();
+    match.step(60 * 60 * 60);
+    expect(match.finish).toBeNull();
+  });
+
   it("uses the configured 10 + 5 minute fight clock", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
     const before = match.snapshot();
