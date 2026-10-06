@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "description": "Competitive body simulation presets. No power stats are player-selectable; mass and geometry drive movement/impact physics while competitive capability remains normalized.",
+  "invariants": {
+    "hp_max": 100,
+    "stamina_max": 100,
+    "consciousness_max": 100,
+    "balance_max": 100,
+    "selectable_power_stats": false,
+    "visible_numeric_stats": false,
+    "practice_changes_stats": false
+  },
+  "body_classes": [
+    {
+      "body_class_id": "fly",
+      "name": "Fly",
+      "min_mass_kg": 52,
+      "max_mass_kg": 61,
+      "min_height_m": 1.66,
+      "max_height_m": 1.76,
+      "center_of_mass_height_ratio": {
+        "min": 0.53,
+        "max": 0.57
+      },
+      "physics": {
+        "acceleration_mass_exponent": 0.28,
+        "deceleration_mass_exponent": 0.24,
+        "rotational_inertia_mass_exponent": 0.42,
+        "push_resistance_mass_exponent": 0.7,
+        "impact_effective_mass_exponent": 0.55,
+        "stamina_movement_mass_exponent": 0.22
+      }
+    },
+    {
+      "body_class_id": "light",
+      "name": "Light",
+      "min_mass_kg": 61,
+      "max_mass_kg": 70,
+      "min_height_m": 1.68,
+      "max_height_m": 1.8,
+      "center_of_mass_height_ratio": {
+        "min": 0.54,
+        "max": 0.58
+      },
+      "physics": {
+        "acceleration_mass_exponent": 0.28,
+        "deceleration_mass_exponent": 0.24,
+        "rotational_inertia_mass_exponent": 0.42,
+        "push_resistance_mass_exponent": 0.7,
+        "impact_effective_mass_exponent": 0.55,
+        "stamina_movement_mass_exponent": 0.22
+      }
+    },
+    {
+      "body_class_id": "middle",
+      "name": "Middle",
+      "min_mass_kg": 70,
+      "max_mass_kg": 84,
+      "min_height_m": 1.7,
+      "max_height_m": 1.85,
+      "center_of_mass_height_ratio": {
+        "min": 0.55,
+        "max": 0.59
+      },
+      "physics": {
+        "acceleration_mass_exponent": 0.28,
+        "deceleration_mass_exponent": 0.24,
+        "rotational_inertia_mass_exponent": 0.42,
+        "push_resistance_mass_exponent": 0.7,
+        "impact_effective_mass_exponent": 0.55,
+        "stamina_movement_mass_exponent": 0.22
+      }
+    },
+    {
+      "body_class_id": "heavy",
+      "name": "Heavy",
+      "min_mass_kg": 84,
+      "max_mass_kg": 105,
+      "min_height_m": 1.74,
+      "max_height_m": 1.92,
+      "center_of_mass_height_ratio": {
+        "min": 0.56,
+        "max": 0.6
+      },
+      "physics": {
+        "acceleration_mass_exponent": 0.28,
+        "deceleration_mass_exponent": 0.24,
+        "rotational_inertia_mass_exponent": 0.42,
+        "push_resistance_mass_exponent": 0.7,
+        "impact_effective_mass_exponent": 0.55,
+        "stamina_movement_mass_exponent": 0.22
+      }
+    },
+    {
+      "body_class_id": "super_heavy",
+      "name": "Super Heavy",
+      "min_mass_kg": 105,
+      "max_mass_kg": 160,
+      "min_height_m": 1.78,
+      "max_height_m": 2.05,
+      "center_of_mass_height_ratio": {
+        "min": 0.57,
+        "max": 0.62
+      },
+      "physics": {
+        "acceleration_mass_exponent": 0.28,
+        "deceleration_mass_exponent": 0.24,
+        "rotational_inertia_mass_exponent": 0.42,
+        "push_resistance_mass_exponent": 0.7,
+        "impact_effective_mass_exponent": 0.55,
+        "stamina_movement_mass_exponent": 0.22
+      }
+    }
+  ],
+  "derived_formulas": {
+    "movement_acceleration": "base_accel * stance.forward_factor * pow(reference_mass_kg / mass_kg, acceleration_mass_exponent)",
+    "pivot_rate": "base_pivot * stance.pivot_factor / (1 + rotational_inertia)",
+    "push_resistance": "pow(mass_kg / reference_mass_kg, push_resistance_mass_exponent) * balance_state",
+    "effective_strike_mass": "mass_kg * limb_transfer_ratio * technique_transfer * stance_transfer",
+    "impact_energy": "0.5 * effective_strike_mass * relative_contact_velocity_mps^2",
+    "collision_impulse": "effective_mass_kg * relative_velocity_mps",
+    "hp_damage": "normalize(event_energy * target_modifier * contact_quality)",
+    "note": "These are simulation formulas/tuning hooks, not exposed RPG attributes."
+  }
+}
