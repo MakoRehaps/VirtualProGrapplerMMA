@@ -834,6 +834,11 @@ export class GameScene {
     this.match.canConnect = (attacker: CombatSide) =>
       this.inStrikeRange(attacker);
 
+    this.match.guardState = (side) => {
+      if (side === "player") return this.input.guarding ? "solid" : "none";
+      return this.match?.opponent.guarding ? "solid" : "none";
+    };
+
     this.match.contactRegion = (attacker, technique) => {
       const attackRig = attacker === "player" ? this.playerCollision : this.opponentCollision;
       const defendRig = attacker === "player" ? this.opponentCollision : this.playerCollision;
