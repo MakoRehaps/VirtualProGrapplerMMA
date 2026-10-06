@@ -27,6 +27,7 @@ import { ProceduralStanceAnimator } from "./ProceduralStanceAnimator";
 import { PairedMartialAnimator } from "./PairedMartialAnimator";
 import { FighterCollisionRig, firstHitRegion } from "./FighterCollisionRig";
 import { ProceduralHitReactionAnimator } from "./ProceduralHitReactionAnimator";
+import { ProceduralKnockdownAnimator } from "./ProceduralKnockdownAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -75,6 +76,7 @@ export class GameScene {
   private playerCollision: FighterCollisionRig | null = null;
   private opponentCollision: FighterCollisionRig | null = null;
   private opponentReactions: ProceduralHitReactionAnimator | null = null;
+  private opponentKnockdown: ProceduralKnockdownAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -526,6 +528,14 @@ export class GameScene {
     this.opponentRig = other.rig;
     this.opponentReactions = new ProceduralHitReactionAnimator(this.scene, other.rig);
     this.opponent.registerAnimations(this.opponentReactions.buildAll());
+    this.opponentKnockdown = new ProceduralKnockdownAnimator(this.scene, other.rig);
+    const knockdownClip = this.opponentKnockdown.buildKnockdown();
+    const standupClip = this.opponentKnockdown.buildTechnicalStandup();
+    this.opponent.registerAnimations(
+      [knockdownClip, standupClip].filter(
+        (x): x is NonNullable<typeof x> => Boolean(x)
+      )
+    );
 
     if (this.playerRig && this.opponentRig) {
       this.pairedProcedural = new PairedMartialAnimator(
@@ -625,7 +635,11 @@ export class GameScene {
 
     this.match.onResolved = (_attacker, defender, resolution) => {
       if (defender !== "opponent") return;
-      this.opponent?.playReaction(`REACT_${resolution.targetRegion}`);
+      if (resolution.knockedDown) {
+        this.opponent?.playReaction("STATE_KNOCKDOWN_SEATED");
+      } else {
+        this.opponent?.playReaction(`REACT_${resolution.targetRegion}`);
+      }
     };
 
     const movement = deriveMovementPhysics(player.body, player.stanceId);
@@ -798,6 +812,8 @@ export class GameScene {
     this.opponentCollision = null;
     this.opponentReactions?.dispose();
     this.opponentReactions = null;
+    this.opponentKnockdown?.dispose();
+    this.opponentKnockdown = null;
 
     this.animations?.dispose();
     this.animations = null;
