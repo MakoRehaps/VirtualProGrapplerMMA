@@ -29,6 +29,11 @@
           </select>
         </label>
 
+        <label v-if="competitionMode === 'local_vs'">
+          P2 name
+          <input v-model.trim="opponentName" maxlength="24" />
+        </label>
+
         <label>
           Opponent style
           <select v-model="opponentStyle">
@@ -68,7 +73,7 @@
         </label>
 
         <label>
-          Height
+          P1 height
           <input
             v-model.number="fighterHeight"
             type="range"
@@ -80,7 +85,7 @@
         </label>
 
         <label>
-          Weight
+          P1 weight
           <input
             v-model.number="fighterMass"
             type="range"
@@ -92,7 +97,7 @@
         </label>
 
         <label>
-          Reach
+          P1 reach
           <input
             v-model.number="fighterReach"
             type="range"
@@ -102,6 +107,44 @@
           />
           <span>{{ fighterReach.toFixed(2) }} m</span>
         </label>
+
+        <template v-if="competitionMode === 'local_vs'">
+          <label>
+            P2 height
+            <input
+              v-model.number="opponentHeight"
+              type="range"
+              :min="bodyBounds.min_height_m"
+              :max="bodyBounds.max_height_m"
+              step="0.01"
+            />
+            <span>{{ opponentHeight.toFixed(2) }} m</span>
+          </label>
+
+          <label>
+            P2 weight
+            <input
+              v-model.number="opponentMass"
+              type="range"
+              :min="bodyBounds.min_mass_kg"
+              :max="bodyBounds.max_mass_kg"
+              step="1"
+            />
+            <span>{{ opponentMass.toFixed(0) }} kg</span>
+          </label>
+
+          <label>
+            P2 reach
+            <input
+              v-model.number="opponentReach"
+              type="range"
+              :min="opponentReachMin"
+              :max="opponentReachMax"
+              step="0.01"
+            />
+            <span>{{ opponentReach.toFixed(2) }} m</span>
+          </label>
+        </template>
 
         <p>
           No weight classes. Body size changes continuous physics only;
@@ -284,7 +327,11 @@ export default defineComponent({
       fighterName: "Fighter",
       fighterStyle: "boxing",
       opponentStyle: "combat_sambo",
+      opponentName: "P2",
       opponentMovesetName: "",
+      opponentHeight: 1.82,
+      opponentMass: 82,
+      opponentReach: 1.86,
       botDifficulty: "club" as BotDifficultyId,
       selectedBotDifficulty: "club" as BotDifficultyId,
       fighterPresets: [] as FighterPreset[],
@@ -343,6 +390,22 @@ export default defineComponent({
     reachMax(): number {
       return Math.round(
         this.fighterHeight *
+          this.bodyBounds.max_reach_to_height_ratio *
+          100
+      ) / 100;
+    },
+
+    opponentReachMin(): number {
+      return Math.round(
+        this.opponentHeight *
+          this.bodyBounds.min_reach_to_height_ratio *
+          100
+      ) / 100;
+    },
+
+    opponentReachMax(): number {
+      return Math.round(
+        this.opponentHeight *
           this.bodyBounds.max_reach_to_height_ratio *
           100
       ) / 100;
@@ -537,14 +600,26 @@ export default defineComponent({
         };
         const opponentStyle = styleById(this.opponentStyle);
         const opponentSetup = {
-          name: "Opponent",
+          name:
+            this.competitionMode === "local_vs"
+              ? this.opponentName || "P2"
+              : "Opponent",
           styleId: this.opponentStyle,
           stanceId:
             opponentStyle?.default_stance ?? "neutral_fighting",
           body: {
-            massKg: 82,
-            heightM: 1.82,
-            reachM: 1.86,
+            massKg:
+              this.competitionMode === "local_vs"
+                ? this.opponentMass
+                : 82,
+            heightM:
+              this.competitionMode === "local_vs"
+                ? this.opponentHeight
+                : 1.82,
+            reachM:
+              this.competitionMode === "local_vs"
+                ? this.opponentReach
+                : 1.86,
             centerOfMassHeightRatio: 0.56,
           },
         };
