@@ -39,6 +39,17 @@
         </label>
 
         <label>
+          Bot difficulty
+          <select v-model="botDifficulty">
+            <option value="learner">Learner</option>
+            <option value="club">Club</option>
+            <option value="competitive">Competitive</option>
+            <option value="elite">Elite</option>
+            <option value="master">Master</option>
+          </select>
+        </label>
+
+        <label>
           Height
           <input
             v-model.number="fighterHeight"
@@ -176,6 +187,7 @@ import CombatDebug from "./CombatDebug.vue";
 import MovesetEditor from "./MovesetEditor.vue";
 import type { FighterMoveset } from "@/combat/moveset";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
+import type { BotDifficultyId } from "@/ai/BotBrain";
 import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
 
 export default defineComponent({
@@ -193,6 +205,8 @@ export default defineComponent({
       fighterName: "Fighter",
       fighterStyle: "boxing",
       opponentStyle: "combat_sambo",
+      botDifficulty: "club" as BotDifficultyId,
+      selectedBotDifficulty: "club" as BotDifficultyId,
       fighterHeight: BODY_PHYSICS.reference_body.height_m,
       fighterMass: BODY_PHYSICS.reference_body.mass_kg,
       fighterReach: BODY_PHYSICS.reference_body.reach_m,
@@ -301,7 +315,8 @@ export default defineComponent({
         const missing = await this.game!.loadCharacter(
           character,
           setup,
-          opponentSetup
+          opponentSetup,
+          this.botDifficulty
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
@@ -315,6 +330,7 @@ export default defineComponent({
           ...opponentSetup,
           body: { ...opponentSetup.body },
         };
+        this.selectedBotDifficulty = this.botDifficulty;
         this.started = true;
         this.matchResult = null;
         window.clearInterval(this.resultTimer);
@@ -340,7 +356,8 @@ export default defineComponent({
         const missing = await this.game.loadCharacter(
           this.selectedCharacter,
           this.selectedSetup ?? undefined,
-          this.selectedOpponentSetup ?? undefined
+          this.selectedOpponentSetup ?? undefined,
+          this.selectedBotDifficulty
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
