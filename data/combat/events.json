@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "description": "Unified combat event types. Every damaging or positional interaction is emitted as an event and resolved deterministically.",
+  "events": [
+    {
+      "event_id": "strike_contact",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "blocked_strike",
+      "uses_physics": true,
+      "can_damage_hp": false,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "glancing_strike",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "counter_strike",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "clinch_contact",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "control"
+    },
+    {
+      "event_id": "takedown_attempt",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "transition"
+    },
+    {
+      "event_id": "takedown_impact",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "throw_impact",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "fall_impact",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "collision",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "ground_strike",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "soccer_kick",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "stomp",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "grounded_knee",
+      "uses_physics": true,
+      "can_damage_hp": true,
+      "resolution": "impact"
+    },
+    {
+      "event_id": "joint_stress",
+      "uses_physics": true,
+      "can_damage_hp": false,
+      "resolution": "submission"
+    },
+    {
+      "event_id": "choke_pressure",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "submission"
+    },
+    {
+      "event_id": "submission_escape",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "transition"
+    },
+    {
+      "event_id": "position_transition",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "transition"
+    },
+    {
+      "event_id": "balance_break",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "balance"
+    },
+    {
+      "event_id": "knockdown",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "state"
+    },
+    {
+      "event_id": "knockout",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "finish"
+    },
+    {
+      "event_id": "submission_finish",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "finish"
+    },
+    {
+      "event_id": "decision_finish",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "finish"
+    },
+    {
+      "event_id": "forfeit_finish",
+      "uses_physics": false,
+      "can_damage_hp": false,
+      "resolution": "finish"
+    }
+  ]
+}
