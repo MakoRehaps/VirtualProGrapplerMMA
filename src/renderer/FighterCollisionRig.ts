@@ -133,6 +133,21 @@ export class FighterCollisionRig {
       radius: 0.13 * (this.bodyHeightM / 1.78),
     };
   }
+
+  elbowStrike(side: "left" | "right"): StrikeVolume | null {
+    const upper = worldPosition(this.rig, side === "left" ? "leftUpperArm" : "rightUpperArm");
+    const fore = worldPosition(this.rig, side === "left" ? "leftForearm" : "rightForearm");
+    if (!upper || !fore) return null;
+    return {
+      sourceBone: side === "left" ? "leftForearm" : "rightForearm",
+      center: midpoint(upper, fore),
+      radius: 0.115 * (this.bodyHeightM / 1.78),
+    };
+  }
+
+  headStrike(): StrikeVolume | null {
+    return this.strikeVolume("head", 0.15);
+  }
 }
 
 function closestPointOnSegment(p: Vector3, a: Vector3, b: Vector3): Vector3 {
