@@ -1,14 +1,25 @@
-# Virtual Pro Grappler
+# MAY' QUV
 
-![Virtual Pro Grappler](assets/artwork/vpg-box-art.png)
+![MAY' QUV](assets/artwork/vpg-box-art.png)
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Babylon.js](https://img.shields.io/badge/Babylon.js-9.x-gray?logo=babylondotjs)
 ![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?logo=vite&logoColor=white)
 
-Virtual Pro Grappler is an open-source professional wrestling game and engine inspired by the AKI-era N64 wrestling games: WWF No Mercy, Virtual Pro Wrestling 2, WCW/nWo Revenge, and related titles.
+`MAY' QUV` is an open-source Kumite combat game built from the Virtual Pro Grappler engine. The goal is an international style-vs-style fighting game: real living, revived, and modern unarmed combat systems compete under a configurable Kumite ruleset, with a dark tournament presentation inspired by classic underground martial-arts fiction and the broad style clashes of early no-holds-barred competition.
 
-The project is currently in an early engine and tooling phase. The focus right now is building the data model, UI flow, arena rendering pipeline, and control mapping foundation before full match gameplay comes online.
+The fork keeps VPG's Babylon.js renderer, deterministic simulation foundations, data-driven content, arena tooling, and input architecture while replacing pro-wrestling-specific match logic with striking, clinch, takedown, positional ground fighting, submissions, knockout damage, style-specific AI, and eventually ranked online play.
+
+## Project identity
+
+- **Style first:** combat styles are gameplay systems, not cosmetic labels.
+- **International:** the style database is intended to cover current-life unarmed combat traditions worldwide.
+- **Kumite:** square-platform tournament presentation rather than an octagon/cage identity.
+- **Finish-focused:** knockout and submission are primary finishes; rulesets can optionally use decisions and other stoppages.
+- **Data driven:** styles, techniques, fighters, arenas, and rules should remain editable data wherever practical.
+- **Competitive-ready:** deterministic simulation remains a core constraint so online/ranked play can be built on a stable foundation.
+
+The project is still in an early conversion phase. Existing wrestling systems remain in parts of the codebase while the MMA/Kumite combat layer is implemented incrementally.
 
 ## Current State
 
