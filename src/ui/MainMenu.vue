@@ -102,6 +102,9 @@ const ROUTE_CONTROLS = "commissioner.controls";
 const ROUTE_ARENA_VIEWER = "commissioner.arena_viewer";
 const ROUTE_ARENA_EDITOR = "commissioner.arena_editor";
 const ROUTE_COMBAT_TEST = "test.combat_system";
+const ROUTE_MATCH_PREFIX = "match_setup.";
+const ROUTE_COACH = "single_play.championship";
+const ROUTE_STYLE_LAB = "single_play.survival";
 
 export default defineComponent({
   name: "MainMenu",
@@ -229,7 +232,12 @@ export default defineComponent({
         return;
       }
 
-      if (target.id === ROUTE_COMBAT_TEST) {
+      if (
+        target.id === ROUTE_COMBAT_TEST ||
+        target.id.startsWith(ROUTE_MATCH_PREFIX) ||
+        target.id === ROUTE_COACH ||
+        target.id === ROUTE_STYLE_LAB
+      ) {
         this.$emit("launch", target.id);
         playMenuCue("select");
         return;
