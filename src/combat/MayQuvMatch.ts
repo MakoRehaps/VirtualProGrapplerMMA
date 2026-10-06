@@ -65,6 +65,7 @@ export class MayQuvMatch {
   onResolved: ((attacker: CombatSide, defender: CombatSide, resolution: CombatResolution) => void) | null = null;
   onGroundedWindowChanged: ((side: CombatSide, active: boolean) => void) | null = null;
   onPositionChanged: ((playerPosition: string, opponentPosition: string) => void) | null = null;
+  guardState: ((side: CombatSide) => "none" | "partial" | "solid") | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -257,11 +258,12 @@ export class MayQuvMatch {
     }
 
     const actualRegion = this.contactRegion?.(hit.attacker, hit.technique) ?? undefined;
+    const liveGuard = this.guardState?.(defenderSide) ?? hit.sample.guard;
     const result = resolveTechniqueImpact(
       this.stateOf(hit.attacker),
       this.stateOf(defenderSide),
       hit.technique,
-      { ...hit.sample, actualRegion }
+      { ...hit.sample, guard: liveGuard, actualRegion }
     );
 
     this.record({
