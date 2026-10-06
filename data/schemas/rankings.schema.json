@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "model",
+    "public_fields",
+    "anti_abuse",
+    "monthly_reset",
+    "archive_top_n"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "model": {
+      "type": "string"
+    },
+    "public_fields": {
+      "type": "array"
+    },
+    "anti_abuse": {
+      "type": "object"
+    },
+    "monthly_reset": {
+      "const": true
+    },
+    "archive_top_n": {
+      "const": 10
+    }
+  }
+}
