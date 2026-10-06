@@ -314,7 +314,10 @@ export class GameScene {
       techniqueId === "seoi_nage" ||
       techniqueId === "inside_trip" ||
       techniqueId === "outside_trip" ||
-      techniqueId === "body_lock_trip"
+      techniqueId === "body_lock_trip" ||
+      techniqueId === "double_leg" ||
+      techniqueId === "single_leg" ||
+      techniqueId === "high_crotch"
     ) {
       const group = this.pairedProcedural?.buildThrow(techniqueId);
       if (group) {
@@ -758,6 +761,9 @@ export class GameScene {
         "inside_trip",
         "outside_trip",
         "body_lock_trip",
+        "double_leg",
+        "single_leg",
+        "high_crotch",
       ] as const) {
         const group = this.pairedProcedural.buildThrow(id);
         if (group) this.animations.register(group);
