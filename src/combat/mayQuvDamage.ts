@@ -133,7 +133,12 @@ export function resolveTechniqueImpact(
   );
 
   const knockedOut = defender.condition.consciousness <= 0 || defender.condition.hp <= 0;
-  const knockedDown = !knockedOut && defender.condition.balance <= 15 * defenderRegional.balanceScale;
+  const forcedKnockdown =
+    technique.type === "takedown" || technique.type === "throw";
+  const knockedDown =
+    !knockedOut &&
+    (forcedKnockdown ||
+      defender.condition.balance <= 15 * defenderRegional.balanceScale);
 
   return {
     eventType: technique.type === "strike" ? "strike_contact" : technique.type,
