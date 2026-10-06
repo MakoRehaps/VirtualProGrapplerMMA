@@ -53,6 +53,8 @@
       <div class="hud__keys">
         <span><kbd>LS</kbd> Move</span>
         <span><kbd>LT</kbd> Guard</span>
+        <span><kbd>RS</kbd> Slip / Duck / Lean</span>
+        <span><kbd>LB</kbd>+<kbd>RS</kbd> Sprawl / Whizzer</span>
         <span><kbd>A</kbd><kbd>B</kbd><kbd>X</kbd><kbd>Y</kbd> Moveset</span>
         <span><kbd>RB</kbd> Clinch / Stand</span>
         <span>Keyboard fallback: WASD · J/K · P</span>
