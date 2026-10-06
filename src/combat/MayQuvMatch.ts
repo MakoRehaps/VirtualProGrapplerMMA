@@ -66,6 +66,8 @@ export class MayQuvMatch {
   onGroundedWindowChanged: ((side: CombatSide, active: boolean) => void) | null = null;
   onPositionChanged: ((playerPosition: string, opponentPosition: string) => void) | null = null;
   guardState: ((side: CombatSide) => "none" | "partial" | "solid") | null = null;
+  evasionState: ((side: CombatSide) => { horizontal: number; vertical: number }) | null = null;
+  private counterWindowUntil: Partial<Record<CombatSide, number>> = {};
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -242,6 +244,33 @@ export class MayQuvMatch {
       return;
     }
 
+    const evasion = this.evasionState?.(defenderSide) ?? {
+      horizontal: 0,
+      vertical: 0,
+    };
+    const headTarget =
+      hit.technique.target === "head" ||
+      hit.technique.target === "face";
+    const evasiveMagnitude = Math.max(
+      Math.abs(evasion.horizontal),
+      Math.abs(evasion.vertical)
+    );
+    if (
+      hit.technique.type === "strike" &&
+      headTarget &&
+      evasiveMagnitude >= 0.58
+    ) {
+      this.counterWindowUntil[defenderSide] = frame + 24;
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: false,
+        missReason: "evaded",
+      });
+      return;
+    }
+
     if (hit.technique.type === "control") {
       this.resolveControlTechnique(hit, defenderSide, frame);
       return;
@@ -344,6 +373,10 @@ export class MayQuvMatch {
       techniqueName: hit.technique.name,
       connected: true,
     });
+  }
+
+  isCounterWindow(side: CombatSide, frame: number): boolean {
+    return (this.counterWindowUntil[side] ?? -1) >= frame;
   }
 
   private record(entry: MayQuvExchange): void {
