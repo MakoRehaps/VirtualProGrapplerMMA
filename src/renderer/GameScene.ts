@@ -952,7 +952,8 @@ export class GameScene {
     botDifficulty: BotDifficultyId = "club",
     playerCondition?: FighterCondition,
     rulesetId = "may_quv_standard",
-    humanOpponent = false
+    humanOpponent = false,
+    opponentDefinition?: CharacterDefinition
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -995,7 +996,7 @@ export class GameScene {
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
-    const opponentDef = opponentFor(definition);
+    const opponentDef = opponentDefinition ?? opponentFor(definition);
     const normalizedOpponentSetup = opponentSetup
       ? normalizeFighterSetup(opponentDef.id, opponentSetup)
       : null;
