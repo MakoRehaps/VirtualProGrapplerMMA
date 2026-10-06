@@ -62,10 +62,10 @@ Standard, event and practice rules.
 standing_open
   -> standing_close
   -> clinch
-  -> takedown / throw / scramble
-  -> ground position
-  -> pass / sweep / escape / submission / grounded strike
-  -> stand-up / KO / submission / decision
+  -> throw / takedown / scramble
+  -> seated / knocked-down opponent
+  -> soccer kick / stomp / grounded knee / disengage
+  -> technical stand-up / KO / decision
 ```
 
 The deterministic fixed timestep, input buffer and seeded RNG inherited from Virtual Pro Grappler should remain the timing foundation.
