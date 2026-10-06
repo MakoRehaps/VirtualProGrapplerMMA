@@ -111,6 +111,7 @@ const BOT_CAPABLE_MATCH_ROUTES = new Set([
   "match_setup.king_of_the_ring",
   "match_setup.guest_referee",
   "match_setup.ladder_match",
+  "match_setup.ironman_match",
 ]);
 
 export default defineComponent({
