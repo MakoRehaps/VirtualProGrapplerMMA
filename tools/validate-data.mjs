@@ -66,6 +66,7 @@ function schemaTargets() {
     ["data/schemas/stages.schema.json", ["data/stages.json"]],
     ["data/schemas/moves.schema.json", ["data/moves/moves.json"]],
     ["data/schemas/move-slots.schema.json", ["data/moves/move-slots.json"]],
+    ["data/schemas/combat-styles.schema.json", ["data/styles/styles.json"]],
   ];
 }
 
