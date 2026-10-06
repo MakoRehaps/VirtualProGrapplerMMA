@@ -76,6 +76,7 @@ function schemaTargets() {
     ["data/schemas/competition.schema.json", ["data/game/competition.json"]],
     ["data/schemas/cosmetics.schema.json", ["data/cosmetics/catalog.json"]],
     ["data/schemas/combat-profile.schema.json", ["data/game/combat-profile.json"]],
+    ["data/schemas/martial-poses.schema.json", ["data/biomechanics/martial-poses.json"]],
     ["data/schemas/body-physics.schema.json", ["data/combat/body-physics.json"]],
     ["data/schemas/events.schema.json", ["data/combat/events.json"]],
     ["data/schemas/damage-model.schema.json", ["data/combat/damage-model.json"]],
@@ -263,6 +264,48 @@ function checkMayQuvInvariants(errors) {
 }
 
 
+
+function checkMartialPoseDatabase(errors) {
+  const db = load("data/biomechanics/martial-poses.json");
+  const techniques = load("data/combat/techniques.json").techniques;
+  const sourceIds = new Set(db.sources.map((x) => x.source_id));
+  const techniqueIds = new Set(techniques.map((x) => x.technique_id));
+  const poseIds = new Set(db.stance_profiles.map((x) => x.pose_id));
+
+  for (const pose of db.stance_profiles) {
+    for (const source of pose.sources ?? []) {
+      if (!sourceIds.has(source)) {
+        errors.push(`pose ${pose.pose_id} references missing source ${source}`);
+      }
+    }
+  }
+
+  for (const motion of db.motion_profiles) {
+    for (const source of motion.sources ?? []) {
+      if (!sourceIds.has(source)) {
+        errors.push(`motion ${motion.motion_id} references missing source ${source}`);
+      }
+    }
+    for (const technique of motion.technique_ids ?? []) {
+      if (!techniqueIds.has(technique)) {
+        errors.push(`motion ${motion.motion_id} references missing technique ${technique}`);
+      }
+    }
+  }
+
+  for (const alias of db.style_motion_aliases ?? []) {
+    const pose = alias.stance_pose;
+    const knownExternalPose =
+      pose === "neutral_fighting" ||
+      pose === "muay_thai_square" ||
+      pose === "taekwondo_side_on" ||
+      pose === "judo_grip_ready";
+    if (!poseIds.has(pose) && !knownExternalPose) {
+      errors.push(`style motion alias references missing stance pose ${pose}`);
+    }
+  }
+}
+
 function checkCombatProfile(errors) {
   const profile = load("data/game/combat-profile.json");
   const positions = load("data/combat/positions.json").positions;
@@ -314,6 +357,7 @@ export function validateAll() {
   checkMayQuvReferences(errors);
   checkMayQuvInvariants(errors);
   checkCombatProfile(errors);
+  checkMartialPoseDatabase(errors);
   return { errors, notes };
 }
 
