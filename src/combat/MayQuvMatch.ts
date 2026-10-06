@@ -68,6 +68,7 @@ export class MayQuvMatch {
   guardState: ((side: CombatSide) => "none" | "partial" | "solid") | null = null;
   evasionState: ((side: CombatSide) => { horizontal: number; vertical: number }) | null = null;
   grappleDefenseState: ((side: CombatSide) => { sprawl: boolean; whizzer: boolean }) | null = null;
+  onDefended: ((defender: CombatSide, kind: "evade" | "sprawl" | "whizzer") => void) | null = null;
   private counterWindowUntil: Partial<Record<CombatSide, number>> = {};
 
   constructor(
@@ -272,6 +273,7 @@ export class MayQuvMatch {
       evasiveMagnitude >= 0.58
     ) {
       this.counterWindowUntil[defenderSide] = frame + 24;
+      this.onDefended?.(defenderSide, "evade");
       this.record({
         frame,
         attacker: hit.attacker,
@@ -297,6 +299,7 @@ export class MayQuvMatch {
 
     if (isStandingShot && grappleDefense.sprawl) {
       this.counterWindowUntil[defenderSide] = frame + 30;
+      this.onDefended?.(defenderSide, "sprawl");
       this.record({
         frame,
         attacker: hit.attacker,
@@ -309,6 +312,7 @@ export class MayQuvMatch {
 
     if (isClinchTakedown && grappleDefense.whizzer) {
       this.counterWindowUntil[defenderSide] = frame + 24;
+      this.onDefended?.(defenderSide, "whizzer");
       this.record({
         frame,
         attacker: hit.attacker,
