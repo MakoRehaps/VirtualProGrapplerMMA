@@ -91,6 +91,7 @@ export class CharacterController {
   /** Notified when a strike is thrown; wired to the combat simulation. */
   private strikeHandler: ((moveId: string) => void) | null = null;
   private techniqueClipResolver: ((moveId: string) => string | null) | null = null;
+  private idleClip = Anim.IDLE;
 
   constructor(
     public readonly root: TransformNode,
@@ -125,6 +126,10 @@ export class CharacterController {
     resolver: ((moveId: string) => string | null) | null
   ): void {
     this.techniqueClipResolver = resolver;
+  }
+
+  setIdleClip(name: string | null): void {
+    this.idleClip = name && this.animations.has(name) ? name : Anim.IDLE;
   }
 
   /** Applies body/stance-derived locomotion without exposing RPG stats. */
@@ -854,7 +859,7 @@ export class CharacterController {
     if (this.state !== "locomotion") return;
 
     if (this.speed < 0.1) {
-      this.animations.play(Anim.IDLE, { loop: true });
+      this.animations.play(this.idleClip, { loop: true });
     } else if (this.speed > (this.movementPhysics.walkSpeed + this.movementPhysics.runSpeed) / 2) {
       this.animations.play(Anim.RUN, { loop: true });
     } else {
