@@ -40,23 +40,28 @@
       :frame-source="() => game?.simFrame ?? 0"
     />
 
+    <MovesetEditor
+      v-if="started && game && movesetOpen && game.currentPlayerMoveset"
+      :moveset="game.currentPlayerMoveset"
+      @apply="applyMoveset"
+      @close="movesetOpen = false"
+    />
+
     <!-- Controls legend, shown once playing. -->
     <div v-if="started" class="hud">
       <div class="hud__keys">
-        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</span>
-        <span><kbd>Shift</kbd> Run</span>
-        <span><kbd>J</kbd> Punch</span>
-        <span><kbd>K</kbd> Kick</span>
-        <span><kbd>L</kbd> Jump</span>
-        <span><kbd>P</kbd> Block</span>
-        <span><kbd>Shift</kbd>+<kbd>P</kbd> Roll</span>
+        <span><kbd>LS</kbd> Move</span>
+        <span><kbd>LT</kbd> Guard</span>
+        <span><kbd>A</kbd><kbd>B</kbd><kbd>X</kbd><kbd>Y</kbd> Moveset</span>
+        <span><kbd>RB</kbd> Clinch / Stand</span>
+        <span>Keyboard fallback: WASD · J/K · P</span>
       </div>
+      <button class="hud__change" @click="movesetOpen = true">Edit Moveset</button>
       <button class="hud__change" @click="reset">Change character</button>
       <button class="hud__change" @click="$emit('exit')">Main menu</button>
       <p class="hud__hint">
-        <kbd>Shift</kbd> alone runs straight ahead; press a direction first to
-        run that way. Only a run takes the ropes &mdash; throw a move to break
-        the chain.
+        A/B/X/Y change automatically between standing, clinch and grounded-opponent
+        contexts. RB enters/exits clinch and performs technical stand-up when down.
       </p>
       <p v-if="warning" class="hud__warning">{{ warning }}</p>
     </div>
@@ -68,11 +73,13 @@ import { defineComponent, markRaw } from "vue";
 import { GameScene } from "@/renderer/GameScene";
 import { CHARACTERS, CharacterDefinition } from "@/game/config";
 import CombatDebug from "./CombatDebug.vue";
+import MovesetEditor from "./MovesetEditor.vue";
+import type { FighterMoveset } from "@/combat/moveset";
 
 export default defineComponent({
   name: "Game",
 
-  components: { CombatDebug },
+  components: { CombatDebug, MovesetEditor },
 
   emits: ["exit"],
 
@@ -83,6 +90,7 @@ export default defineComponent({
       loadingId: null as string | null,
       error: "" as string,
       warning: "" as string,
+      movesetOpen: false,
       // markRaw keeps Vue from proxying the whole Babylon scene graph, which
       // would be both slow and subtly break engine internals.
       game: null as GameScene | null,
@@ -121,8 +129,17 @@ export default defineComponent({
       }
     },
 
+    applyMoveset(moveset: FighterMoveset) {
+      if (!this.game?.setPlayerMoveset(moveset)) {
+        this.warning = "Could not apply moveset to current fighter.";
+        return;
+      }
+      this.warning = `Applied moveset: ${moveset.name}`;
+    },
+
     reset() {
       this.started = false;
+      this.movesetOpen = false;
       this.warning = "";
     },
   },
