@@ -68,6 +68,7 @@ export interface ImpactSample {
   relativeVelocityMps: number;
   contactQuality: "glancing" | "partial" | "clean" | "perfect";
   guard: "none" | "partial" | "solid";
+  actualRegion?: keyof RegionalCondition;
 }
 
 export interface RegionalEffects {
