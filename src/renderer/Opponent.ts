@@ -28,9 +28,13 @@ export class Opponent {
     this.animations.registerMany(groups);
   }
 
-  playReaction(name: string): void {
+  playReaction(name: string, onEnd?: () => void): void {
     if (!this.animations.has(name)) return;
-    this.animations.play(name, { loop: false, restart: true });
+    this.animations.play(name, {
+      loop: false,
+      restart: true,
+      onEnd,
+    });
   }
 
   setExternalPoseLock(locked: boolean): void {
