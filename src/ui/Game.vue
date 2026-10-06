@@ -224,6 +224,7 @@ import type { FighterMoveset } from "@/combat/moveset";
 import { loadMoveset } from "@/combat/movesetStore";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
+import { gamepadSlotConnected } from "@/game/GamepadTechniqueInput";
 import {
   BODY_PHYSICS,
   STYLES,
@@ -479,6 +480,15 @@ export default defineComponent({
       this.warning = "";
 
       try {
+        if (
+          this.competitionMode === "local_vs" &&
+          (!gamepadSlotConnected(0) || !gamepadSlotConnected(1))
+        ) {
+          this.error =
+            "Local VS requires two connected XInput-compatible controllers.";
+          return;
+        }
+
         if (!COMPETITION_SESSION.canEnter(this.competitionMode)) {
           this.error =
             this.competitionMode === "weekly_tournament"
