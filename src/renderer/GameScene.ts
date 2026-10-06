@@ -634,11 +634,15 @@ export class GameScene {
       const weapon = technique.weapon;
       let strike = null;
       if (weapon.includes("lead_hand")) strike = attackRig.handStrike("left");
-      else if (weapon.includes("rear_hand") || weapon === "hand" || weapon === "arm") strike = attackRig.handStrike("right");
+      else if (weapon.includes("rear_hand") || weapon === "hand") strike = attackRig.handStrike("right");
+      else if (weapon.includes("lead_elbow")) strike = attackRig.elbowStrike("left");
+      else if (weapon.includes("rear_elbow") || weapon === "elbow") strike = attackRig.elbowStrike("right");
       else if (weapon.includes("lead_knee")) strike = attackRig.kneeStrike("left");
       else if (weapon.includes("rear_knee") || weapon === "knee") strike = attackRig.kneeStrike("right");
       else if (weapon.includes("lead_leg")) strike = attackRig.footStrike("left");
       else if (weapon.includes("rear_leg") || weapon === "leg") strike = attackRig.footStrike("right");
+      else if (weapon === "head") strike = attackRig.headStrike();
+      else if (weapon === "arm" || weapon === "arms") strike = attackRig.handStrike("right");
       else return null;
 
       if (!strike) return null;
