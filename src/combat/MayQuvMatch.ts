@@ -1,5 +1,6 @@
 import { Rng } from "@/sim/Rng";
 import { resolveTechniqueImpact } from "./mayQuvDamage";
+import { regionConsequences } from "./regionalCondition";
 import { ACTIVE_COMBAT_PROFILE, isPositionActive, isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
 import {
   createFighterState,
@@ -196,7 +197,19 @@ export class MayQuvMatch {
     if (!styleAllowsTechnique(state.loadout.styleId, technique.techniqueId)) return false;
     if (!isTechniqueActive(technique)) return false;
     if (!this.techniqueLegalFromPosition(state, technique)) return false;
-    if (state.condition.stamina < technique.staminaCost) return false;
+
+    const staminaCommitted =
+      Math.round(
+        technique.staminaCost *
+          regionConsequences(state.condition).staminaCostScale *
+          10
+      ) / 10;
+    if (state.condition.stamina < staminaCommitted) return false;
+
+    state.condition.stamina = Math.max(
+      0,
+      Math.round((state.condition.stamina - staminaCommitted) * 10) / 10
+    );
 
     const counterStartupBonusFrames =
       technique.type === "strike" && this.isCounterWindow(attacker, currentFrame)
@@ -208,7 +221,7 @@ export class MayQuvMatch {
       technique,
       landsOnFrame:
         currentFrame + Math.max(1, technique.startupFrames - counterStartupBonusFrames),
-      sample,
+      sample: { ...sample, staminaCommitted },
     });
 
     if (counterStartupBonusFrames > 0) {
