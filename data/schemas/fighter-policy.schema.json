@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "competitive_invariants",
+    "player_choice",
+    "simulation_derives",
+    "principle"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "competitive_invariants": {
+      "type": "object",
+      "properties": {
+        "hp_max": {
+          "const": 100
+        },
+        "stamina_max": {
+          "const": 100
+        },
+        "selectable_numeric_stats": {
+          "const": false
+        },
+        "visible_numeric_power_stats": {
+          "const": false
+        },
+        "stat_grind": {
+          "const": false
+        },
+        "coach_stat_buffs": {
+          "const": false
+        },
+        "cosmetic_bonuses": {
+          "const": false
+        },
+        "styles_free": {
+          "const": true
+        },
+        "techniques_free": {
+          "const": true
+        },
+        "stances_free": {
+          "const": true
+        },
+        "fighter_reroll_free": {
+          "const": true
+        }
+      }
+    },
+    "player_choice": {
+      "type": "array"
+    },
+    "simulation_derives": {
+      "type": "array"
+    },
+    "principle": {
+      "type": "string"
+    }
+  }
+}
