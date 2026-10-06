@@ -10,7 +10,7 @@ import {
   type ImpactSample,
   type TechniqueRuntime,
 } from "./mayQuvTypes";
-import { styleAllowsTechnique } from "@/data/combatCatalog";
+import { isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
 
 interface PendingTechnique {
   attacker: CombatSide;
@@ -88,6 +88,7 @@ export class MayQuvMatch {
     if (this.winner) return false;
     const state = this.stateOf(attacker);
     if (!styleAllowsTechnique(state.loadout.styleId, technique.techniqueId)) return false;
+    if (!isTechniqueActive(technique)) return false;
     if (state.condition.stamina < technique.staminaCost) return false;
 
     this.pending.push({
