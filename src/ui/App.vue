@@ -1,6 +1,12 @@
 <template>
   <MainMenu v-if="screen === 'menu'" @launch="launch" />
-  <Game v-else :launch-route="launchRoute" @exit="exit" />
+  <Game
+    v-else
+    :key="launchRoute"
+    :launch-route="launchRoute"
+    @exit="exit"
+    @navigate="launch"
+  />
 </template>
 
 <script lang="ts">
