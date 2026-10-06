@@ -1,0 +1,3550 @@
+{
+  "schema_version": 1,
+  "description": "Global living/revived unarmed-combat style database for VirtualProGrapplerMMA. Ratings are game-design starting points, not claims of real-world superiority.",
+  "styles": [
+    {
+      "style_id": "boxing",
+      "name": "Boxing",
+      "origin": "United Kingdom",
+      "regions": [
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "boxing"
+      ],
+      "techniques": {
+        "punches": 100,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 90,
+        "power": 85,
+        "cardio": 90,
+        "balance": 75,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Modern gloved boxing; elite hand striking, footwork and defense."
+    },
+    {
+      "style_id": "bare_knuckle_boxing",
+      "name": "Bare-Knuckle Boxing",
+      "origin": "United Kingdom",
+      "regions": [
+        "United Kingdom",
+        "United States",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 100,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 80,
+        "balance": 75,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Bare-knuckle rules emphasize hand durability, clinch fighting and compact punching."
+    },
+    {
+      "style_id": "catch_wrestling",
+      "name": "Catch Wrestling",
+      "origin": "United Kingdom",
+      "regions": [
+        "United Kingdom",
+        "United States",
+        "Japan"
+      ],
+      "family": [
+        "wrestling",
+        "submission",
+        "grappling"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 95,
+        "ground_control": 90,
+        "joint_locks": 95,
+        "chokes": 70,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 95,
+        "aggression_bias": 50
+      },
+      "notes": "Submission-oriented wrestling descended from Lancashire catch-as-catch-can."
+    },
+    {
+      "style_id": "lancashire_wrestling",
+      "name": "Lancashire Wrestling",
+      "origin": "United Kingdom",
+      "regions": [
+        "United Kingdom"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 95,
+        "ground_control": 80,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 75,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional English catch-as-catch-can wrestling."
+    },
+    {
+      "style_id": "cornish_wrestling",
+      "name": "Cornish Wrestling",
+      "origin": "United Kingdom",
+      "regions": [
+        "United Kingdom"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 85,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 75,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 10,
+        "aggression_bias": 50
+      },
+      "notes": "Jacket wrestling tradition from Cornwall."
+    },
+    {
+      "style_id": "scottish_backhold",
+      "name": "Scottish Backhold Wrestling",
+      "origin": "Scotland",
+      "regions": [
+        "United Kingdom"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 80,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Standing backhold wrestling; falling first loses."
+    },
+    {
+      "style_id": "irish_collarg_elbow",
+      "name": "Irish Collar-and-Elbow",
+      "origin": "Ireland",
+      "regions": [
+        "Ireland",
+        "United States"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "revival",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 70,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Historic Irish standing jacket-and-grip wrestling with modern revival."
+    },
+    {
+      "style_id": "savate",
+      "name": "Savate",
+      "origin": "France",
+      "regions": [
+        "France",
+        "Europe",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "boxing",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 100,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 95,
+        "countering": 90,
+        "power": 70,
+        "cardio": 85,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "French kickboxing emphasizing precision, footwear-based kicking and range."
+    },
+    {
+      "style_id": "judo",
+      "name": "Judo",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "grappling",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 90,
+        "ground_control": 75,
+        "joint_locks": 65,
+        "chokes": 70,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 85,
+        "power": 80,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 60,
+        "aggression_bias": 50
+      },
+      "notes": "Throwing and grappling art founded by Jigoro Kano."
+    },
+    {
+      "style_id": "jujutsu",
+      "name": "Japanese Jujutsu",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "grappling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 80,
+        "ground_control": 70,
+        "joint_locks": 90,
+        "chokes": 70,
+        "sweeps": 65
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 70,
+        "aggression_bias": 50
+      },
+      "notes": "Umbrella category for living Japanese jujutsu schools."
+    },
+    {
+      "style_id": "brazilian_jiu_jitsu",
+      "name": "Brazilian Jiu-Jitsu",
+      "origin": "Brazil",
+      "regions": [
+        "Brazil",
+        "Global"
+      ],
+      "family": [
+        "grappling",
+        "submission",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 65,
+        "ground_control": 100,
+        "joint_locks": 100,
+        "chokes": 100,
+        "sweeps": 100
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 90,
+        "power": 50,
+        "cardio": 85,
+        "balance": 80,
+        "ground_bias": 100,
+        "aggression_bias": 50
+      },
+      "notes": "Ground-focused submission grappling developed in Brazil from judo/jujutsu."
+    },
+    {
+      "style_id": "luta_livre_esportiva",
+      "name": "Luta Livre Esportiva",
+      "origin": "Brazil",
+      "regions": [
+        "Brazil"
+      ],
+      "family": [
+        "grappling",
+        "submission",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 80,
+        "ground_control": 95,
+        "joint_locks": 95,
+        "chokes": 95,
+        "sweeps": 90
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 85,
+        "balance": 50,
+        "ground_bias": 100,
+        "aggression_bias": 50
+      },
+      "notes": "Brazilian no-gi submission wrestling."
+    },
+    {
+      "style_id": "vale_tudo",
+      "name": "Vale Tudo",
+      "origin": "Brazil",
+      "regions": [
+        "Brazil"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 70,
+        "knees": 75,
+        "elbows": 65,
+        "headbutts": 45,
+        "throws": 75,
+        "takedowns": 85,
+        "ground_control": 85,
+        "joint_locks": 80,
+        "chokes": 80,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 85,
+        "balance": 85,
+        "ground_bias": 65,
+        "aggression_bias": 90
+      },
+      "notes": "Brazilian minimal-rules mixed fighting tradition."
+    },
+    {
+      "style_id": "capoeira",
+      "name": "Capoeira",
+      "origin": "Brazil",
+      "regions": [
+        "Brazil",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 25,
+        "kicks": 100,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 35,
+        "throws": 40,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 90
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 100,
+        "countering": 80,
+        "power": 75,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 65
+      },
+      "notes": "Afro-Brazilian martial art emphasizing deceptive movement, kicks and sweeps."
+    },
+    {
+      "style_id": "huka_huka",
+      "name": "Huka-Huka",
+      "origin": "Brazil",
+      "regions": [
+        "Brazil"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Indigenous Brazilian wrestling practiced among peoples of the Xingu."
+    },
+    {
+      "style_id": "sambo",
+      "name": "Sport Sambo",
+      "origin": "Soviet Union",
+      "regions": [
+        "Russia",
+        "Eastern Europe",
+        "Central Asia",
+        "Global"
+      ],
+      "family": [
+        "grappling",
+        "wrestling",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 95,
+        "ground_control": 80,
+        "joint_locks": 95,
+        "chokes": 20,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 75,
+        "aggression_bias": 50
+      },
+      "notes": "Jacket grappling sport blending regional wrestling and judo influences."
+    },
+    {
+      "style_id": "combat_sambo",
+      "name": "Combat Sambo",
+      "origin": "Soviet Union",
+      "regions": [
+        "Russia",
+        "Eastern Europe",
+        "Central Asia",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport",
+        "military"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 70,
+        "knees": 65,
+        "elbows": 55,
+        "headbutts": 20,
+        "throws": 95,
+        "takedowns": 95,
+        "ground_control": 85,
+        "joint_locks": 95,
+        "chokes": 80,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 85,
+        "balance": 95,
+        "ground_bias": 75,
+        "aggression_bias": 85
+      },
+      "notes": "Combat form of Sambo integrating strikes and submissions."
+    },
+    {
+      "style_id": "freestyle_wrestling",
+      "name": "Freestyle Wrestling",
+      "origin": "International",
+      "regions": [
+        "Global"
+      ],
+      "family": [
+        "wrestling",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 100,
+        "ground_control": 85,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 80,
+        "countering": 50,
+        "power": 85,
+        "cardio": 95,
+        "balance": 95,
+        "ground_bias": 70,
+        "aggression_bias": 50
+      },
+      "notes": "Olympic wrestling allowing attacks to the legs."
+    },
+    {
+      "style_id": "greco_roman_wrestling",
+      "name": "Greco-Roman Wrestling",
+      "origin": "Europe",
+      "regions": [
+        "Global"
+      ],
+      "family": [
+        "wrestling",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 85,
+        "ground_control": 80,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 90,
+        "balance": 95,
+        "ground_bias": 60,
+        "aggression_bias": 50
+      },
+      "notes": "Olympic upper-body wrestling; leg attacks are prohibited."
+    },
+    {
+      "style_id": "folkstyle_wrestling",
+      "name": "American Folkstyle Wrestling",
+      "origin": "United States",
+      "regions": [
+        "United States"
+      ],
+      "family": [
+        "wrestling",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 75,
+        "takedowns": 100,
+        "ground_control": 100,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 100,
+        "balance": 95,
+        "ground_bias": 85,
+        "aggression_bias": 50
+      },
+      "notes": "US scholastic/collegiate wrestling emphasizing control and escapes."
+    },
+    {
+      "style_id": "sumo",
+      "name": "Sumo",
+      "origin": "Japan",
+      "regions": [
+        "Japan"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 20,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 25,
+        "throws": 100,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 100,
+        "mobility": 50,
+        "countering": 50,
+        "power": 100,
+        "cardio": 45,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Japanese ring-out and throw wrestling."
+    },
+    {
+      "style_id": "shoot_wrestling",
+      "name": "Shoot Wrestling",
+      "origin": "Japan",
+      "regions": [
+        "Japan"
+      ],
+      "family": [
+        "hybrid",
+        "submission",
+        "wrestling"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 55,
+        "kicks": 60,
+        "knees": 40,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 90,
+        "ground_control": 85,
+        "joint_locks": 95,
+        "chokes": 90,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 90,
+        "aggression_bias": 50
+      },
+      "notes": "Japanese submission-fighting lineage that grew from professional wrestling."
+    },
+    {
+      "style_id": "shooto",
+      "name": "Shooto",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 70,
+        "knees": 65,
+        "elbows": 45,
+        "headbutts": 0,
+        "throws": 70,
+        "takedowns": 85,
+        "ground_control": 85,
+        "joint_locks": 90,
+        "chokes": 90,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 80,
+        "countering": 50,
+        "power": 50,
+        "cardio": 90,
+        "balance": 85,
+        "ground_bias": 70,
+        "aggression_bias": 50
+      },
+      "notes": "Japanese mixed combat sport founded by Satoru Sayama."
+    },
+    {
+      "style_id": "pancrase_hybrid",
+      "name": "Pancrase-Style Hybrid",
+      "origin": "Japan",
+      "regions": [
+        "Japan"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "modern_hybrid",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 55,
+        "kicks": 75,
+        "knees": 65,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 85,
+        "ground_control": 85,
+        "joint_locks": 95,
+        "chokes": 90,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 80,
+        "mobility": 50,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 75,
+        "aggression_bias": 50
+      },
+      "notes": "Open-palm striking and submission-heavy Japanese hybrid ruleset."
+    },
+    {
+      "style_id": "karate_shotokan",
+      "name": "Shotokan Karate",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "boxing",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 90,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 95,
+        "power": 80,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Linear karate emphasizing distance, timing and decisive attacks."
+    },
+    {
+      "style_id": "karate_kyokushin",
+      "name": "Kyokushin Karate",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 100,
+        "knees": 70,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 95,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 85
+      },
+      "notes": "Full-contact knockdown karate known for body conditioning and powerful kicks."
+    },
+    {
+      "style_id": "ashihara_karate",
+      "name": "Ashihara Karate",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 90,
+        "knees": 60,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 45,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 65
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Sabaki-oriented knockdown karate."
+    },
+    {
+      "style_id": "enshin_karate",
+      "name": "Enshin Karate",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 90,
+        "knees": 55,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 70,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Sabaki karate with grabs, sweeps and throws."
+    },
+    {
+      "style_id": "kudo",
+      "name": "Kudo",
+      "origin": "Japan",
+      "regions": [
+        "Japan",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 85,
+        "knees": 80,
+        "elbows": 45,
+        "headbutts": 35,
+        "throws": 80,
+        "takedowns": 80,
+        "ground_control": 65,
+        "joint_locks": 60,
+        "chokes": 55,
+        "sweeps": 70
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 85,
+        "balance": 90,
+        "ground_bias": 45,
+        "aggression_bias": 50
+      },
+      "notes": "Japanese mixed combat sport combining knockdown karate, judo-style grappling and head-protected striking."
+    },
+    {
+      "style_id": "muay_thai",
+      "name": "Muay Thai",
+      "origin": "Thailand",
+      "regions": [
+        "Thailand",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 100,
+        "knees": 100,
+        "elbows": 100,
+        "headbutts": 0,
+        "throws": 45,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 70
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 95,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Thai eight-limb striking with strong clinch fighting."
+    },
+    {
+      "style_id": "muay_boran",
+      "name": "Muay Boran",
+      "origin": "Thailand",
+      "regions": [
+        "Thailand"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 90,
+        "knees": 95,
+        "elbows": 95,
+        "headbutts": 55,
+        "throws": 60,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 70
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Umbrella term for pre-modern Thai fighting methods still practiced today."
+    },
+    {
+      "style_id": "lethwei",
+      "name": "Lethwei",
+      "origin": "Myanmar",
+      "regions": [
+        "Myanmar"
+      ],
+      "family": [
+        "striking",
+        "combat_sport",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 90,
+        "knees": 95,
+        "elbows": 95,
+        "headbutts": 100,
+        "throws": 45,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 55
+      },
+      "gameplay": {
+        "pressure": 100,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 95,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 100
+      },
+      "notes": "Burmese bare-knuckle striking allowing headbutts."
+    },
+    {
+      "style_id": "pradal_serey",
+      "name": "Pradal Serey / Kun Khmer",
+      "origin": "Cambodia",
+      "regions": [
+        "Cambodia"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 95,
+        "knees": 95,
+        "elbows": 95,
+        "headbutts": 0,
+        "throws": 45,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 55
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 90,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Cambodian ring striking art with elbows, knees and clinch."
+    },
+    {
+      "style_id": "bokator",
+      "name": "Bokator",
+      "origin": "Cambodia",
+      "regions": [
+        "Cambodia"
+      ],
+      "family": [
+        "hybrid",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 70,
+        "kicks": 85,
+        "knees": 80,
+        "elbows": 80,
+        "headbutts": 50,
+        "throws": 75,
+        "takedowns": 70,
+        "ground_control": 55,
+        "joint_locks": 65,
+        "chokes": 45,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 75,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 35,
+        "aggression_bias": 50
+      },
+      "notes": "Cambodian traditional martial art with striking and grappling components."
+    },
+    {
+      "style_id": "sanda",
+      "name": "Sanda / Sanshou",
+      "origin": "China",
+      "regions": [
+        "China",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 95,
+        "knees": 30,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 90,
+        "power": 85,
+        "cardio": 90,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Chinese full-contact kickboxing with throws and catches."
+    },
+    {
+      "style_id": "shuai_jiao",
+      "name": "Shuai Jiao",
+      "origin": "China",
+      "regions": [
+        "China"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 90
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 85,
+        "power": 85,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Chinese jacket wrestling emphasizing fast throws."
+    },
+    {
+      "style_id": "wing_chun",
+      "name": "Wing Chun",
+      "origin": "China",
+      "regions": [
+        "China",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 95,
+        "kicks": 45,
+        "knees": 0,
+        "elbows": 65,
+        "headbutts": 0,
+        "throws": 35,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 60,
+        "countering": 90,
+        "power": 65,
+        "cardio": 50,
+        "balance": 75,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Southern Chinese close-range striking system."
+    },
+    {
+      "style_id": "bajiquan",
+      "name": "Bajiquan",
+      "origin": "China",
+      "regions": [
+        "China"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 45,
+        "knees": 55,
+        "elbows": 95,
+        "headbutts": 0,
+        "throws": 50,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 100,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Chinese style known for explosive short-range power and elbows."
+    },
+    {
+      "style_id": "choy_li_fut",
+      "name": "Choy Li Fut",
+      "origin": "China",
+      "regions": [
+        "China",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "boxing",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 80,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 80,
+        "countering": 50,
+        "power": 85,
+        "cardio": 80,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Southern Chinese striking art using wide circular hand techniques and kicks."
+    },
+    {
+      "style_id": "hung_gar",
+      "name": "Hung Gar",
+      "origin": "China",
+      "regions": [
+        "China",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 60,
+        "knees": 0,
+        "elbows": 55,
+        "headbutts": 0,
+        "throws": 35,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 80,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Southern Chinese system emphasizing rooted stances and powerful hand techniques."
+    },
+    {
+      "style_id": "taekwondo",
+      "name": "Taekwondo",
+      "origin": "South Korea",
+      "regions": [
+        "South Korea",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 40,
+        "kicks": 100,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 100,
+        "countering": 85,
+        "power": 80,
+        "cardio": 90,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Korean kicking art and Olympic combat sport."
+    },
+    {
+      "style_id": "taekkyeon",
+      "name": "Taekkyeon",
+      "origin": "Korea",
+      "regions": [
+        "South Korea"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "kicking",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 20,
+        "kicks": 90,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 65,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 100,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional Korean martial art with rhythmic footwork, kicks and trips."
+    },
+    {
+      "style_id": "ssireum",
+      "name": "Ssireum",
+      "origin": "Korea",
+      "regions": [
+        "South Korea"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 95,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Korean belt wrestling."
+    },
+    {
+      "style_id": "hapkido",
+      "name": "Hapkido",
+      "origin": "South Korea",
+      "regions": [
+        "South Korea",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 55,
+        "kicks": 75,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 65,
+        "ground_control": 0,
+        "joint_locks": 90,
+        "chokes": 35,
+        "sweeps": 65
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 35,
+        "aggression_bias": 50
+      },
+      "notes": "Korean martial art combining kicks, throws and joint locks."
+    },
+    {
+      "style_id": "tang_soo_do",
+      "name": "Tang Soo Do",
+      "origin": "South Korea",
+      "regions": [
+        "South Korea",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "boxing",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 95,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 85,
+        "power": 75,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Korean striking art influenced by karate and indigenous traditions."
+    },
+    {
+      "style_id": "yaw_yan",
+      "name": "Yaw-Yan",
+      "origin": "Philippines",
+      "regions": [
+        "Philippines"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 100,
+        "knees": 80,
+        "elbows": 75,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 55
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 50,
+        "power": 90,
+        "cardio": 90,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Filipino kickboxing system known for powerful rotational kicks."
+    },
+    {
+      "style_id": "panantukan",
+      "name": "Panantukan / Suntukan",
+      "origin": "Philippines",
+      "regions": [
+        "Philippines"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 95,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 85,
+        "headbutts": 40,
+        "throws": 45,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 55
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 90,
+        "power": 80,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Filipino empty-hand boxing concepts associated with FMA."
+    },
+    {
+      "style_id": "dumog",
+      "name": "Dumog",
+      "origin": "Philippines",
+      "regions": [
+        "Philippines"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Filipino grappling/wrestling methods."
+    },
+    {
+      "style_id": "sikaran",
+      "name": "Sikaran",
+      "origin": "Philippines",
+      "regions": [
+        "Philippines"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 35,
+        "kicks": 100,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 95,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Filipino kicking art."
+    },
+    {
+      "style_id": "pencak_silat",
+      "name": "Pencak Silat",
+      "origin": "Indonesia",
+      "regions": [
+        "Indonesia",
+        "Malaysia",
+        "Southeast Asia"
+      ],
+      "family": [
+        "hybrid",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 80,
+        "knees": 65,
+        "elbows": 70,
+        "headbutts": 40,
+        "throws": 75,
+        "takedowns": 70,
+        "ground_control": 50,
+        "joint_locks": 65,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 30,
+        "aggression_bias": 50
+      },
+      "notes": "Large family of Southeast Asian martial traditions; this entry models common unarmed competition/self-defense concepts."
+    },
+    {
+      "style_id": "silat_olahraga",
+      "name": "Silat Olahraga",
+      "origin": "Southeast Asia",
+      "regions": [
+        "Indonesia",
+        "Malaysia",
+        "Singapore",
+        "Brunei"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 70,
+        "kicks": 85,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 85,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 90
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Sport silat ruleset focused on strikes, catches, sweeps and throws."
+    },
+    {
+      "style_id": "vovinam",
+      "name": "Vovinam",
+      "origin": "Vietnam",
+      "regions": [
+        "Vietnam",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 70,
+        "kicks": 90,
+        "knees": 55,
+        "elbows": 50,
+        "headbutts": 0,
+        "throws": 75,
+        "takedowns": 65,
+        "ground_control": 0,
+        "joint_locks": 70,
+        "chokes": 0,
+        "sweeps": 75
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Vietnamese martial art combining striking, throws and locks."
+    },
+    {
+      "style_id": "vat_co_truyen",
+      "name": "Vat Co Truyen",
+      "origin": "Vietnam",
+      "regions": [
+        "Vietnam"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 95,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional Vietnamese wrestling."
+    },
+    {
+      "style_id": "krav_maga",
+      "name": "Krav Maga",
+      "origin": "Israel",
+      "regions": [
+        "Israel",
+        "Global"
+      ],
+      "family": [
+        "self_defense",
+        "hybrid"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 75,
+        "knees": 85,
+        "elbows": 85,
+        "headbutts": 65,
+        "throws": 55,
+        "takedowns": 55,
+        "ground_control": 45,
+        "joint_locks": 40,
+        "chokes": 35,
+        "sweeps": 45
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 80,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 95
+      },
+      "notes": "Modern self-defense system; game representation limited to unarmed techniques."
+    },
+    {
+      "style_id": "kapap",
+      "name": "KAPAP",
+      "origin": "Israel",
+      "regions": [
+        "Israel"
+      ],
+      "family": [
+        "self_defense",
+        "military",
+        "hybrid"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 65,
+        "knees": 75,
+        "elbows": 80,
+        "headbutts": 50,
+        "throws": 55,
+        "takedowns": 60,
+        "ground_control": 45,
+        "joint_locks": 45,
+        "chokes": 35,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Israeli close-combat system; unarmed subset only."
+    },
+    {
+      "style_id": "systema",
+      "name": "Systema",
+      "origin": "Russia",
+      "regions": [
+        "Russia",
+        "Global"
+      ],
+      "family": [
+        "self_defense",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 70,
+        "kicks": 55,
+        "knees": 45,
+        "elbows": 55,
+        "headbutts": 0,
+        "throws": 60,
+        "takedowns": 55,
+        "ground_control": 45,
+        "joint_locks": 55,
+        "chokes": 35,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 80,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Russian martial-art family emphasizing relaxation, movement and adaptive response."
+    },
+    {
+      "style_id": "army_hand_to_hand_combat",
+      "name": "Army Hand-to-Hand Combat",
+      "origin": "Russia",
+      "regions": [
+        "Russia"
+      ],
+      "family": [
+        "military",
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 80,
+        "kicks": 75,
+        "knees": 65,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 80,
+        "takedowns": 85,
+        "ground_control": 65,
+        "joint_locks": 55,
+        "chokes": 45,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 90,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 85,
+        "balance": 90,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Russian military-derived competitive hand-to-hand system."
+    },
+    {
+      "style_id": "kurash",
+      "name": "Kurash",
+      "origin": "Uzbekistan",
+      "regions": [
+        "Uzbekistan",
+        "Central Asia",
+        "Global"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Uzbek jacket wrestling."
+    },
+    {
+      "style_id": "alysh",
+      "name": "Alysh",
+      "origin": "Kyrgyzstan",
+      "regions": [
+        "Kyrgyzstan",
+        "Central Asia"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Central Asian belt wrestling."
+    },
+    {
+      "style_id": "kazakh_kuresi",
+      "name": "Kazakh Kuresi",
+      "origin": "Kazakhstan",
+      "regions": [
+        "Kazakhstan"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Kazakh traditional wrestling."
+    },
+    {
+      "style_id": "bokh",
+      "name": "Bökh",
+      "origin": "Mongolia",
+      "regions": [
+        "Mongolia",
+        "Inner Mongolia"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 100,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 80,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Mongolian traditional wrestling."
+    },
+    {
+      "style_id": "pehlwani",
+      "name": "Pehlwani / Kushti",
+      "origin": "Indian subcontinent",
+      "regions": [
+        "India",
+        "Pakistan"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 95,
+        "ground_control": 85,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 95,
+        "cardio": 95,
+        "balance": 95,
+        "ground_bias": 70,
+        "aggression_bias": 50
+      },
+      "notes": "South Asian traditional wrestling."
+    },
+    {
+      "style_id": "malla_yuddha",
+      "name": "Malla-Yuddha",
+      "origin": "India",
+      "regions": [
+        "India"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "revival",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 90,
+        "ground_control": 75,
+        "joint_locks": 55,
+        "chokes": 45,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 90,
+        "ground_bias": 65,
+        "aggression_bias": 50
+      },
+      "notes": "Living/revived South Asian grappling tradition."
+    },
+    {
+      "style_id": "kalaripayattu_unarmed",
+      "name": "Kalaripayattu — Unarmed",
+      "origin": "India",
+      "regions": [
+        "India"
+      ],
+      "family": [
+        "traditional",
+        "hybrid"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 65,
+        "kicks": 80,
+        "knees": 45,
+        "elbows": 55,
+        "headbutts": 0,
+        "throws": 60,
+        "takedowns": 55,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 60
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Unarmed subset of Kalaripayattu."
+    },
+    {
+      "style_id": "musti_yuddha",
+      "name": "Musti-Yuddha",
+      "origin": "India",
+      "regions": [
+        "India"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "revival",
+      "ranges": [
+        "boxing"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 85,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional South Asian fist-fighting lineage; surviving practice is limited."
+    },
+    {
+      "style_id": "yağlı_güreş",
+      "name": "Yağlı Güreş",
+      "origin": "Türkiye",
+      "regions": [
+        "Türkiye"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown",
+        "ground"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 90,
+        "ground_control": 70,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 90,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Turkish oil wrestling."
+    },
+    {
+      "style_id": "karakucak",
+      "name": "Karakucak",
+      "origin": "Türkiye",
+      "regions": [
+        "Türkiye"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional Turkish free wrestling."
+    },
+    {
+      "style_id": "glima",
+      "name": "Glíma",
+      "origin": "Iceland",
+      "regions": [
+        "Iceland"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 85,
+        "takedowns": 80,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 90
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 85,
+        "countering": 85,
+        "power": 50,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Icelandic wrestling tradition."
+    },
+    {
+      "style_id": "schwingen",
+      "name": "Schwingen",
+      "origin": "Switzerland",
+      "regions": [
+        "Switzerland"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Swiss breeches wrestling."
+    },
+    {
+      "style_id": "gouren",
+      "name": "Gouren",
+      "origin": "France",
+      "regions": [
+        "Brittany",
+        "France"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 85,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Breton jacket wrestling."
+    },
+    {
+      "style_id": "lutte_senegalaise",
+      "name": "Laamb / Senegalese Wrestling",
+      "origin": "Senegal",
+      "regions": [
+        "Senegal",
+        "West Africa"
+      ],
+      "family": [
+        "wrestling",
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 70,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 95,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 100,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 90
+      },
+      "notes": "Senegalese wrestling; professional forms may include striking."
+    },
+    {
+      "style_id": "nuba_wrestling",
+      "name": "Nuba Wrestling",
+      "origin": "Sudan",
+      "regions": [
+        "Sudan"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional wrestling of Nuba communities."
+    },
+    {
+      "style_id": "dambe",
+      "name": "Dambe",
+      "origin": "Nigeria",
+      "regions": [
+        "Nigeria",
+        "West Africa"
+      ],
+      "family": [
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing"
+      ],
+      "techniques": {
+        "punches": 100,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 100,
+        "mobility": 50,
+        "countering": 50,
+        "power": 100,
+        "cardio": 50,
+        "balance": 75,
+        "ground_bias": 0,
+        "aggression_bias": 100
+      },
+      "notes": "Hausa striking sport centered on a dominant wrapped punching hand."
+    },
+    {
+      "style_id": "moraingy",
+      "name": "Moraingy",
+      "origin": "Madagascar",
+      "regions": [
+        "Madagascar",
+        "Indian Ocean"
+      ],
+      "family": [
+        "striking",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing"
+      ],
+      "techniques": {
+        "punches": 95,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 95,
+        "mobility": 50,
+        "countering": 50,
+        "power": 90,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 95
+      },
+      "notes": "Malagasy bare-fist striking tradition."
+    },
+    {
+      "style_id": "engolo",
+      "name": "Engolo",
+      "origin": "Angola",
+      "regions": [
+        "Angola"
+      ],
+      "family": [
+        "striking",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "long",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 95,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 100,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 85,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Angolan combat game/martial tradition associated with inverted and kicking movement."
+    },
+    {
+      "style_id": "canarian_wrestling",
+      "name": "Lucha Canaria",
+      "origin": "Spain",
+      "regions": [
+        "Canary Islands",
+        "Spain"
+      ],
+      "family": [
+        "wrestling",
+        "traditional",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 95,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 85,
+        "cardio": 50,
+        "balance": 100,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Canarian jacket/belt wrestling."
+    },
+    {
+      "style_id": "leonese_wrestling",
+      "name": "Lucha Leonesa",
+      "origin": "Spain",
+      "regions": [
+        "León",
+        "Spain"
+      ],
+      "family": [
+        "wrestling",
+        "traditional"
+      ],
+      "status": "living",
+      "ranges": [
+        "clinch",
+        "takedown"
+      ],
+      "techniques": {
+        "punches": 0,
+        "kicks": 0,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 90,
+        "takedowns": 90,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 85
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 50,
+        "balance": 95,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Traditional Spanish belt wrestling."
+    },
+    {
+      "style_id": "pankration_modern",
+      "name": "Modern Pankration",
+      "origin": "Greece",
+      "regions": [
+        "Greece",
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "revival",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 75,
+        "kicks": 70,
+        "knees": 55,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 75,
+        "takedowns": 80,
+        "ground_control": 75,
+        "joint_locks": 80,
+        "chokes": 75,
+        "sweeps": 70
+      },
+      "gameplay": {
+        "pressure": 80,
+        "mobility": 50,
+        "countering": 50,
+        "power": 50,
+        "cardio": 85,
+        "balance": 85,
+        "ground_bias": 65,
+        "aggression_bias": 50
+      },
+      "notes": "Modern sport revival inspired by ancient pankration."
+    },
+    {
+      "style_id": "combat_hapkido",
+      "name": "Combat Hapkido",
+      "origin": "United States",
+      "regions": [
+        "United States",
+        "Global"
+      ],
+      "family": [
+        "self_defense",
+        "hybrid"
+      ],
+      "status": "modern_hybrid",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 65,
+        "kicks": 65,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 60,
+        "takedowns": 55,
+        "ground_control": 0,
+        "joint_locks": 90,
+        "chokes": 40,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 50,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 80,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Modern self-defense system derived from Hapkido."
+    },
+    {
+      "style_id": "kenpo_karate",
+      "name": "American Kenpo",
+      "origin": "United States",
+      "regions": [
+        "United States",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "self_defense"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 75,
+        "knees": 55,
+        "elbows": 70,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 80,
+        "mobility": 75,
+        "countering": 90,
+        "power": 50,
+        "cardio": 50,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "American Kenpo/Kenpo Karate family."
+    },
+    {
+      "style_id": "american_kickboxing",
+      "name": "American Kickboxing",
+      "origin": "United States",
+      "regions": [
+        "United States",
+        "Global"
+      ],
+      "family": [
+        "striking",
+        "combat_sport"
+      ],
+      "status": "living",
+      "ranges": [
+        "boxing",
+        "kicking"
+      ],
+      "techniques": {
+        "punches": 90,
+        "kicks": 90,
+        "knees": 0,
+        "elbows": 0,
+        "headbutts": 0,
+        "throws": 0,
+        "takedowns": 0,
+        "ground_control": 0,
+        "joint_locks": 0,
+        "chokes": 0,
+        "sweeps": 0
+      },
+      "gameplay": {
+        "pressure": 50,
+        "mobility": 90,
+        "countering": 50,
+        "power": 85,
+        "cardio": 90,
+        "balance": 50,
+        "ground_bias": 0,
+        "aggression_bias": 50
+      },
+      "notes": "Full-contact American kickboxing tradition."
+    },
+    {
+      "style_id": "mma",
+      "name": "Mixed Martial Arts",
+      "origin": "International",
+      "regions": [
+        "Global"
+      ],
+      "family": [
+        "hybrid",
+        "combat_sport"
+      ],
+      "status": "modern_hybrid",
+      "ranges": [
+        "boxing",
+        "kicking",
+        "clinch",
+        "takedown",
+        "ground",
+        "submission"
+      ],
+      "techniques": {
+        "punches": 85,
+        "kicks": 80,
+        "knees": 75,
+        "elbows": 75,
+        "headbutts": 0,
+        "throws": 70,
+        "takedowns": 85,
+        "ground_control": 85,
+        "joint_locks": 80,
+        "chokes": 85,
+        "sweeps": 80
+      },
+      "gameplay": {
+        "pressure": 80,
+        "mobility": 80,
+        "countering": 80,
+        "power": 80,
+        "cardio": 90,
+        "balance": 90,
+        "ground_bias": 65,
+        "aggression_bias": 50
+      },
+      "notes": "Modern mixed martial arts; broad baseline rather than a regional style."
+    }
+  ]
+}
