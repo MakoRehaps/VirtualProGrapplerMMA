@@ -47,7 +47,7 @@ export class BotBrain {
   }
 
   step(frame: number): void {
-    if (this.match.winner || frame < this.nextDecisionFrame) return;
+    if (this.match.finish || frame < this.nextDecisionFrame) return;
 
     const state = this.match.stateOf(this.side);
 
