@@ -58,98 +58,98 @@
       "menuItems": [
         {
           "id": "exhibition",
-          "displayName": "Exhibition Fight",
+          "displayName": "Ranked Fight",
           "target": "match_setup.exhibition",
           "instructions": {
-            "title": "<< Exhibition Fight >>",
+            "title": "<< Ranked Fight >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Fight a direct 1 vs. 1 Kumite match with selected styles and rules."
+                "text": "Fresh-condition 1 vs. 1 multiplayer. Results affect the monthly ranking; damage does not persist after the match."
               }
             ]
           }
         },
         {
           "id": "royal_rumble",
-          "displayName": "Ranked Fight",
+          "displayName": "Weekly Qualifier",
           "target": "match_setup.royal_rumble",
           "instructions": {
-            "title": "<< Ranked Fight >>",
+            "title": "<< Weekly Qualifier >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Competitive 1 vs. 1 matchmaking. Results affect your online rank."
+                "text": "Fight a bot qualifier. Win to enter the weekly Kumite. Damage carries into the weekly tournament."
               }
             ]
           }
         },
         {
           "id": "pay_per_view",
-          "displayName": "Kumite Event",
+          "displayName": "Weekly Kumite",
           "target": "match_setup.pay_per_view",
           "instructions": {
-            "title": "<< Kumite Event >>",
+            "title": "<< Weekly Kumite >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Build a custom international combat event with your own rules, arena, and bracket."
+                "text": "Weekly tournament for qualified fighters. Human bracket slots are filled by fair bots when needed. Event damage resets when the tournament ends."
               }
             ]
           }
         },
         {
           "id": "king_of_the_ring",
-          "displayName": "Open Tournament",
+          "displayName": "Monthly Qualifier I",
           "target": "match_setup.king_of_the_ring",
           "instructions": {
-            "title": "<< Open Tournament >>",
+            "title": "<< Monthly Qualifier I >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Single-elimination style-versus-style tournament competition."
+                "text": "First bot-only qualifier for the monthly MAY' QUV. Damage begins carrying through the monthly event chain."
               }
             ]
           }
         },
         {
           "id": "guest_referee",
-          "displayName": "Training Fight",
+          "displayName": "Monthly Qualifier II",
           "target": "match_setup.guest_referee",
           "instructions": {
-            "title": "<< Training Fight >>",
+            "title": "<< Monthly Qualifier II >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Practice against a human partner with configurable damage and rules."
+                "text": "Second bot-only qualifier. You must win both monthly qualifiers to enter the Grand Tournament."
               }
             ]
           }
         },
         {
           "id": "ladder_match",
-          "displayName": "Style Trials",
+          "displayName": "MAY' QUV Grand Tournament",
           "target": "match_setup.ladder_match",
           "instructions": {
-            "title": "<< Style Trials >>",
+            "title": "<< MAY' QUV Grand Tournament >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Test a combat style against a sequence of contrasting styles."
+                "text": "The monthly main event. Qualified humans fight a bracket with fair bot fill when required. Damage from both qualifiers carries in."
               }
             ]
           }
         },
         {
           "id": "ironman_match",
-          "displayName": "Endurance",
+          "displayName": "Local VS",
           "target": "match_setup.ironman_match",
           "instructions": {
-            "title": "<< Endurance >>",
+            "title": "<< Local VS >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Continue fighting new opponents while damage and fatigue carry forward."
+                "text": "Local 1 vs. 1 XInput fight. Fresh condition, no tokens, no ranking and no persistent damage."
               }
             ]
           }
@@ -163,28 +163,28 @@
       "menuItems": [
         {
           "id": "championship",
-          "displayName": "World Kumite",
+          "displayName": "Coach Practice",
           "target": "single_play.championship",
           "instructions": {
-            "title": "<< World Kumite >>",
+            "title": "<< Coach Practice >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Enter an international tournament built around real unarmed combat styles. Win by knockout, submission, or the event's configured decision rules."
+                "text": "Train against your persistent adaptive coach. The coach studies your habits, recreates weaknesses and teaches matchups without stat buffs or persistent damage."
               }
             ]
           }
         },
         {
           "id": "survival",
-          "displayName": "Style Gauntlet",
+          "displayName": "Style Lab",
           "target": "single_play.survival",
           "instructions": {
-            "title": "<< Style Gauntlet >>",
+            "title": "<< Style Lab >>",
             "blocks": [
               {
                 "type": "paragraph",
-                "text": "Take one style through a long sequence of opponents and discover where it excels or struggles."
+                "text": "Freely reroll fighters, test styles, stances and techniques, and learn the combat system. Gameplay tools are never locked behind progression."
               }
             ]
           }
