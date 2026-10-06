@@ -31,6 +31,7 @@ import { ProceduralKnockdownAnimator } from "./ProceduralKnockdownAnimator";
 import { CollisionDebugView } from "./CollisionDebugView";
 import { ProceduralClinchAnimator, type ClinchPoseId } from "./ProceduralClinchAnimator";
 import { DefensivePoseOverlay } from "./DefensivePoseOverlay";
+import { ProceduralGrappleDefenseAnimator } from "./ProceduralGrappleDefenseAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { GamepadTechniqueInput } from "../game/GamepadTechniqueInput";
@@ -88,6 +89,7 @@ export class GameScene {
   private clinchProcedural: ProceduralClinchAnimator | null = null;
   private currentClinchPose: ClinchPoseId | null = null;
   private defensiveOverlay: DefensivePoseOverlay | null = null;
+  private grappleDefenseProcedural: ProceduralGrappleDefenseAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -761,6 +763,13 @@ export class GameScene {
         other.root,
         this.opponentRig
       );
+      this.grappleDefenseProcedural = new ProceduralGrappleDefenseAnimator(
+        this.scene,
+        other.root,
+        this.opponentRig,
+        root,
+        this.playerRig
+      );
       for (const id of [
         "osoto_gari",
         "harai_goshi",
@@ -899,6 +908,28 @@ export class GameScene {
       this.opponent?.playReaction(
         active ? "STATE_KNOCKDOWN_SEATED" : "STATE_TECHNICAL_STANDUP"
       );
+    };
+
+    this.match.onDefended = (defender, kind) => {
+      if (defender !== "player" || kind === "evade" || !this.animations) return;
+
+      const group = this.grappleDefenseProcedural?.build(
+        kind === "sprawl" ? "sprawl" : "whizzer"
+      );
+      if (!group) return;
+
+      this.controller?.setExternalPoseLock(true);
+      this.opponent?.setExternalPoseLock(true);
+      this.animations.register(group);
+      this.animations.play(group.name, {
+        loop: false,
+        restart: true,
+        onEnd: () => {
+          this.controller?.setExternalPoseLock(false);
+          this.opponent?.setExternalPoseLock(false);
+          if (this.currentClinchPose) this.resumeClinchPose();
+        },
+      });
     };
 
     this.match.onPositionChanged = (playerPosition, opponentPosition) => {
@@ -1117,6 +1148,8 @@ export class GameScene {
     this.pairedProcedural = null;
     this.clinchProcedural?.dispose();
     this.clinchProcedural = null;
+    this.grappleDefenseProcedural?.dispose();
+    this.grappleDefenseProcedural = null;
     this.currentClinchPose = null;
     this.playerProcedural?.dispose();
     this.playerProcedural = null;
