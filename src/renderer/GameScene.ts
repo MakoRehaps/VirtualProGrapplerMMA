@@ -269,7 +269,7 @@ export class GameScene {
     if (group && this.animations) {
       this.clinchProcedural?.alignRoots();
       this.controller?.setExternalPoseLock(true);
-      this.opponent.setExternalPoseLock(true);
+      this.setOpponentPoseLock(true);
       this.animations.register(group);
       this.currentClinchPose = position;
       this.animations.play(group.name, { loop: true, restart: true });
@@ -283,7 +283,7 @@ export class GameScene {
 
     this.currentClinchPose = null;
     this.controller?.setExternalPoseLock(false);
-    this.opponent?.setExternalPoseLock(false);
+    this.setOpponentPoseLock(false);
     return true;
   }
 
@@ -299,7 +299,15 @@ export class GameScene {
     return stood;
   }
 
-  private resumeClinchPose(): void {
+  private setOpponentPoseLock(locked: boolean): void {
+    if (this.opponentController) {
+      this.opponentController.setExternalPoseLock(locked);
+    } else {
+      this.opponent?.setExternalPoseLock(locked);
+    }
+  }
+
+    private resumeClinchPose(): void {
     if (!this.currentClinchPose || !this.animations) return;
     const group = this.clinchProcedural?.build(this.currentClinchPose);
     if (!group) return;
@@ -335,6 +343,16 @@ export class GameScene {
       button
     );
     return techniqueId ? this.tryPlayerTechnique(techniqueId) : false;
+  }
+
+    private tryOpponentMovesetButton(button: MovesetButton): boolean {
+    if (!this.match || !this.opponentMoveset) return false;
+    const techniqueId = techniqueForMovesetInput(
+      this.opponentMoveset,
+      this.match.opponent.positionId,
+      button
+    );
+    return techniqueId ? this.tryOpponentTechnique(techniqueId) : false;
   }
 
     private tryOpponentTechnique(techniqueId: string): boolean {
@@ -1209,7 +1227,7 @@ export class GameScene {
             restart: true,
           });
         } else {
-          this.opponent?.setExternalPoseLock(true);
+          this.setOpponentPoseLock(true);
           this.opponent?.playReaction("STATE_KNOCKOUT");
         }
         return;
@@ -1252,7 +1270,7 @@ export class GameScene {
 
     this.match.onFinished = (_finish, _winner) => {
       this.controller?.setExternalPoseLock(true);
-      this.opponent?.setExternalPoseLock(true);
+      this.setOpponentPoseLock(true);
     };
 
     this.match.onDefended = (defender, kind) => {
@@ -1266,14 +1284,14 @@ export class GameScene {
       if (!group) return;
 
       this.controller?.setExternalPoseLock(true);
-      this.opponent?.setExternalPoseLock(true);
+      this.setOpponentPoseLock(true);
       this.animations.register(group);
       this.animations.play(group.name, {
         loop: false,
         restart: true,
         onEnd: () => {
           this.controller?.setExternalPoseLock(false);
-          this.opponent?.setExternalPoseLock(false);
+          this.setOpponentPoseLock(false);
           if (this.currentClinchPose) this.resumeClinchPose();
         },
       });
@@ -1298,7 +1316,7 @@ export class GameScene {
       this.currentClinchPose = pose;
       this.clinchProcedural?.alignRoots();
       this.controller?.setExternalPoseLock(true);
-      this.opponent?.setExternalPoseLock(true);
+      this.setOpponentPoseLock(true);
       this.animations.register(group);
       this.animations.play(group.name, { loop: true, restart: true });
     };
