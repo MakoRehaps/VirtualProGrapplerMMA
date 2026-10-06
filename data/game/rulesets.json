@@ -10,7 +10,6 @@
       "normal_tko": false,
       "finishes": [
         "knockout",
-        "submission",
         "decision",
         "forfeit"
       ],
@@ -26,7 +25,10 @@
         300
       ],
       "whole_fight_judging": true,
-      "damage_persists_between_matches": false
+      "damage_persists_between_matches": false,
+      "sustained_ground_grappling": false,
+      "submissions": false,
+      "grounded_window_seconds": 4
     },
     {
       "ruleset_id": "may_quv_event",
@@ -37,7 +39,6 @@
       "normal_tko": false,
       "finishes": [
         "knockout",
-        "submission",
         "decision",
         "forfeit"
       ],
@@ -53,7 +54,10 @@
         300
       ],
       "whole_fight_judging": true,
-      "damage_persists_between_matches": true
+      "damage_persists_between_matches": true,
+      "sustained_ground_grappling": false,
+      "submissions": false,
+      "grounded_window_seconds": 4
     },
     {
       "ruleset_id": "practice",
@@ -64,7 +68,6 @@
       "normal_tko": false,
       "finishes": [
         "knockout",
-        "submission",
         "reset"
       ],
       "grounded_head_kicks": true,
@@ -76,7 +79,10 @@
       "platform": "square",
       "rounds": [],
       "whole_fight_judging": false,
-      "damage_persists_between_matches": false
+      "damage_persists_between_matches": false,
+      "sustained_ground_grappling": false,
+      "submissions": false,
+      "grounded_window_seconds": 4
     }
   ]
 }
