@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "model": "glicko_like",
+  "public_fields": [
+    "rank",
+    "rating_band",
+    "wins",
+    "losses",
+    "ko_wins",
+    "submission_wins",
+    "decision_wins",
+    "streak",
+    "style_id",
+    "monthly_placements"
+  ],
+  "hidden_internal_fields": [
+    "rating",
+    "rating_deviation",
+    "volatility"
+  ],
+  "anti_abuse": {
+    "repeat_opponent_diminishing_returns": true,
+    "bot_matches_affect_rank": false,
+    "qualifier_bot_matches_affect_rank": false,
+    "practice_affects_rank": false
+  },
+  "monthly_reset": true,
+  "archive_top_n": 10,
+  "top_ten_label": "World Top 10",
+  "rank_one_label": "MAY' QUV Champion"
+}
