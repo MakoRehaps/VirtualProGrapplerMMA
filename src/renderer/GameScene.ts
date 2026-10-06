@@ -23,13 +23,14 @@ import "@babylonjs/loaders/glTF";
 import { AnimationController } from "./AnimationController";
 import { SkeletonRig } from "./SkeletonRig";
 import { ProceduralMartialAnimator } from "./ProceduralMartialAnimator";
+import { ProceduralStanceAnimator } from "./ProceduralStanceAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
 import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
-import { styleById, techniqueById } from "../data/combatCatalog";
+import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
 import { InputBuffer } from "../sim/InputBuffer";
@@ -64,6 +65,7 @@ export class GameScene {
   private controller: CharacterController | null = null;
   private animations: AnimationController | null = null;
   private playerProcedural: ProceduralMartialAnimator | null = null;
+  private playerStanceProcedural: ProceduralStanceAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -413,6 +415,7 @@ export class GameScene {
     root: TransformNode;
     animations: AnimationController;
     procedural: ProceduralMartialAnimator;
+    stanceProcedural: ProceduralStanceAnimator;
     nodes: TransformNode[];
   }> {
     const result = await ImportMeshAsync(
@@ -443,6 +446,7 @@ export class GameScene {
     const animations = new AnimationController(result.animationGroups);
     const rig = new SkeletonRig(result.skeletons);
     const procedural = new ProceduralMartialAnimator(this.scene, rig);
+    const stanceProcedural = new ProceduralStanceAnimator(this.scene, rig);
     animations.registerMany(procedural.buildDefaultSet());
 
     if (import.meta.env.DEV) {
@@ -458,6 +462,7 @@ export class GameScene {
       root,
       animations,
       procedural,
+      stanceProcedural,
       nodes,
     };
   }
@@ -478,6 +483,7 @@ export class GameScene {
     this.loadedNodes.push(...player.nodes);
     this.animations = player.animations;
     this.playerProcedural = player.procedural;
+    this.playerStanceProcedural = player.stanceProcedural;
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
@@ -558,6 +564,17 @@ export class GameScene {
       acceleration: movement.acceleration,
       pivotScale: movement.pivotScale,
     });
+
+    const preferredPoseId = preferredBiomechPoseForStyle(player.styleId);
+    const stanceGroup = preferredPoseId
+      ? this.playerStanceProcedural?.buildPose(preferredPoseId)
+      : null;
+    if (stanceGroup && this.animations) {
+      this.animations.register(stanceGroup);
+      this.controller?.setIdleClip(stanceGroup.name);
+    } else {
+      this.controller?.setIdleClip(null);
+    }
 
     // Legacy animation buttons are translated into real MAY' QUV techniques
     // while the animation library is replaced incrementally.
