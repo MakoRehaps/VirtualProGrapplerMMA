@@ -31,7 +31,8 @@ export class BotBrain {
     private readonly match: MayQuvMatch,
     private readonly side: CombatSide,
     difficultyId: BotDifficultyId,
-    private readonly onTechnique: (techniqueId: string) => boolean
+    private readonly onTechnique: (techniqueId: string) => boolean,
+    private readonly onEnterClinch: (() => boolean) | null = null
   ) {
     this.difficulty =
       (botsJson.difficulty_levels.find(
@@ -44,6 +45,18 @@ export class BotBrain {
     if (this.match.winner || frame < this.nextDecisionFrame) return;
 
     const state = this.match.stateOf(this.side);
+    if (
+      (state.positionId === "standing_open" ||
+        state.positionId === "standing_close") &&
+      this.shouldTryClinch(state.loadout.styleId)
+    ) {
+      if (this.onEnterClinch?.()) {
+        this.nextDecisionFrame =
+          frame + this.difficulty.reaction_frames + 8;
+        return;
+      }
+    }
+
     const candidates = this.candidatesForPosition(
       state.loadout.styleId,
       state.positionId
@@ -79,6 +92,24 @@ export class BotBrain {
         frame + chosen.startupFrames + chosen.recoveryFrames
       );
     }
+  }
+
+  private shouldTryClinch(styleId: string): boolean {
+    if (!this.onEnterClinch) return false;
+
+    const hasClinchOffense = activeTechniquesForStyle(styleId).some(
+      (t) =>
+        t.context === "clinch" &&
+        (t.type === "strike" ||
+          t.type === "takedown" ||
+          t.type === "throw")
+    );
+    if (!hasClinchOffense) return false;
+
+    const threshold = Math.round(
+      1000 * (0.08 + this.difficulty.transition_skill * 0.16)
+    );
+    return this.match.rng.nextInt(1000) < threshold;
   }
 
   private candidatesForPosition(
