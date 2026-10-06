@@ -8,7 +8,8 @@
     "contact_quality",
     "guard_absorption",
     "finish_rules",
-    "event_persistence"
+    "event_persistence",
+    "regional_conditions"
   ],
   "additionalProperties": false,
   "properties": {
@@ -33,10 +34,17 @@
         "balance_max": {
           "const": 100
         },
-        "limb_condition_max": {
+        "regional_condition_max": {
           "const": 100
         }
-      }
+      },
+      "required": [
+        "hp_max",
+        "stamina_max",
+        "consciousness_max",
+        "balance_max",
+        "regional_condition_max"
+      ]
     },
     "target_zones": {
       "type": "object"
@@ -57,6 +65,22 @@
     },
     "event_persistence": {
       "type": "object"
+    },
+    "regional_conditions": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "head",
+          "body",
+          "leftArm",
+          "rightArm",
+          "leftLeg",
+          "rightLeg"
+        ]
+      }
     }
   }
 }
