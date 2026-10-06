@@ -1143,6 +1143,8 @@ export class GameScene {
     };
 
     this.match.onGroundedWindowChanged = (side, active) => {
+      if (active) this.currentClinchPose = null;
+
       const clip = active
         ? "STATE_KNOCKDOWN_SEATED"
         : "STATE_TECHNICAL_STANDUP";
@@ -1201,6 +1203,7 @@ export class GameScene {
         "thai_plum",
         "over_under",
         "double_underhooks",
+        "rear_clinch",
         "front_headlock",
       ]);
       if (!supported.has(playerPosition as ClinchPoseId)) return;
