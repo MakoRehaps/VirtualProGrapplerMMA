@@ -55,6 +55,8 @@ const styleTechniqueMap = new Map(
 );
 
 export const BODY_PHYSICS = bodyPhysicsJson;
+export const STYLES = stylesJson.styles;
+export const STANCES = stancesJson.stances;
 export const RULESETS = rulesetsJson.rulesets;
 export const COMPETITION_MODES = competitionJson.modes;
 export const ACTIVE_COMBAT_PROFILE = combatProfileJson;
