@@ -92,6 +92,7 @@ export class CharacterController {
   private strikeHandler: ((moveId: string) => void) | null = null;
   private techniqueClipResolver: ((moveId: string) => string | null) | null = null;
   private idleClip: string = Anim.IDLE;
+  private externalPoseLock = false;
 
   constructor(
     public readonly root: TransformNode,
@@ -130,6 +131,11 @@ export class CharacterController {
 
   setIdleClip(name: string | null): void {
     this.idleClip = name && this.animations.has(name) ? name : Anim.IDLE;
+  }
+
+  setExternalPoseLock(locked: boolean): void {
+    this.externalPoseLock = locked;
+    if (locked) this.resetMotion();
   }
 
   /** Applies body/stance-derived locomotion without exposing RPG stats. */
@@ -174,6 +180,10 @@ export class CharacterController {
     const dt = Math.min(deltaSeconds, 0.1);
 
     this.input.update();
+    if (this.externalPoseLock) {
+      this.animations.update(dt);
+      return;
+    }
     this.handleActions();
     this.updateBlockHold();
     this.move(dt);
