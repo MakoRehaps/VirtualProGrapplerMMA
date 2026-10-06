@@ -60,7 +60,7 @@ export class MayQuvMatch {
   finish: MayQuvMatchSnapshot["finish"] = null;
 
   canConnect: ((attacker: CombatSide, technique: TechniqueRuntime) => boolean) | null = null;
-  contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => FighterCondition["regions"] extends infer R ? keyof R : never | null) | null = null;
+  contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => keyof FighterCondition["regions"] | null) | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
