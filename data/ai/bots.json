@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "description": "AI archetypes use legal styles/techniques and the same physics/HP as humans. Difficulty changes decision quality, timing and adaptation only.",
+  "difficulty_levels": [
+    {
+      "id": "learner",
+      "reaction_frames": 18,
+      "decision_error": 0.28,
+      "combo_discipline": 0.45,
+      "transition_skill": 0.4,
+      "adaptation_rate": 0.2,
+      "input_reading": false
+    },
+    {
+      "id": "club",
+      "reaction_frames": 14,
+      "decision_error": 0.2,
+      "combo_discipline": 0.6,
+      "transition_skill": 0.55,
+      "adaptation_rate": 0.35,
+      "input_reading": false
+    },
+    {
+      "id": "competitive",
+      "reaction_frames": 10,
+      "decision_error": 0.12,
+      "combo_discipline": 0.75,
+      "transition_skill": 0.72,
+      "adaptation_rate": 0.55,
+      "input_reading": false
+    },
+    {
+      "id": "elite",
+      "reaction_frames": 7,
+      "decision_error": 0.07,
+      "combo_discipline": 0.88,
+      "transition_skill": 0.86,
+      "adaptation_rate": 0.75,
+      "input_reading": false
+    },
+    {
+      "id": "master",
+      "reaction_frames": 5,
+      "decision_error": 0.04,
+      "combo_discipline": 0.95,
+      "transition_skill": 0.94,
+      "adaptation_rate": 0.9,
+      "input_reading": false
+    }
+  ],
+  "qualifier_templates": [
+    {
+      "id": "pressure_striker",
+      "goal": "close distance and punish passive defense",
+      "preferred_families": [
+        "striking",
+        "hybrid"
+      ]
+    },
+    {
+      "id": "range_kicker",
+      "goal": "force entries through long-range kicking",
+      "preferred_families": [
+        "striking"
+      ]
+    },
+    {
+      "id": "clinch_thrower",
+      "goal": "test clinch pummeling and throw defense",
+      "preferred_families": [
+        "grappling",
+        "wrestling"
+      ]
+    },
+    {
+      "id": "shot_wrestler",
+      "goal": "test range discipline and takedown defense",
+      "preferred_families": [
+        "wrestling"
+      ]
+    },
+    {
+      "id": "submission_hunter",
+      "goal": "test ground survival and escapes",
+      "preferred_families": [
+        "submission",
+        "grappling"
+      ]
+    },
+    {
+      "id": "counter_fighter",
+      "goal": "punish predictable offense",
+      "preferred_families": [
+        "striking",
+        "hybrid"
+      ]
+    },
+    {
+      "id": "mixed_threat",
+      "goal": "combine striking, clinch and ground threats",
+      "preferred_families": [
+        "hybrid",
+        "combat_sport"
+      ]
+    }
+  ],
+  "fairness": {
+    "same_hp": true,
+    "same_stamina": true,
+    "same_damage_model": true,
+    "same_style_access": true,
+    "future_input_reading": false,
+    "hidden_stat_bonus": false,
+    "qualifier_bots_can_be_hard": true
+  }
+}
