@@ -38,6 +38,7 @@ export class CharacterController {
     acceleration: Tuning.acceleration,
     pivotScale: 1,
   };
+  private conditionMovementScale = 1;
   private verticalVelocity = 0;
   /** Facing angle in radians, eased toward the direction of travel. */
   private yaw = 0;
@@ -146,6 +147,10 @@ export class CharacterController {
     pivotScale: number;
   }): void {
     this.movementPhysics = { ...values };
+  }
+
+  setConditionMovementScale(scale: number): void {
+    this.conditionMovementScale = Scalar.Clamp(scale, 0.45, 1);
   }
 
   /**
@@ -485,14 +490,16 @@ export class CharacterController {
 
     const targetSpeed = wantsMove
       ? runMode !== "none"
-        ? this.movementPhysics.runSpeed
-        : this.movementPhysics.walkSpeed
+        ? this.movementPhysics.runSpeed * this.conditionMovementScale
+        : this.movementPhysics.walkSpeed * this.conditionMovementScale
       : 0;
 
     this.speed = Scalar.MoveTowards(
       this.speed,
       targetSpeed,
-      this.movementPhysics.acceleration * dt
+      this.movementPhysics.acceleration *
+        this.conditionMovementScale *
+        dt
     );
 
     this.updateFacing(runMode, wantsMove, dt);
