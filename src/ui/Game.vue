@@ -42,7 +42,7 @@
           </select>
         </label>
 
-        <label>
+        <label v-if="competitionMode !== 'local_vs'">
           Bot difficulty
           <select v-model="botDifficulty">
             <option value="learner">Learner</option>
@@ -92,6 +92,10 @@
         <p>
           No weight classes. Body size changes continuous physics only;
           HP stays 100.
+          <template v-if="competitionMode === 'local_vs'">
+            Local VS requires two XInput-compatible controllers: P1 uses pad 1,
+            P2 uses pad 2.
+          </template>
         </p>
       </div>
 
@@ -519,7 +523,8 @@ export default defineComponent({
           this.botDifficulty,
           startingCondition,
           competitionModeById(this.competitionMode)?.ruleset_id ??
-            "may_quv_standard"
+            "may_quv_standard",
+          this.competitionMode === "local_vs"
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
@@ -575,7 +580,8 @@ export default defineComponent({
           this.selectedBotDifficulty,
           startingCondition,
           competitionModeById(this.competitionMode)?.ruleset_id ??
-            "may_quv_standard"
+            "may_quv_standard",
+          this.competitionMode === "local_vs"
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
