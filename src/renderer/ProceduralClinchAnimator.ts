@@ -12,6 +12,7 @@ export type ClinchPoseId =
   | "thai_plum"
   | "over_under"
   | "double_underhooks"
+  | "rear_clinch"
   | "front_headlock";
 
 interface BonePose {
@@ -162,6 +163,25 @@ export class ProceduralClinchAnimator {
           { id: "leftForearm", pitch: 78 },
           { id: "rightForearm", pitch: 78 },
           { id: "chest", pitch: 14 },
+        ],
+      ];
+    }
+
+    if (pose === "rear_clinch") {
+      return [
+        [
+          { id: "chest", pitch: 8 },
+          { id: "leftUpperArm", pitch: -34, yaw: -18, roll: -34 },
+          { id: "rightUpperArm", pitch: -34, yaw: 18, roll: 34 },
+          { id: "leftForearm", pitch: 96 },
+          { id: "rightForearm", pitch: 96 },
+        ],
+        [
+          { id: "chest", pitch: 14 },
+          { id: "leftUpperArm", pitch: -18, roll: -12 },
+          { id: "rightUpperArm", pitch: -18, roll: 12 },
+          { id: "leftForearm", pitch: 72 },
+          { id: "rightForearm", pitch: 72 },
         ],
       ];
     }
