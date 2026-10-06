@@ -44,6 +44,8 @@ describe("stamina recovery", () => {
     const worn = new MayQuvMatch(fighter("a"), fighter("b"));
     const cross = techniqueById("cross")!;
 
+    fresh.player.condition.stamina = 50;
+    worn.player.condition.stamina = 50;
     worn.player.condition.regions.body = 20;
 
     fresh.throwTechnique("player", cross, 0, sample);
