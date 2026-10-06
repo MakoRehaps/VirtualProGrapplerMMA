@@ -29,24 +29,7 @@ describe("clinch state", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
     const knee = techniqueById("rear_knee")!;
     expect(match.throwTechnique("player", knee, 0, sample)).toBe(false);
-    it("control techniques change clinch position without damage", () => {
-    const match = new MayQuvMatch(fighter("a"), fighter("b"));
-    const collar = techniqueById("collar_tie")!;
-
-    match.player.positionId = "over_under";
-    match.opponent.positionId = "over_under";
-    const beforeHp = match.opponent.condition.hp;
-    const beforeHead = match.opponent.condition.regions.head;
-
-    expect(match.throwTechnique("player", collar, 0, sample)).toBe(true);
-    match.step(collar.startupFrames);
-
-    expect(match.player.positionId).toBe("single_collar_tie");
-    expect(match.opponent.positionId).toBe("single_collar_tie");
-    expect(match.opponent.condition.hp).toBe(beforeHp);
-    expect(match.opponent.condition.regions.head).toBe(beforeHead);
   });
-});
 
   it("allows clinch-only strikes after entering a legal clinch", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
@@ -70,5 +53,23 @@ describe("clinch state", () => {
     expect(match.exitClinch()).toBe(true);
     expect(match.player.positionId).toBe("standing_close");
     expect(match.opponent.positionId).toBe("standing_close");
+  });
+
+  it("control techniques change clinch position without damage", () => {
+    const match = new MayQuvMatch(fighter("a"), fighter("b"));
+    const collar = techniqueById("collar_tie")!;
+
+    match.player.positionId = "over_under";
+    match.opponent.positionId = "over_under";
+    const beforeHp = match.opponent.condition.hp;
+    const beforeHead = match.opponent.condition.regions.head;
+
+    expect(match.throwTechnique("player", collar, 0, sample)).toBe(true);
+    match.step(collar.startupFrames);
+
+    expect(match.player.positionId).toBe("single_collar_tie");
+    expect(match.opponent.positionId).toBe("single_collar_tie");
+    expect(match.opponent.condition.hp).toBe(beforeHp);
+    expect(match.opponent.condition.regions.head).toBe(beforeHead);
   });
 });
