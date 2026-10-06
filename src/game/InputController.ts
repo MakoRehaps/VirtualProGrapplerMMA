@@ -55,7 +55,11 @@ export class InputController {
     KeyP: "guard",
   };
 
-  constructor(private scene: Scene) {
+  constructor(
+    private scene: Scene,
+    private readonly gamepadIndex = 0,
+    private readonly keyboardEnabled = true
+  ) {
     this.onKeyDown = (e) => {
       // `code` is layout-independent, so WASD works on AZERTY hardware too.
       if (!this.held.has(e.code)) {
@@ -80,17 +84,27 @@ export class InputController {
       this.grappleDefense = false;
     };
 
-    window.addEventListener("keydown", this.onKeyDown);
-    window.addEventListener("keyup", this.onKeyUp);
-    window.addEventListener("blur", this.onBlur);
+    if (this.keyboardEnabled) {
+      window.addEventListener("keydown", this.onKeyDown);
+      window.addEventListener("keyup", this.onKeyUp);
+      window.addEventListener("blur", this.onBlur);
+    }
   }
 
   /** Refreshes keyboard fallback and primary XInput/Gamepad state. */
   update(): void {
-    const fwd = this.held.has("KeyW") || this.held.has("ArrowUp");
-    const back = this.held.has("KeyS") || this.held.has("ArrowDown");
-    const left = this.held.has("KeyA") || this.held.has("ArrowLeft");
-    const right = this.held.has("KeyD") || this.held.has("ArrowRight");
+    const fwd =
+      this.keyboardEnabled &&
+      (this.held.has("KeyW") || this.held.has("ArrowUp"));
+    const back =
+      this.keyboardEnabled &&
+      (this.held.has("KeyS") || this.held.has("ArrowDown"));
+    const left =
+      this.keyboardEnabled &&
+      (this.held.has("KeyA") || this.held.has("ArrowLeft"));
+    const right =
+      this.keyboardEnabled &&
+      (this.held.has("KeyD") || this.held.has("ArrowRight"));
 
     const keyboardVertical = (fwd ? 1 : 0) - (back ? 1 : 0);
     const keyboardHorizontal = (right ? 1 : 0) - (left ? 1 : 0);
@@ -115,7 +129,9 @@ export class InputController {
 
     // Standard mapping: LT is button 6, LB is button 4.
     const leftTrigger = pad?.buttons[6]?.value ?? 0;
-    this.guarding = leftTrigger >= 0.5 || this.held.has("KeyP");
+    this.guarding =
+      leftTrigger >= 0.5 ||
+      (this.keyboardEnabled && this.held.has("KeyP"));
     this.grappleDefense = Boolean(pad?.buttons[4]?.pressed);
 
     this.updateRunMode(fwd || back || left || right);
@@ -125,6 +141,16 @@ export class InputController {
     if (typeof navigator === "undefined" || !navigator.getGamepads) return null;
 
     const pads = Array.from(navigator.getGamepads());
+    const exact = pads[this.gamepadIndex] ?? null;
+    if (
+      exact?.connected &&
+      (exact.mapping === "standard" || /xbox|xinput/i.test(exact.id))
+    ) {
+      return exact;
+    }
+
+    if (this.gamepadIndex > 0) return null;
+
     for (const pad of pads) {
       if (!pad || !pad.connected) continue;
       if (pad.mapping === "standard" || /xbox|xinput/i.test(pad.id)) {
@@ -181,9 +207,11 @@ export class InputController {
   }
 
   dispose(): void {
-    window.removeEventListener("keydown", this.onKeyDown);
-    window.removeEventListener("keyup", this.onKeyUp);
-    window.removeEventListener("blur", this.onBlur);
+    if (this.keyboardEnabled) {
+      window.removeEventListener("keydown", this.onKeyDown);
+      window.removeEventListener("keyup", this.onKeyUp);
+      window.removeEventListener("blur", this.onBlur);
+    }
     this.held.clear();
     this.queued.length = 0;
   }
