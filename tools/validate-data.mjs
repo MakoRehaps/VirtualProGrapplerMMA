@@ -68,6 +68,13 @@ function schemaTargets() {
     ["data/schemas/move-slots.schema.json", ["data/moves/move-slots.json"]],
     ["data/schemas/combat-styles.schema.json", ["data/styles/styles.json"]],
     ["data/schemas/stances.schema.json", ["data/stances/stances.json"]],
+    ["data/schemas/techniques.schema.json", ["data/combat/techniques.json"]],
+    ["data/schemas/positions.schema.json", ["data/combat/positions.json"]],
+    ["data/schemas/transitions.schema.json", ["data/combat/transitions.json"]],
+    ["data/schemas/style-techniques.schema.json", ["data/styles/style-techniques.json"]],
+    ["data/schemas/rulesets.schema.json", ["data/game/rulesets.json"]],
+    ["data/schemas/competition.schema.json", ["data/game/competition.json"]],
+    ["data/schemas/cosmetics.schema.json", ["data/cosmetics/catalog.json"]],
   ];
 }
 
@@ -165,6 +172,54 @@ function checkStyleStances(errors) {
   }
 }
 
+
+function checkMayQuvReferences(errors) {
+  const positions = load("data/combat/positions.json").positions;
+  const transitions = load("data/combat/transitions.json").transitions;
+  const techniques = load("data/combat/techniques.json").techniques;
+  const styles = load("data/styles/styles.json").styles;
+  const styleTechniques = load("data/styles/style-techniques.json").styles;
+  const rulesets = load("data/game/rulesets.json").rulesets;
+  const competition = load("data/game/competition.json").modes;
+  const cosmetics = load("data/cosmetics/catalog.json");
+
+  const positionIds = new Set(positions.map((x) => x.position_id));
+  const techniqueIds = new Set(techniques.map((x) => x.technique_id));
+  const styleIds = new Set(styles.map((x) => x.style_id));
+  const rulesetIds = new Set(rulesets.map((x) => x.ruleset_id));
+  const cosmeticCategories = new Set(cosmetics.categories);
+
+  for (const t of transitions) {
+    if (!positionIds.has(t.from)) errors.push(`transition ${t.transition_id} missing from-position ${t.from}`);
+    if (!positionIds.has(t.to)) errors.push(`transition ${t.transition_id} missing to-position ${t.to}`);
+  }
+
+  const mappedStyles = new Set();
+  for (const mapping of styleTechniques) {
+    if (!styleIds.has(mapping.style_id)) errors.push(`style-techniques references missing style ${mapping.style_id}`);
+    mappedStyles.add(mapping.style_id);
+    for (const id of mapping.technique_ids) {
+      if (!techniqueIds.has(id)) errors.push(`style ${mapping.style_id} references missing technique ${id}`);
+    }
+  }
+  for (const id of styleIds) {
+    if (!mappedStyles.has(id)) errors.push(`style ${id} has no technique mapping`);
+  }
+
+  for (const mode of competition) {
+    if (!rulesetIds.has(mode.ruleset_id)) errors.push(`mode ${mode.mode_id} references missing ruleset ${mode.ruleset_id}`);
+  }
+
+  for (const item of cosmetics.items) {
+    if (!cosmeticCategories.has(item.category)) errors.push(`cosmetic ${item.id} uses unknown category ${item.category}`);
+  }
+
+  const standard = rulesets.find((x) => x.ruleset_id === "may_quv_standard");
+  if (!standard || standard.players !== 2 || standard.team_size !== 1 || standard.hp_max !== 100 || standard.normal_tko !== false) {
+    errors.push("may_quv_standard must remain 1v1, 100 HP, and no normal TKO");
+  }
+}
+
 function checkMenuTargets(errors) {
   const menu = load("data/ui/main-menu.json");
   const pages = Object.keys(menu.pages);
@@ -189,6 +244,7 @@ export function validateAll() {
   checkAssets(errors, notes);
   checkMenuTargets(errors);
   checkStyleStances(errors);
+  checkMayQuvReferences(errors);
   return { errors, notes };
 }
 
