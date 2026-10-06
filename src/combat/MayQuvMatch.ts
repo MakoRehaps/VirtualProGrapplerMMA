@@ -10,7 +10,6 @@ import {
   type ImpactSample,
   type TechniqueRuntime,
 } from "./mayQuvTypes";
-import { isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
 
 interface PendingTechnique {
   attacker: CombatSide;
@@ -56,6 +55,7 @@ export class MayQuvMatch {
   readonly opponent: FighterState;
   private pending: PendingTechnique[] = [];
   private log: MayQuvExchange[] = [];
+  private groundedUntil: Partial<Record<CombatSide, number>> = {};
   winner: CombatSide | null = null;
   finish: MayQuvMatchSnapshot["finish"] = null;
 
@@ -103,10 +103,26 @@ export class MayQuvMatch {
   }
 
   step(frame: number): void {
-    if (this.winner || !this.pending.length) return;
+    if (this.winner) return;
+    this.updateGroundedWindow(frame);
+    if (!this.pending.length) return;
     const due = this.pending.filter((p) => p.landsOnFrame <= frame);
     this.pending = this.pending.filter((p) => p.landsOnFrame > frame);
     for (const hit of due) this.resolve(hit, frame);
+  }
+
+  private updateGroundedWindow(frame: number): void {
+    for (const side of ["player", "opponent"] as CombatSide[]) {
+      const until = this.groundedUntil[side];
+      if (until === undefined || frame < until) continue;
+
+      const other: CombatSide = side === "player" ? "opponent" : "player";
+      this.stateOf(side).positionId = "standing_open";
+      if (this.stateOf(other).positionId === "standing_over_grounded") {
+        this.stateOf(other).positionId = "standing_open";
+      }
+      delete this.groundedUntil[side];
+    }
   }
 
   private resolve(hit: PendingTechnique, frame: number): void {
@@ -145,6 +161,22 @@ export class MayQuvMatch {
       this.winner = hit.attacker;
       this.finish = "ko";
       this.pending.length = 0;
+      return;
+    }
+
+    if (result.knockedDown) {
+      const seconds = ACTIVE_COMBAT_PROFILE.grounded_window.max_seconds;
+      const frames = Math.max(1, Math.round(seconds * 60));
+      const defender = this.stateOf(defenderSide);
+      const attacker = this.stateOf(hit.attacker);
+
+      defender.positionId = isPositionActive("seated_guard")
+        ? "seated_guard"
+        : "standing_open";
+      attacker.positionId = isPositionActive("standing_over_grounded")
+        ? "standing_over_grounded"
+        : "standing_open";
+      this.groundedUntil[defenderSide] = frame + frames;
     }
   }
 
