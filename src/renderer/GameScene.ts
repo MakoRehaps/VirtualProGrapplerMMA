@@ -969,6 +969,37 @@ export class GameScene {
     return this.match?.snapshot() ?? null;
   }
 
+  movesetSnapshot() {
+    if (!this.match || !this.playerMoveset) return null;
+
+    const positionId = this.match.player.positionId;
+    const buttons = ["a", "b", "x", "y"] as const;
+    const resolved = Object.fromEntries(
+      buttons.map((button) => {
+        const id = techniqueForMovesetInput(
+          this.playerMoveset!,
+          positionId,
+          button
+        );
+        return [
+          button,
+          id
+            ? {
+                techniqueId: id,
+                name: techniqueById(id)?.name ?? id,
+              }
+            : null,
+        ];
+      })
+    );
+
+    return {
+      movesetName: this.playerMoveset.name,
+      positionId,
+      buttons: resolved,
+    };
+  }
+
   /** Simulation frame count. Used by the overlay and tests. */
   get simFrame(): number {
     return this.clock.frame;
