@@ -6,7 +6,7 @@
     "stamina_max": 100,
     "consciousness_max": 100,
     "balance_max": 100,
-    "limb_condition_max": 100
+    "regional_condition_max": 100
   },
   "target_zones": {
     "head": {
@@ -21,21 +21,21 @@
     },
     "left_arm": {
       "hp_multiplier": 0.45,
-      "limb_multiplier": 1
+      "regional_multiplier": 1
     },
     "right_arm": {
       "hp_multiplier": 0.45,
-      "limb_multiplier": 1
+      "regional_multiplier": 1
     },
     "left_leg": {
       "hp_multiplier": 0.55,
-      "limb_multiplier": 1.15,
-      "balance_multiplier": 0.85
+      "balance_multiplier": 0.85,
+      "regional_multiplier": 1.15
     },
     "right_leg": {
       "hp_multiplier": 0.55,
-      "limb_multiplier": 1.15,
-      "balance_multiplier": 0.85
+      "balance_multiplier": 0.85,
+      "regional_multiplier": 1.15
     },
     "neck": {
       "hp_multiplier": 0.8,
@@ -71,5 +71,13 @@
     "monthly_qualifier_chain": true,
     "monthly_tournament_chain": true,
     "after_event": false
-  }
+  },
+  "regional_conditions": [
+    "head",
+    "body",
+    "leftArm",
+    "rightArm",
+    "leftLeg",
+    "rightLeg"
+  ]
 }
