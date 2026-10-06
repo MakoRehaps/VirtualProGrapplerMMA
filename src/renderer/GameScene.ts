@@ -39,6 +39,7 @@ import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
 import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
+import { regionConsequences } from "../combat/regionalCondition";
 import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
@@ -164,6 +165,11 @@ export class GameScene {
         }
       }
 
+      if (this.match) {
+        this.controller?.setConditionMovementScale(
+          regionConsequences(this.match.player.condition).movementScale
+        );
+      }
       this.controller?.update(dt);
       this.defensiveOverlay?.apply(
         this.input.swayHorizontal,
@@ -181,7 +187,10 @@ export class GameScene {
       this.opponent?.update(
         dt,
         this.playerRoot?.position ?? null,
-        botPressure ? 1.0 : null
+        botPressure ? 1.0 : null,
+        this.match
+          ? regionConsequences(this.match.opponent.condition).movementScale
+          : 1
       );
       // Ropes keep oscillating after the wrestler has left them.
       this.ropes?.update(dt);
