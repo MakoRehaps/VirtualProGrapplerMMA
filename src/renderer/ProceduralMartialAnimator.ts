@@ -44,6 +44,25 @@ export class ProceduralMartialAnimator {
   ): AnimationGroup | null {
     const profiles = motionProfilesForTechnique(techniqueId);
     const supportsSynthesized = [
+      "lead_hook",
+      "rear_hook",
+      "lead_uppercut",
+      "rear_uppercut",
+      "overhand",
+      "body_jab",
+      "body_cross",
+      "palm_strike",
+      "backfist",
+      "spinning_backfist",
+      "front_kick",
+      "teep",
+      "calf_kick",
+      "spinning_back_kick",
+      "axe_kick",
+      "hook_kick",
+      "crescent_kick",
+      "question_mark_kick",
+      "leg_kick_grounded",
       "lead_knee",
       "rear_knee",
       "knee_head",
@@ -85,6 +104,14 @@ export class ProceduralMartialAnimator {
       this.buildRoundKick(group, profile, techniqueId);
     } else if (techniqueId === "side_kick") {
       this.buildSideKick(group, profile);
+    } else if (["lead_hook", "rear_hook"].includes(techniqueId)) {
+      this.buildHook(group, profile, techniqueId);
+    } else if (["lead_uppercut", "rear_uppercut"].includes(techniqueId)) {
+      this.buildUppercut(group, profile, techniqueId);
+    } else if (["overhand", "body_jab", "body_cross", "palm_strike", "backfist", "spinning_backfist"].includes(techniqueId)) {
+      this.buildHandVariant(group, profile, techniqueId);
+    } else if (["front_kick", "teep", "calf_kick", "spinning_back_kick", "axe_kick", "hook_kick", "crescent_kick", "question_mark_kick", "leg_kick_grounded"].includes(techniqueId)) {
+      this.buildKickVariant(group, profile, techniqueId);
     } else if (["lead_knee", "rear_knee", "knee_head"].includes(techniqueId)) {
       this.buildKnee(group, profile, techniqueId);
     } else if (["lead_elbow", "rear_elbow", "spinning_elbow"].includes(techniqueId)) {
@@ -399,6 +426,100 @@ export class ProceduralMartialAnimator {
         [1.00, 0, 0, 0],
       ])
     );
+  }
+
+  private buildHook(group: AnimationGroup, profile: any, techniqueId: string): void {
+    const lead = techniqueId === "lead_hook";
+    const arm = lead ? "leftUpperArm" : "rightUpperArm";
+    const fore = lead ? "leftForearm" : "rightForearm";
+    const dir = lead ? 1 : -1;
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,0,dir*10,0],[0.62,0,dir*28,0],[0.82,0,dir*34,0],[1,0,0,0],
+    ]));
+    this.addBone(group, "chest", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,0,dir*14,0],[0.62,0,dir*38,dir*5],[0.82,0,dir*46,dir*7],[1,0,0,0],
+    ]));
+    this.addBone(group, arm, this.normalizedKeys(profile, [
+      [0,0,0,0],[0.32,-36,dir*12,dir*34],[0.66,-54,dir*24,dir*58],[0.82,-48,dir*32,dir*64],[1,0,0,0],
+    ]));
+    this.addBone(group, fore, this.normalizedKeys(profile, [
+      [0,0,0,0],[0.32,72,0,0],[0.66,94,0,0],[0.82,88,0,0],[1,0,0,0],
+    ]));
+  }
+
+  private buildUppercut(group: AnimationGroup, profile: any, techniqueId: string): void {
+    const lead = techniqueId === "lead_uppercut";
+    const arm = lead ? "leftUpperArm" : "rightUpperArm";
+    const fore = lead ? "leftForearm" : "rightForearm";
+    const dir = lead ? 1 : -1;
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.25,8,dir*8,0],[0.55,-6,dir*18,0],[0.78,-12,dir*24,0],[1,0,0,0],
+    ]));
+    this.addBone(group, "chest", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.28,12,dir*8,0],[0.58,-10,dir*22,dir*4],[0.80,-18,dir*28,dir*5],[1,0,0,0],
+    ]));
+    this.addBone(group, arm, this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,-28,dir*8,dir*18],[0.60,-54,dir*14,dir*30],[0.80,-68,dir*16,dir*34],[1,0,0,0],
+    ]));
+    this.addBone(group, fore, this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,102,0,0],[0.60,88,0,0],[0.80,72,0,0],[1,0,0,0],
+    ]));
+  }
+
+  private buildHandVariant(group: AnimationGroup, profile: any, techniqueId: string): void {
+    if (techniqueId === "body_jab") {
+      this.buildLeadStraight(group, profile);
+      this.addBone(group, "chest", this.normalizedKeys(profile, [[0,0,0,0],[0.55,18,0,0],[0.88,14,0,0],[1,0,0,0]]));
+      return;
+    }
+    if (techniqueId === "body_cross") {
+      this.buildRearStraight(group, profile);
+      this.addBone(group, "chest", this.normalizedKeys(profile, [[0,0,0,0],[0.55,18,0,0],[0.88,14,0,0],[1,0,0,0]]));
+      return;
+    }
+    if (techniqueId === "palm_strike") {
+      this.buildLeadStraight(group, profile);
+      return;
+    }
+
+    const spinning = techniqueId === "spinning_backfist";
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.28,0,spinning?-55:-12,0],[0.58,0,spinning?-145:-32,0],[0.80,0,spinning?-220:-44,0],[1,0,0,0],
+    ]));
+    this.addBone(group, "chest", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,0,spinning?-42:-18,0],[0.60,0,spinning?-125:-42,0],[0.82,0,spinning?-185:-52,0],[1,0,0,0],
+    ]));
+    this.addBone(group, "rightUpperArm", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.34,-30,10,30],[0.64,-66,18,54],[0.82,-78,24,62],[1,0,0,0],
+    ]));
+    this.addBone(group, "rightForearm", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.34,38,0,0],[0.64,20,0,0],[0.82,10,0,0],[1,0,0,0],
+    ]));
+  }
+
+  private buildKickVariant(group: AnimationGroup, profile: any, techniqueId: string): void {
+    const spin = techniqueId === "spinning_back_kick";
+    const axe = techniqueId === "axe_kick";
+    const hook = techniqueId === "hook_kick";
+    const crescent = techniqueId === "crescent_kick";
+    const question = techniqueId === "question_mark_kick";
+    const calf = techniqueId === "calf_kick";
+    const grounded = techniqueId === "leg_kick_grounded";
+    const front = techniqueId === "front_kick" || techniqueId === "teep";
+
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.24,0,spin?-55:-8,0],[0.56,0,spin?-145:(question?-40:-18),0],[0.80,0,spin?-220:(question?-72:-24),0],[1,0,0,0],
+    ]));
+    this.addBone(group, "rightThigh", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.30, front?-52:(axe?-92:(calf||grounded?-26:-64)), 0, hook?18:(crescent?-18:6)],
+      [0.58, front?-78:(axe?-128:(calf||grounded?18:-88)), 0, hook?34:(crescent?-34:10)],
+      [0.80, front?-86:(axe?42:(calf||grounded?42:-96)), spin?-8:0, hook?48:(crescent?-46:8)],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "rightShin", this.normalizedKeys(profile, [
+      [0,0,0,0],[0.30,82,0,0],[0.58,front?42:94,0,0],[0.80,front?8:(axe?6:18),0,0],[1,0,0,0],
+    ]));
   }
 
   private buildKnee(group: AnimationGroup, profile: any, techniqueId: string): void {
