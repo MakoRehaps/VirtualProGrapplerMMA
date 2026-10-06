@@ -34,6 +34,8 @@ export class InputController {
   swayHorizontal = 0;
   /** Right-stick defensive head movement: -1 duck, +1 lean back. */
   swayVertical = 0;
+  /** LB held for grappling defense (sprawl/whizzer modifier). */
+  grappleDefense = false;
 
   /** Shift state on the previous frame, for press-edge detection. */
   private shiftWasDown = false;
@@ -75,6 +77,7 @@ export class InputController {
       this.shiftWasDown = false;
       this.swayHorizontal = 0;
       this.swayVertical = 0;
+      this.grappleDefense = false;
     };
 
     window.addEventListener("keydown", this.onKeyDown);
@@ -110,9 +113,10 @@ export class InputController {
     this.horizontal = padX !== 0 ? padX : keyboardHorizontal;
     this.vertical = padY !== 0 ? padY : keyboardVertical;
 
-    // Standard mapping: LT is button 6. Keyboard P remains fallback.
+    // Standard mapping: LT is button 6, LB is button 4.
     const leftTrigger = pad?.buttons[6]?.value ?? 0;
     this.guarding = leftTrigger >= 0.5 || this.held.has("KeyP");
+    this.grappleDefense = Boolean(pad?.buttons[4]?.pressed);
 
     this.updateRunMode(fwd || back || left || right);
   }
