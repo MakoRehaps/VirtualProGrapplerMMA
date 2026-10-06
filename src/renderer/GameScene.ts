@@ -252,7 +252,10 @@ export class GameScene {
     if (
       techniqueId === "osoto_gari" ||
       techniqueId === "harai_goshi" ||
-      techniqueId === "seoi_nage"
+      techniqueId === "seoi_nage" ||
+      techniqueId === "inside_trip" ||
+      techniqueId === "outside_trip" ||
+      techniqueId === "body_lock_trip"
     ) {
       const group = this.pairedProcedural?.buildThrow(techniqueId);
       if (group) {
@@ -689,7 +692,14 @@ export class GameScene {
         other.root,
         this.opponentRig
       );
-      for (const id of ["osoto_gari", "harai_goshi", "seoi_nage"] as const) {
+      for (const id of [
+        "osoto_gari",
+        "harai_goshi",
+        "seoi_nage",
+        "inside_trip",
+        "outside_trip",
+        "body_lock_trip",
+      ] as const) {
         const group = this.pairedProcedural.buildThrow(id);
         if (group) this.animations.register(group);
       }
