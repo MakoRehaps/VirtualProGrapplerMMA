@@ -13,8 +13,12 @@ import {
 } from "./FighterCollisionRig";
 
 function centerOf(hurt: HurtVolume): Vector3 {
-  if (hurt.kind === "sphere") return hurt.shape.center.clone();
-  return hurt.shape.a.add(hurt.shape.b).scale(0.5);
+  if (hurt.kind === "sphere") {
+    const shape = hurt.shape as import("./FighterCollisionRig").SphereVolume;
+    return shape.center.clone();
+  }
+  const shape = hurt.shape as import("./FighterCollisionRig").CapsuleVolume;
+  return shape.a.add(shape.b).scale(0.5);
 }
 
 export class CollisionDebugView {
@@ -58,10 +62,7 @@ export class CollisionDebugView {
 
   private drawRig(rig: FighterCollisionRig, prefix: string): void {
     for (const hurt of rig.hurtVolumes()) {
-      const radius =
-        hurt.kind === "sphere"
-          ? hurt.shape.radius
-          : hurt.shape.radius;
+      const radius = hurt.shape.radius;
 
       const m = MeshBuilder.CreateSphere(
         `${prefix}_hurt_${hurt.region}`,
