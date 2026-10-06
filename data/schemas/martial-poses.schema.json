@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "coordinate_convention",
+    "solver_defaults",
+    "formulas",
+    "sources",
+    "stance_profiles",
+    "motion_profiles",
+    "style_motion_aliases"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "coordinate_convention": {
+      "type": "object"
+    },
+    "solver_defaults": {
+      "type": "object"
+    },
+    "formulas": {
+      "type": "object"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "title",
+          "url",
+          "evidence"
+        ]
+      }
+    },
+    "stance_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "pose_id",
+          "family",
+          "label",
+          "evidence_level",
+          "sources",
+          "geometry",
+          "support",
+          "solver"
+        ]
+      }
+    },
+    "motion_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "motion_id",
+          "family",
+          "technique_ids",
+          "evidence_level",
+          "sources"
+        ]
+      }
+    },
+    "style_motion_aliases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "style_family",
+          "stance_pose",
+          "motion_family"
+        ]
+      }
+    }
+  }
+}
