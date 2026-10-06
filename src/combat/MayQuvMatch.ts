@@ -516,6 +516,22 @@ export class MayQuvMatch {
     });
   }
 
+  forfeit(side: CombatSide): boolean {
+    if (this.finish) return false;
+    this.winner = side === "player" ? "opponent" : "player";
+    this.finish = "forfeit";
+    this.pending.length = 0;
+    return true;
+  }
+
+  private finishByDecision(_frame: number): void {
+    if (this.finish) return;
+    this.decision = scoreWholeFight(this.judgingStats);
+    this.winner = this.decision.winner;
+    this.finish = "decision";
+    this.pending.length = 0;
+  }
+
   isCounterWindow(side: CombatSide, frame: number): boolean {
     return (this.counterWindowUntil[side] ?? -1) >= frame;
   }
