@@ -1,0 +1,598 @@
+{
+  "schema_version": 1,
+  "description": "Reusable base stance archetypes for MAY' QUV. Styles reference these and techniques may further modify them.",
+  "stances": [
+    {
+      "stance_id": "neutral_fighting",
+      "name": "Neutral Fighting Stance",
+      "category": "hybrid",
+      "lead_side": "left",
+      "posture": "neutral",
+      "guard": "mid",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "light",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 75,
+        "backward": 75,
+        "lateral": 75,
+        "pivot": 75,
+        "burst": 70
+      },
+      "readiness": {
+        "punch": 75,
+        "kick": 70,
+        "clinch": 70,
+        "takedown": 65,
+        "sprawl": 70,
+        "throw": 60,
+        "ground_entry": 55
+      },
+      "range_bias": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "notes": "Balanced default stance."
+    },
+    {
+      "stance_id": "boxing_orthodox",
+      "name": "Boxing Orthodox",
+      "category": "striking",
+      "lead_side": "left",
+      "posture": "semi_upright",
+      "guard": "high",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "raised",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 45,
+        "rear": 55
+      },
+      "movement": {
+        "forward": 85,
+        "backward": 90,
+        "lateral": 90,
+        "pivot": 95,
+        "burst": 90
+      },
+      "readiness": {
+        "punch": 100,
+        "kick": 20,
+        "clinch": 55,
+        "takedown": 30,
+        "sprawl": 45,
+        "throw": 20,
+        "ground_entry": 15
+      },
+      "range_bias": [
+        "boxing"
+      ],
+      "notes": "Classic boxing stance."
+    },
+    {
+      "stance_id": "boxing_southpaw",
+      "name": "Boxing Southpaw",
+      "category": "striking",
+      "lead_side": "right",
+      "posture": "semi_upright",
+      "guard": "high",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "raised",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 45,
+        "rear": 55
+      },
+      "movement": {
+        "forward": 85,
+        "backward": 90,
+        "lateral": 90,
+        "pivot": 95,
+        "burst": 90
+      },
+      "readiness": {
+        "punch": 100,
+        "kick": 20,
+        "clinch": 55,
+        "takedown": 30,
+        "sprawl": 45,
+        "throw": 20,
+        "ground_entry": 15
+      },
+      "range_bias": [
+        "boxing"
+      ],
+      "notes": "Southpaw boxing stance."
+    },
+    {
+      "stance_id": "muay_thai_square",
+      "name": "Muay Thai Square",
+      "category": "striking",
+      "lead_side": "left",
+      "posture": "upright",
+      "guard": "high",
+      "feet": {
+        "orientation": "square",
+        "width": "medium",
+        "rear_heel": "light",
+        "stance_depth": "shallow"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 80,
+        "backward": 70,
+        "lateral": 65,
+        "pivot": 65,
+        "burst": 70
+      },
+      "readiness": {
+        "punch": 85,
+        "kick": 100,
+        "clinch": 100,
+        "takedown": 45,
+        "sprawl": 55,
+        "throw": 55,
+        "ground_entry": 20
+      },
+      "range_bias": [
+        "kicking",
+        "boxing",
+        "clinch"
+      ],
+      "notes": "Square stance for checks, knees, elbows and clinch."
+    },
+    {
+      "stance_id": "karate_blade",
+      "name": "Karate Bladed",
+      "category": "striking",
+      "lead_side": "left",
+      "posture": "semi_upright",
+      "guard": "mid",
+      "feet": {
+        "orientation": "bladed",
+        "width": "medium",
+        "rear_heel": "light",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 45,
+        "rear": 55
+      },
+      "movement": {
+        "forward": 90,
+        "backward": 90,
+        "lateral": 85,
+        "pivot": 90,
+        "burst": 100
+      },
+      "readiness": {
+        "punch": 85,
+        "kick": 90,
+        "clinch": 35,
+        "takedown": 35,
+        "sprawl": 55,
+        "throw": 35,
+        "ground_entry": 15
+      },
+      "range_bias": [
+        "long",
+        "kicking",
+        "boxing"
+      ],
+      "notes": "Bladed stance for explosive entry and exit."
+    },
+    {
+      "stance_id": "taekwondo_side_on",
+      "name": "Taekwondo Side-On",
+      "category": "striking",
+      "lead_side": "left",
+      "posture": "upright",
+      "guard": "low",
+      "feet": {
+        "orientation": "side_on",
+        "width": "medium",
+        "rear_heel": "raised",
+        "stance_depth": "shallow"
+      },
+      "weight": {
+        "front": 40,
+        "rear": 60
+      },
+      "movement": {
+        "forward": 85,
+        "backward": 90,
+        "lateral": 95,
+        "pivot": 95,
+        "burst": 100
+      },
+      "readiness": {
+        "punch": 45,
+        "kick": 100,
+        "clinch": 20,
+        "takedown": 20,
+        "sprawl": 45,
+        "throw": 20,
+        "ground_entry": 10
+      },
+      "range_bias": [
+        "long",
+        "kicking"
+      ],
+      "notes": "Side-on kicking stance."
+    },
+    {
+      "stance_id": "wrestling_crouch",
+      "name": "Wrestling Crouch",
+      "category": "grappling",
+      "lead_side": "square",
+      "posture": "crouched",
+      "guard": "wrestling_hands",
+      "feet": {
+        "orientation": "square",
+        "width": "wide",
+        "rear_heel": "light",
+        "stance_depth": "deep"
+      },
+      "weight": {
+        "front": 55,
+        "rear": 45
+      },
+      "movement": {
+        "forward": 95,
+        "backward": 75,
+        "lateral": 90,
+        "pivot": 75,
+        "burst": 100
+      },
+      "readiness": {
+        "punch": 30,
+        "kick": 20,
+        "clinch": 95,
+        "takedown": 100,
+        "sprawl": 100,
+        "throw": 75,
+        "ground_entry": 95
+      },
+      "range_bias": [
+        "takedown",
+        "clinch"
+      ],
+      "notes": "Low stance for shots, sprawls and hand fighting."
+    },
+    {
+      "stance_id": "judo_grip_ready",
+      "name": "Judo Grip-Ready",
+      "category": "grappling",
+      "lead_side": "square",
+      "posture": "upright",
+      "guard": "grip_ready",
+      "feet": {
+        "orientation": "square",
+        "width": "medium",
+        "rear_heel": "down",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 75,
+        "backward": 70,
+        "lateral": 80,
+        "pivot": 85,
+        "burst": 70
+      },
+      "readiness": {
+        "punch": 20,
+        "kick": 10,
+        "clinch": 100,
+        "takedown": 85,
+        "sprawl": 60,
+        "throw": 100,
+        "ground_entry": 65
+      },
+      "range_bias": [
+        "clinch",
+        "takedown"
+      ],
+      "notes": "Upright throwing stance."
+    },
+    {
+      "stance_id": "sambo_hybrid",
+      "name": "Sambo Hybrid",
+      "category": "hybrid",
+      "lead_side": "left",
+      "posture": "semi_upright",
+      "guard": "open_hands",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "light",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 85,
+        "backward": 75,
+        "lateral": 80,
+        "pivot": 80,
+        "burst": 90
+      },
+      "readiness": {
+        "punch": 65,
+        "kick": 55,
+        "clinch": 95,
+        "takedown": 95,
+        "sprawl": 90,
+        "throw": 95,
+        "ground_entry": 85
+      },
+      "range_bias": [
+        "clinch",
+        "takedown",
+        "boxing"
+      ],
+      "notes": "Hybrid grappling stance."
+    },
+    {
+      "stance_id": "sanda_hybrid",
+      "name": "Sanda Hybrid",
+      "category": "hybrid",
+      "lead_side": "left",
+      "posture": "semi_upright",
+      "guard": "mid",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "raised",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 45,
+        "rear": 55
+      },
+      "movement": {
+        "forward": 90,
+        "backward": 90,
+        "lateral": 90,
+        "pivot": 90,
+        "burst": 95
+      },
+      "readiness": {
+        "punch": 90,
+        "kick": 95,
+        "clinch": 80,
+        "takedown": 90,
+        "sprawl": 70,
+        "throw": 85,
+        "ground_entry": 25
+      },
+      "range_bias": [
+        "kicking",
+        "boxing",
+        "clinch",
+        "takedown"
+      ],
+      "notes": "Kickboxing stance prepared for catches and throws."
+    },
+    {
+      "stance_id": "sumo_square",
+      "name": "Sumo Square",
+      "category": "grappling",
+      "lead_side": "square",
+      "posture": "crouched",
+      "guard": "open_hands",
+      "feet": {
+        "orientation": "square",
+        "width": "wide",
+        "rear_heel": "down",
+        "stance_depth": "deep"
+      },
+      "weight": {
+        "front": 55,
+        "rear": 45
+      },
+      "movement": {
+        "forward": 100,
+        "backward": 45,
+        "lateral": 60,
+        "pivot": 55,
+        "burst": 100
+      },
+      "readiness": {
+        "punch": 30,
+        "kick": 20,
+        "clinch": 100,
+        "takedown": 90,
+        "sprawl": 80,
+        "throw": 100,
+        "ground_entry": 10
+      },
+      "range_bias": [
+        "clinch",
+        "takedown"
+      ],
+      "notes": "Wide rooted stance for pressure and throws."
+    },
+    {
+      "stance_id": "capoeira_ginga",
+      "name": "Capoeira Ginga",
+      "category": "dynamic",
+      "lead_side": "switch",
+      "posture": "dynamic",
+      "guard": "dynamic",
+      "feet": {
+        "orientation": "dynamic",
+        "width": "wide",
+        "rear_heel": "dynamic",
+        "stance_depth": "dynamic"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 80,
+        "backward": 85,
+        "lateral": 100,
+        "pivot": 100,
+        "burst": 95
+      },
+      "readiness": {
+        "punch": 35,
+        "kick": 100,
+        "clinch": 45,
+        "takedown": 40,
+        "sprawl": 55,
+        "throw": 35,
+        "ground_entry": 35
+      },
+      "range_bias": [
+        "long",
+        "kicking"
+      ],
+      "notes": "Continuous ginga rather than a static stance."
+    },
+    {
+      "stance_id": "traditional_upright",
+      "name": "Traditional Upright",
+      "category": "traditional",
+      "lead_side": "left",
+      "posture": "upright",
+      "guard": "mid",
+      "feet": {
+        "orientation": "slightly_blade",
+        "width": "medium",
+        "rear_heel": "down",
+        "stance_depth": "medium"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 75,
+        "backward": 75,
+        "lateral": 70,
+        "pivot": 75,
+        "burst": 70
+      },
+      "readiness": {
+        "punch": 75,
+        "kick": 70,
+        "clinch": 60,
+        "takedown": 55,
+        "sprawl": 50,
+        "throw": 55,
+        "ground_entry": 35
+      },
+      "range_bias": [
+        "boxing",
+        "kicking",
+        "clinch"
+      ],
+      "notes": "General traditional mixed stance."
+    },
+    {
+      "stance_id": "close_combat_square",
+      "name": "Close-Combat Square",
+      "category": "hybrid",
+      "lead_side": "square",
+      "posture": "semi_upright",
+      "guard": "open_hands",
+      "feet": {
+        "orientation": "square",
+        "width": "medium",
+        "rear_heel": "light",
+        "stance_depth": "shallow"
+      },
+      "weight": {
+        "front": 55,
+        "rear": 45
+      },
+      "movement": {
+        "forward": 90,
+        "backward": 65,
+        "lateral": 70,
+        "pivot": 70,
+        "burst": 90
+      },
+      "readiness": {
+        "punch": 90,
+        "kick": 65,
+        "clinch": 95,
+        "takedown": 75,
+        "sprawl": 70,
+        "throw": 70,
+        "ground_entry": 55
+      },
+      "range_bias": [
+        "boxing",
+        "clinch",
+        "takedown"
+      ],
+      "notes": "Aggressive close-combat stance."
+    },
+    {
+      "stance_id": "submission_grappler",
+      "name": "Submission Grappler",
+      "category": "grappling",
+      "lead_side": "square",
+      "posture": "crouched",
+      "guard": "wrestling_hands",
+      "feet": {
+        "orientation": "square",
+        "width": "wide",
+        "rear_heel": "light",
+        "stance_depth": "deep"
+      },
+      "weight": {
+        "front": 50,
+        "rear": 50
+      },
+      "movement": {
+        "forward": 85,
+        "backward": 75,
+        "lateral": 80,
+        "pivot": 75,
+        "burst": 85
+      },
+      "readiness": {
+        "punch": 25,
+        "kick": 15,
+        "clinch": 90,
+        "takedown": 90,
+        "sprawl": 95,
+        "throw": 75,
+        "ground_entry": 100
+      },
+      "range_bias": [
+        "takedown",
+        "clinch",
+        "ground"
+      ],
+      "notes": "Low stance for submissions and scrambles."
+    }
+  ]
+}
