@@ -109,7 +109,9 @@ export function resolveTechniqueImpact(
     0,
     Math.round(
       normalized *
-        (zoneTuning.limb_multiplier ?? (region === "body" ? 0.85 : 1)) *
+        (zoneTuning.regional_multiplier ??
+          zoneTuning.limb_multiplier ??
+          (region === "body" ? 0.85 : 1)) *
         q *
         guardScale *
         10
