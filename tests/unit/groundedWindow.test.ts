@@ -3,11 +3,11 @@ import { MayQuvMatch } from "@/combat/MayQuvMatch";
 import { techniqueById } from "@/data/combatCatalog";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 
-function fighter(id: string): FighterLoadout {
+function fighter(id: string, styleId = "american_kickboxing"): FighterLoadout {
   return {
     id,
     name: id,
-    styleId: "american_kickboxing",
+    styleId,
     stanceId: "american_kickboxing",
     body: {
       massKg: 77,
@@ -30,7 +30,10 @@ describe("grounded-opponent window", () => {
       })
     ).toBe(false);
     it("successful clinch trip starts and expires the grounded window", () => {
-    const match = new MayQuvMatch(fighter("a"), fighter("b"));
+    const match = new MayQuvMatch(
+      fighter("a", "adimurai"),
+      fighter("b", "adimurai")
+    );
     const trip = techniqueById("inside_trip")!;
     const events: Array<[string, boolean]> = [];
     match.onGroundedWindowChanged = (side, active) => {
