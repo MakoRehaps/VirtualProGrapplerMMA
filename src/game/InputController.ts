@@ -30,6 +30,10 @@ export class InputController {
   /** True while the guard key is held. Blocking is a sustained state, unlike
    *  the one-shot attacks. */
   guarding = false;
+  /** Right-stick defensive head movement: -1 left, +1 right. */
+  swayHorizontal = 0;
+  /** Right-stick defensive head movement: -1 duck, +1 lean back. */
+  swayVertical = 0;
 
   /** Shift state on the previous frame, for press-edge detection. */
   private shiftWasDown = false;
@@ -69,6 +73,8 @@ export class InputController {
       this.queued.length = 0;
       this.runMode = "none";
       this.shiftWasDown = false;
+      this.swayHorizontal = 0;
+      this.swayVertical = 0;
     };
 
     window.addEventListener("keydown", this.onKeyDown);
@@ -92,6 +98,12 @@ export class InputController {
     const padYRaw = -(pad?.axes[1] ?? 0);
     const padX = Math.abs(padXRaw) >= deadzone ? padXRaw : 0;
     const padY = Math.abs(padYRaw) >= deadzone ? padYRaw : 0;
+    const swayXRaw = pad?.axes[2] ?? 0;
+    const swayYRaw = -(pad?.axes[3] ?? 0);
+    this.swayHorizontal =
+      Math.abs(swayXRaw) >= deadzone ? swayXRaw : 0;
+    this.swayVertical =
+      Math.abs(swayYRaw) >= deadzone ? swayYRaw : 0;
 
     // XInput is primary when the stick is being used; keyboard remains the
     // development/accessibility fallback when the controller is idle.
