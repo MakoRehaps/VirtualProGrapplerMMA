@@ -15,11 +15,20 @@
     </div>
 
     <div v-if="moveset" class="moveset">
-      <strong>{{ moveset.movesetName }}</strong>
+      <strong>P1 · {{ moveset.movesetName }}</strong>
       <span>{{ moveset.positionId }}</span>
       <span v-for="button in (['a','b','x','y'] as const)" :key="button">
         {{ button.toUpperCase() }}:
         {{ moveset.buttons[button]?.name ?? '—' }}
+      </span>
+    </div>
+
+    <div v-if="opponentMoveset" class="moveset">
+      <strong>P2 · {{ opponentMoveset.movesetName }}</strong>
+      <span>{{ opponentMoveset.positionId }}</span>
+      <span v-for="button in (['a','b','x','y'] as const)" :key="`p2-${button}`">
+        {{ button.toUpperCase() }}:
+        {{ opponentMoveset.buttons[button]?.name ?? '—' }}
       </span>
     </div>
 
@@ -80,12 +89,26 @@ export default defineComponent({
       required: false,
       default: null,
     },
+    opponentMovesetSource: {
+      type: Function as PropType<() => {
+        movesetName: string;
+        positionId: string;
+        buttons: Record<string, { techniqueId: string; name: string } | null>;
+      } | null>,
+      required: false,
+      default: null,
+    },
   },
   data() {
     return {
       snapshot: null as MayQuvMatchSnapshot | null,
       frame: 0,
       moveset: null as {
+        movesetName: string;
+        positionId: string;
+        buttons: Record<string, { techniqueId: string; name: string } | null>;
+      } | null,
+      opponentMoveset: null as {
         movesetName: string;
         positionId: string;
         buttons: Record<string, { techniqueId: string; name: string } | null>;
@@ -129,6 +152,9 @@ export default defineComponent({
       this.snapshot = this.source();
       this.frame = this.frameSource();
       this.moveset = this.movesetSource ? this.movesetSource() : null;
+      this.opponentMoveset = this.opponentMovesetSource
+        ? this.opponentMovesetSource()
+        : null;
     }, 100);
   },
   beforeUnmount() {
