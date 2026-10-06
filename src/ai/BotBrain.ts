@@ -71,7 +71,14 @@ export class BotBrain {
     }
 
     const chosen = pool[this.match.rng.nextInt(pool.length)];
-    if (chosen) this.onTechnique(chosen.techniqueId);
+    if (!chosen) return;
+
+    if (this.onTechnique(chosen.techniqueId)) {
+      this.nextDecisionFrame = Math.max(
+        this.nextDecisionFrame,
+        frame + chosen.startupFrames + chosen.recoveryFrames
+      );
+    }
   }
 
   private candidatesForPosition(
