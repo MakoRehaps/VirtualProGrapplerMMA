@@ -284,7 +284,14 @@
         <span>Keyboard fallback: WASD · J/K · P</span>
       </div>
       <button class="hud__change" @click="movesetOpen = true">Edit Moveset</button>
-      <button class="hud__change" @click="saveCurrentFighter">Save Fighter</button>
+      <button class="hud__change" @click="saveCurrentFighter">Save P1 Fighter</button>
+      <button
+        v-if="competitionMode === 'local_vs'"
+        class="hud__change"
+        @click="saveOpponentFighter"
+      >
+        Save P2 Fighter
+      </button>
       <button
         v-if="!matchResult"
         class="hud__change"
@@ -584,6 +591,29 @@ export default defineComponent({
     removeFighterPreset(name: string) {
       deleteFighterPreset(name);
       this.refreshFighterPresets();
+    },
+
+    saveOpponentFighter() {
+      if (!this.selectedOpponentCharacter || !this.selectedOpponentSetup) {
+        this.warning = "Start Local VS once before saving the P2 build.";
+        return;
+      }
+
+      saveFighterPreset({
+        version: 1,
+        name:
+          this.selectedOpponentSetup.name?.trim() ||
+          this.opponentName ||
+          "P2",
+        characterId: this.selectedOpponentCharacter.id,
+        movesetName: this.game?.currentOpponentMoveset?.name,
+        setup: {
+          ...this.selectedOpponentSetup,
+          body: { ...this.selectedOpponentSetup.body },
+        },
+      });
+      this.refreshFighterPresets();
+      this.warning = "P2 fighter build saved.";
     },
 
     saveCurrentFighter() {
