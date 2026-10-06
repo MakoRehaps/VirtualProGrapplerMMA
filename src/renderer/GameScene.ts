@@ -348,7 +348,13 @@ export class GameScene {
       techniqueId === "body_lock_trip" ||
       techniqueId === "double_leg" ||
       techniqueId === "single_leg" ||
-      techniqueId === "high_crotch"
+      techniqueId === "high_crotch" ||
+      techniqueId === "ouchi_gari" ||
+      techniqueId === "uchi_mata" ||
+      techniqueId === "hip_toss" ||
+      techniqueId === "suplex" ||
+      techniqueId === "lateral_drop" ||
+      techniqueId === "snapdown"
     ) {
       const group = this.opponentPairedProcedural?.buildThrow(techniqueId);
       if (group) {
@@ -409,7 +415,13 @@ export class GameScene {
           techniqueId === "body_lock_trip" ||
           techniqueId === "double_leg" ||
           techniqueId === "single_leg" ||
-          techniqueId === "high_crotch"
+          techniqueId === "high_crotch" ||
+          techniqueId === "ouchi_gari" ||
+          techniqueId === "uchi_mata" ||
+          techniqueId === "hip_toss" ||
+          techniqueId === "suplex" ||
+          techniqueId === "lateral_drop" ||
+          techniqueId === "snapdown"
             ? this.opponentPairedProcedural?.buildThrow(techniqueId)
             : null);
         if (group) {
@@ -938,6 +950,12 @@ export class GameScene {
         "double_leg",
         "single_leg",
         "high_crotch",
+        "ouchi_gari",
+        "uchi_mata",
+        "hip_toss",
+        "suplex",
+        "lateral_drop",
+        "snapdown",
       ] as const) {
         const group = this.pairedProcedural.buildThrow(id);
         if (group) this.animations.register(group);
