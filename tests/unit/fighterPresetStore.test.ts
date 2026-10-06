@@ -54,6 +54,16 @@ describe("fighter preset store", () => {
     expect(saved[0].setup.body.heightM).toBe(1.98);
   });
 
+  it("preserves the linked moveset name", () => {
+    stubStorage();
+    saveFighterPreset({
+      ...preset,
+      movesetName: "Pressure",
+    });
+
+    expect(listFighterPresets()[0].movesetName).toBe("Pressure");
+  });
+
   it("overwrites a preset with the same name", () => {
     stubStorage();
     saveFighterPreset(preset);
