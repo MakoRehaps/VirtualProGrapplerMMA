@@ -63,6 +63,7 @@ export class MayQuvMatch {
   canConnect: ((attacker: CombatSide, technique: TechniqueRuntime) => boolean) | null = null;
   contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => keyof FighterCondition["regions"] | null) | null = null;
   onResolved: ((attacker: CombatSide, defender: CombatSide, resolution: CombatResolution) => void) | null = null;
+  onGroundedWindowChanged: ((side: CombatSide, active: boolean) => void) | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -171,6 +172,7 @@ export class MayQuvMatch {
       this.stateOf(other).positionId = "standing_open";
     }
     delete this.groundedUntil[side];
+    this.onGroundedWindowChanged?.(side, false);
     return true;
   }
 
@@ -216,6 +218,7 @@ export class MayQuvMatch {
         this.stateOf(other).positionId = "standing_open";
       }
       delete this.groundedUntil[side];
+      this.onGroundedWindowChanged?.(side, false);
     }
   }
 
@@ -271,6 +274,7 @@ export class MayQuvMatch {
         ? "standing_over_grounded"
         : "standing_open";
       this.groundedUntil[defenderSide] = frame + frames;
+      this.onGroundedWindowChanged?.(defenderSide, true);
     }
   }
 
