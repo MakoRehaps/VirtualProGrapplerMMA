@@ -22,6 +22,15 @@ export class Opponent {
     return this.root.position;
   }
 
+  registerAnimations(groups: import("@babylonjs/core").AnimationGroup[]): void {
+    this.animations.registerMany(groups);
+  }
+
+  playReaction(name: string): void {
+    if (!this.animations.has(name)) return;
+    this.animations.play(name, { loop: false, restart: true });
+  }
+
   /** Turns to face a point and advances animation blending. */
   update(deltaSeconds: number, facePoint: Vector3 | null): void {
     if (facePoint) {
