@@ -5,6 +5,7 @@ import stancesJson from "#data/stances/stances.json";
 import bodyPhysicsJson from "#data/combat/body-physics.json";
 import rulesetsJson from "#data/game/rulesets.json";
 import competitionJson from "#data/game/competition.json";
+import combatProfileJson from "#data/game/combat-profile.json";
 import type { TechniqueRuntime } from "@/combat/mayQuvTypes";
 
 export interface StyleRecord {
@@ -55,6 +56,7 @@ const styleTechniqueMap = new Map(
 export const BODY_PHYSICS = bodyPhysicsJson;
 export const RULESETS = rulesetsJson.rulesets;
 export const COMPETITION_MODES = competitionJson.modes;
+export const ACTIVE_COMBAT_PROFILE = combatProfileJson;
 
 export function techniqueById(id: string): TechniqueRuntime | null {
   return techniqueMap.get(id) ?? null;
@@ -86,4 +88,31 @@ export function rulesetById(id: string) {
 
 export function competitionModeById(id: string) {
   return COMPETITION_MODES.find((m) => m.mode_id === id) ?? null;
+}
+
+
+const disabledTechniqueIds = new Set(ACTIVE_COMBAT_PROFILE.disabled_technique_ids);
+const disabledTechniqueTypes = new Set(ACTIVE_COMBAT_PROFILE.disabled_technique_types);
+const allowedTechniqueContexts = new Set(ACTIVE_COMBAT_PROFILE.allowed_technique_contexts);
+const activePositionIds = new Set(ACTIVE_COMBAT_PROFILE.active_positions);
+
+export function isTechniqueActive(technique: TechniqueRuntime): boolean {
+  if (disabledTechniqueIds.has(technique.techniqueId)) return false;
+  if (disabledTechniqueTypes.has(technique.type)) return false;
+  if (!allowedTechniqueContexts.has(technique.context)) return false;
+  if (
+    technique.context === "grounded_opponent" &&
+    !ACTIVE_COMBAT_PROFILE.grounded_window.allowed_attacks.includes(technique.techniqueId)
+  ) {
+    return false;
+  }
+  return true;
+}
+
+export function activeTechniquesForStyle(styleId: string): TechniqueRuntime[] {
+  return techniquesForStyle(styleId).filter(isTechniqueActive);
+}
+
+export function isPositionActive(positionId: string): boolean {
+  return activePositionIds.has(positionId);
 }
