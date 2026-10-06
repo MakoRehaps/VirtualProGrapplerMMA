@@ -6,6 +6,7 @@ import type {
   TargetZone,
   TechniqueRuntime,
 } from "./mayQuvTypes";
+import { regionConsequences, regionFromTarget } from "./regionalCondition";
 import { effectiveStrikeMass } from "@/game/bodyPhysics";
 
 const target = damageJson.target_zones as Record<string, Record<string, number>>;
@@ -33,13 +34,6 @@ function targetZoneFor(raw: string): TargetZone {
   }
 }
 
-function limbKey(zone: TargetZone): keyof FighterState["condition"]["limbs"] | null {
-  if (zone === "left_arm") return "leftArm";
-  if (zone === "right_arm") return "rightArm";
-  if (zone === "left_leg") return "leftLeg";
-  if (zone === "right_leg") return "rightLeg";
-  return null;
-}
 
 export function resolveTechniqueImpact(
   attacker: FighterState,
@@ -49,11 +43,18 @@ export function resolveTechniqueImpact(
 ): CombatResolution {
   const zone = targetZoneFor(technique.target);
   const zoneTuning = target[zone] ?? target.body ?? {};
-  const effectiveMassKg = effectiveStrikeMass(
+  const region = regionFromTarget(zone);
+  const attackerRegional = regionConsequences(attacker.condition);
+  const defenderRegional = regionConsequences(defender.condition);
+  let effectiveMassKg = effectiveStrikeMass(
     attacker.loadout.body,
     technique.weapon,
     technique.power
   );
+  if (technique.weapon.includes("lead_hand") || technique.weapon.includes("lead_elbow")) effectiveMassKg *= attackerRegional.leftArmScale;
+  if (technique.weapon.includes("rear_hand") || technique.weapon.includes("rear_elbow")) effectiveMassKg *= attackerRegional.rightArmScale;
+  if (technique.weapon.includes("lead_leg") || technique.weapon.includes("lead_knee")) effectiveMassKg *= attackerRegional.leftLegScale;
+  if (technique.weapon.includes("rear_leg") || technique.weapon.includes("rear_knee") || technique.weapon === "leg" || technique.weapon === "knee") effectiveMassKg *= attackerRegional.rightLegScale;
   const v = Math.max(0, sample.relativeVelocityMps);
   const impactEnergy = 0.5 * effectiveMassKg * v * v;
 
@@ -69,6 +70,7 @@ export function resolveTechniqueImpact(
     0,
     Math.round(normalized * hpMultiplier * q * guardScale * 10) / 10
   );
+  const consciousnessScale = region === "head" ? defenderRegional.koRiskScale : 1;
   const consciousnessDamage = Math.max(
     0,
     Math.round(
@@ -76,9 +78,11 @@ export function resolveTechniqueImpact(
         (zoneTuning.consciousness_multiplier ?? 0.25) *
         q *
         guardScale *
+        consciousnessScale *
         10
     ) / 10
   );
+  const balanceScale = (region === "leftLeg" || region === "rightLeg") ? 1 / Math.max(0.45, defenderRegional.balanceScale) : 1;
   const balanceDamage = Math.max(
     0,
     Math.round(
@@ -86,22 +90,24 @@ export function resolveTechniqueImpact(
         (zoneTuning.balance_multiplier ?? 0.2) *
         q *
         guardScale *
+        balanceScale *
         10
     ) / 10
   );
-  const limbDamage = Math.max(
+  const regionalDamage = Math.max(
     0,
     Math.round(
       normalized *
-        (zoneTuning.limb_multiplier ?? 0) *
+        (zoneTuning.limb_multiplier ?? (region === "body" ? 0.85 : 1)) *
         q *
         guardScale *
         10
     ) / 10
   );
 
+  const staminaSpent = Math.round(technique.staminaCost * attackerRegional.staminaCostScale * 10) / 10;
   attacker.condition.stamina = clamp100(
-    attacker.condition.stamina - technique.staminaCost
+    attacker.condition.stamina - staminaSpent
   );
   defender.condition.hp = clamp100(defender.condition.hp - hpDamage);
   defender.condition.consciousness = clamp100(
@@ -111,15 +117,12 @@ export function resolveTechniqueImpact(
     defender.condition.balance - balanceDamage
   );
 
-  const lk = limbKey(zone);
-  if (lk) {
-    defender.condition.limbs[lk] = clamp100(
-      defender.condition.limbs[lk] - limbDamage
-    );
-  }
+  defender.condition.regions[region] = clamp100(
+    defender.condition.regions[region] - regionalDamage
+  );
 
   const knockedOut = defender.condition.consciousness <= 0 || defender.condition.hp <= 0;
-  const knockedDown = !knockedOut && defender.condition.balance <= 15;
+  const knockedDown = !knockedOut && defender.condition.balance <= 15 * defenderRegional.balanceScale;
 
   return {
     eventType: technique.type === "strike" ? "strike_contact" : technique.type,
@@ -128,9 +131,9 @@ export function resolveTechniqueImpact(
     hpDamage,
     consciousnessDamage,
     balanceDamage,
-    staminaSpent: technique.staminaCost,
-    limbDamage,
-    targetZone: zone,
+    staminaSpent,
+    regionalDamage,
+    targetRegion: region,
     effectiveMassKg: Math.round(effectiveMassKg * 100) / 100,
     impactEnergy: Math.round(impactEnergy * 100) / 100,
     knockedDown,
