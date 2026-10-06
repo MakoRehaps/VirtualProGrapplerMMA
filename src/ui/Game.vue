@@ -112,6 +112,20 @@
         </button>
       </div>
 
+      <div v-if="fighterPresets.length" class="saved-fighters">
+        <strong>Saved fighters</strong>
+        <div
+          v-for="preset in fighterPresets"
+          :key="preset.name"
+          class="saved-fighters__row"
+        >
+          <button @click="loadFighterPreset(preset)">
+            {{ preset.name }} · {{ preset.setup.styleId }}
+          </button>
+          <button @click="removeFighterPreset(preset.name)">Delete</button>
+        </div>
+      </div>
+
       <p v-if="error" class="overlay__error">{{ error }}</p>
 
       <button class="overlay__back" @click="$emit('exit')">
@@ -161,6 +175,7 @@
         <span>Keyboard fallback: WASD · J/K · P</span>
       </div>
       <button class="hud__change" @click="movesetOpen = true">Edit Moveset</button>
+      <button class="hud__change" @click="saveCurrentFighter">Save Fighter</button>
       <button
         v-if="!matchResult"
         class="hud__change"
@@ -189,6 +204,12 @@ import type { FighterMoveset } from "@/combat/moveset";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
 import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
+import {
+  deleteFighterPreset,
+  listFighterPresets,
+  saveFighterPreset,
+  type FighterPreset,
+} from "@/game/fighterPresetStore";
 
 export default defineComponent({
   name: "Game",
@@ -207,6 +228,7 @@ export default defineComponent({
       opponentStyle: "combat_sambo",
       botDifficulty: "club" as BotDifficultyId,
       selectedBotDifficulty: "club" as BotDifficultyId,
+      fighterPresets: [] as FighterPreset[],
       fighterHeight: BODY_PHYSICS.reference_body.height_m,
       fighterMass: BODY_PHYSICS.reference_body.mass_kg,
       fighterReach: BODY_PHYSICS.reference_body.reach_m,
@@ -237,6 +259,7 @@ export default defineComponent({
   mounted() {
     const canvas = this.$refs.canvas as HTMLCanvasElement;
     this.game = markRaw(new GameScene(canvas));
+    this.refreshFighterPresets();
   },
 
   beforeUnmount() {
@@ -280,6 +303,51 @@ export default defineComponent({
   },
 
   methods: {
+    refreshFighterPresets() {
+      this.fighterPresets = listFighterPresets();
+    },
+
+    async loadFighterPreset(preset: FighterPreset) {
+      const character = this.characters.find(
+        (x) => x.id === preset.characterId
+      );
+      if (!character) {
+        this.error = `Missing character model for preset ${preset.name}`;
+        return;
+      }
+
+      this.fighterName = preset.setup.name ?? preset.name;
+      this.fighterStyle = preset.setup.styleId;
+      this.fighterHeight = preset.setup.body.heightM;
+      this.fighterMass = preset.setup.body.massKg;
+      this.fighterReach = preset.setup.body.reachM;
+      await this.choose(character);
+    },
+
+    removeFighterPreset(name: string) {
+      deleteFighterPreset(name);
+      this.refreshFighterPresets();
+    },
+
+    saveCurrentFighter() {
+      if (!this.selectedCharacter || !this.selectedSetup) {
+        this.warning = "Start a fighter once before saving this build.";
+        return;
+      }
+
+      saveFighterPreset({
+        version: 1,
+        name: this.selectedSetup.name?.trim() || this.fighterName || "Fighter",
+        characterId: this.selectedCharacter.id,
+        setup: {
+          ...this.selectedSetup,
+          body: { ...this.selectedSetup.body },
+        },
+      });
+      this.refreshFighterPresets();
+      this.warning = "Fighter build saved.";
+    },
+
     async choose(character: CharacterDefinition) {
       if (this.loadingId) return;
       this.loadingId = character.id;
@@ -429,6 +497,28 @@ export default defineComponent({
   margin: 0;
   font-size: clamp(1.4rem, 4vw, 2.2rem);
   letter-spacing: 0.02em;
+}
+
+.saved-fighters {
+  width: min(100%, 46rem);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.saved-fighters__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem;
+}
+
+.saved-fighters button {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0.35rem;
+  background: rgba(255,255,255,0.06);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .overlay__error {
