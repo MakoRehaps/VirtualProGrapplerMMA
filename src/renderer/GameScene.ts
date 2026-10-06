@@ -92,7 +92,9 @@ export class GameScene {
   private clinchProcedural: ProceduralClinchAnimator | null = null;
   private currentClinchPose: ClinchPoseId | null = null;
   private defensiveOverlay: DefensivePoseOverlay | null = null;
+  private opponentDefensiveOverlay: DefensivePoseOverlay | null = null;
   private grappleDefenseProcedural: ProceduralGrappleDefenseAnimator | null = null;
+  private opponentGrappleDefenseProcedural: ProceduralGrappleDefenseAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -166,6 +168,11 @@ export class GameScene {
       this.defensiveOverlay?.apply(
         this.input.swayHorizontal,
         this.input.swayVertical
+      );
+      const botDefense = this.botBrain?.defenseState(this.clock.frame);
+      this.opponentDefensiveOverlay?.apply(
+        botDefense?.evasion.horizontal ?? 0,
+        botDefense?.evasion.vertical ?? 0
       );
       const opponentPosition = this.match?.opponent.positionId ?? "standing_open";
       const botPressure =
@@ -846,6 +853,7 @@ export class GameScene {
     this.opponentNodes = other.nodes;
     this.opponentRig = other.rig;
     this.opponentProcedural = other.procedural;
+    this.opponentDefensiveOverlay = new DefensivePoseOverlay(other.rig);
     this.opponentReactions = new ProceduralHitReactionAnimator(this.scene, other.rig);
     this.opponent.registerAnimations(this.opponentReactions.buildAll());
     this.opponentKnockdown = new ProceduralKnockdownAnimator(this.scene, other.rig);
@@ -885,6 +893,13 @@ export class GameScene {
         this.opponentRig,
         root,
         this.playerRig
+      );
+      this.opponentGrappleDefenseProcedural = new ProceduralGrappleDefenseAnimator(
+        this.scene,
+        root,
+        this.playerRig,
+        other.root,
+        this.opponentRig
       );
       for (const id of [
         "osoto_gari",
@@ -981,25 +996,42 @@ export class GameScene {
 
     this.match.guardState = (side) => {
       if (side === "player") return this.input.guarding ? "solid" : "none";
-      return this.match?.opponent.guarding ? "solid" : "none";
+      const botDefense = this.botBrain?.defenseState(this.clock.frame);
+      return botDefense?.guard ? "solid" : "none";
     };
 
     this.match.evasionState = (side) => {
-      if (side !== "player") return { horizontal: 0, vertical: 0 };
-      return {
-        horizontal: this.input.swayHorizontal,
-        vertical: this.input.swayVertical,
-      };
+      if (side === "player") {
+        return {
+          horizontal: this.input.swayHorizontal,
+          vertical: this.input.swayVertical,
+        };
+      }
+      return (
+        this.botBrain?.defenseState(this.clock.frame).evasion ?? {
+          horizontal: 0,
+          vertical: 0,
+        }
+      );
     };
 
     this.match.grappleDefenseState = (side) => {
-      if (side !== "player" || !this.input.grappleDefense) {
-        return { sprawl: false, whizzer: false };
+      if (side === "player") {
+        if (!this.input.grappleDefense) {
+          return { sprawl: false, whizzer: false };
+        }
+        return {
+          sprawl: this.input.swayVertical <= -0.35,
+          whizzer: Math.abs(this.input.swayHorizontal) >= 0.35,
+        };
       }
-      return {
-        sprawl: this.input.swayVertical <= -0.35,
-        whizzer: Math.abs(this.input.swayHorizontal) >= 0.35,
-      };
+
+      return (
+        this.botBrain?.defenseState(this.clock.frame).grapple ?? {
+          sprawl: false,
+          whizzer: false,
+        }
+      );
     };
 
     this.match.contactRegion = (attacker, technique) => {
@@ -1040,11 +1072,13 @@ export class GameScene {
     };
 
     this.match.onDefended = (defender, kind) => {
-      if (defender !== "player" || kind === "evade" || !this.animations) return;
+      if (kind === "evade" || !this.animations) return;
 
-      const group = this.grappleDefenseProcedural?.build(
-        kind === "sprawl" ? "sprawl" : "whizzer"
-      );
+      const source =
+        defender === "player"
+          ? this.grappleDefenseProcedural
+          : this.opponentGrappleDefenseProcedural;
+      const group = source?.build(kind === "sprawl" ? "sprawl" : "whizzer");
       if (!group) return;
 
       this.controller?.setExternalPoseLock(true);
@@ -1281,6 +1315,8 @@ export class GameScene {
     this.clinchProcedural = null;
     this.grappleDefenseProcedural?.dispose();
     this.grappleDefenseProcedural = null;
+    this.opponentGrappleDefenseProcedural?.dispose();
+    this.opponentGrappleDefenseProcedural = null;
     this.currentClinchPose = null;
     this.playerProcedural?.dispose();
     this.playerProcedural = null;
@@ -1290,6 +1326,8 @@ export class GameScene {
     this.playerStanceProcedural = null;
     this.defensiveOverlay?.reset();
     this.defensiveOverlay = null;
+    this.opponentDefensiveOverlay?.reset();
+    this.opponentDefensiveOverlay = null;
     this.playerRig = null;
     this.opponentRig = null;
     this.playerCollision = null;
