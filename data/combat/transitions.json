@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "description": "Position-to-position transitions. Difficulty is execution difficulty on a 1-100 tuning scale, not a hidden fighter stat.",
+  "transitions": [
+    {
+      "transition_id": "close_distance",
+      "from": "standing_open",
+      "to": "standing_close",
+      "type": "movement",
+      "difficulty": 25,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "exit_range",
+      "from": "standing_close",
+      "to": "standing_open",
+      "type": "movement",
+      "difficulty": 20,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "enter_collar_tie",
+      "from": "standing_close",
+      "to": "single_collar_tie",
+      "type": "clinch_entry",
+      "difficulty": 40,
+      "stamina_cost": 5
+    },
+    {
+      "transition_id": "enter_over_under",
+      "from": "standing_close",
+      "to": "over_under",
+      "type": "clinch_entry",
+      "difficulty": 45,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "double_under_entry",
+      "from": "over_under",
+      "to": "double_underhooks",
+      "type": "pummel",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "thai_plum_entry",
+      "from": "single_collar_tie",
+      "to": "thai_plum",
+      "type": "pummel",
+      "difficulty": 50,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "rear_clinch_take",
+      "from": "over_under",
+      "to": "rear_clinch",
+      "type": "angle_change",
+      "difficulty": 65,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "snapdown_front_headlock",
+      "from": "single_collar_tie",
+      "to": "front_headlock",
+      "type": "snapdown",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "double_leg_to_guard",
+      "from": "standing_close",
+      "to": "open_guard",
+      "type": "takedown",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "double_leg_to_half_guard",
+      "from": "standing_close",
+      "to": "half_guard",
+      "type": "takedown",
+      "difficulty": 65,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "throw_to_side_control",
+      "from": "over_under",
+      "to": "side_control",
+      "type": "throw",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "trip_to_half_guard",
+      "from": "over_under",
+      "to": "half_guard",
+      "type": "trip",
+      "difficulty": 45,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "guard_pull_transition",
+      "from": "standing_close",
+      "to": "closed_guard",
+      "type": "guard_pull",
+      "difficulty": 50,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "open_to_closed_guard",
+      "from": "open_guard",
+      "to": "closed_guard",
+      "type": "control",
+      "difficulty": 35,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "closed_guard_open",
+      "from": "closed_guard",
+      "to": "open_guard",
+      "type": "escape",
+      "difficulty": 35,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "guard_pass_to_half",
+      "from": "open_guard",
+      "to": "half_guard",
+      "type": "pass",
+      "difficulty": 50,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "guard_pass_to_side",
+      "from": "open_guard",
+      "to": "side_control",
+      "type": "pass",
+      "difficulty": 70,
+      "stamina_cost": 9
+    },
+    {
+      "transition_id": "half_pass_to_side",
+      "from": "half_guard",
+      "to": "side_control",
+      "type": "pass",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "side_to_mount",
+      "from": "side_control",
+      "to": "mount",
+      "type": "transition",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "side_to_north_south",
+      "from": "side_control",
+      "to": "north_south",
+      "type": "transition",
+      "difficulty": 40,
+      "stamina_cost": 5
+    },
+    {
+      "transition_id": "north_south_to_side",
+      "from": "north_south",
+      "to": "side_control",
+      "type": "transition",
+      "difficulty": 35,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "mount_take_back",
+      "from": "mount",
+      "to": "back_control",
+      "type": "transition",
+      "difficulty": 70,
+      "stamina_cost": 9
+    },
+    {
+      "transition_id": "turtle_take_back",
+      "from": "turtle",
+      "to": "back_control",
+      "type": "transition",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "front_headlock_to_turtle",
+      "from": "front_headlock",
+      "to": "turtle",
+      "type": "transition",
+      "difficulty": 40,
+      "stamina_cost": 5
+    },
+    {
+      "transition_id": "sprawl_to_front_headlock",
+      "from": "scramble",
+      "to": "front_headlock",
+      "type": "control",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "mount_bridge_escape",
+      "from": "mount",
+      "to": "closed_guard",
+      "type": "escape",
+      "difficulty": 65,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "mount_shrimp_escape",
+      "from": "mount",
+      "to": "half_guard",
+      "type": "escape",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "side_shrimp_escape",
+      "from": "side_control",
+      "to": "half_guard",
+      "type": "escape",
+      "difficulty": 60,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "back_escape_to_guard",
+      "from": "back_control",
+      "to": "open_guard",
+      "type": "escape",
+      "difficulty": 70,
+      "stamina_cost": 9
+    },
+    {
+      "transition_id": "turtle_standup",
+      "from": "turtle",
+      "to": "standing_close",
+      "type": "standup",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "seated_technical_standup",
+      "from": "seated_guard",
+      "to": "standing_open",
+      "type": "standup",
+      "difficulty": 45,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "open_guard_standup",
+      "from": "open_guard",
+      "to": "standing_open",
+      "type": "standup",
+      "difficulty": 55,
+      "stamina_cost": 7
+    },
+    {
+      "transition_id": "stand_over_from_seated",
+      "from": "standing_open",
+      "to": "standing_over_grounded",
+      "type": "approach",
+      "difficulty": 30,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "disengage_grounded",
+      "from": "standing_over_grounded",
+      "to": "standing_open",
+      "type": "disengage",
+      "difficulty": 10,
+      "stamina_cost": 4
+    },
+    {
+      "transition_id": "dive_into_guard",
+      "from": "standing_over_grounded",
+      "to": "open_guard",
+      "type": "ground_entry",
+      "difficulty": 45,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "leg_entry_from_guard",
+      "from": "open_guard",
+      "to": "leg_entanglement",
+      "type": "submission_entry",
+      "difficulty": 65,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "leg_escape_to_open_guard",
+      "from": "leg_entanglement",
+      "to": "open_guard",
+      "type": "escape",
+      "difficulty": 65,
+      "stamina_cost": 8
+    },
+    {
+      "transition_id": "failed_takedown_scramble",
+      "from": "standing_close",
+      "to": "scramble",
+      "type": "scramble",
+      "difficulty": 50,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "scramble_to_standing",
+      "from": "scramble",
+      "to": "standing_close",
+      "type": "scramble",
+      "difficulty": 50,
+      "stamina_cost": 6
+    },
+    {
+      "transition_id": "scramble_to_top",
+      "from": "scramble",
+      "to": "side_control",
+      "type": "scramble",
+      "difficulty": 65,
+      "stamina_cost": 8
+    }
+  ]
+}
