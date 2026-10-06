@@ -162,6 +162,12 @@
           · Opponent {{ matchResult.decision.opponent }}
         </p>
         <div class="result__actions">
+          <button
+            v-if="nextEventRoute"
+            @click="$emit('navigate', nextEventRoute)"
+          >
+            {{ nextEventLabel }}
+          </button>
           <button @click="rematch">Rematch</button>
           <button @click="reset">Change fighter</button>
           <button @click="$emit('exit')">Main menu</button>
@@ -235,7 +241,7 @@ export default defineComponent({
     },
   },
 
-  emits: ["exit"],
+  emits: ["exit", "navigate"],
 
   data() {
     return {
@@ -306,6 +312,36 @@ export default defineComponent({
           this.bodyBounds.max_reach_to_height_ratio *
           100
       ) / 100;
+    },
+
+    nextEventRoute(): string | null {
+      if (!this.matchResult || this.matchResult.winner !== "player") {
+        return null;
+      }
+
+      if (this.competitionMode === "weekly_qualifier") {
+        return "match_setup.pay_per_view";
+      }
+      if (this.competitionMode === "monthly_qualifier_one") {
+        return "match_setup.guest_referee";
+      }
+      if (this.competitionMode === "monthly_qualifier_two") {
+        return "match_setup.ladder_match";
+      }
+      return null;
+    },
+
+    nextEventLabel(): string {
+      if (this.competitionMode === "weekly_qualifier") {
+        return "Continue to Weekly Kumite";
+      }
+      if (this.competitionMode === "monthly_qualifier_one") {
+        return "Continue to Monthly Qualifier II";
+      }
+      if (this.competitionMode === "monthly_qualifier_two") {
+        return "Continue to Grand Tournament";
+      }
+      return "";
     },
 
     resultTitle(): string {
