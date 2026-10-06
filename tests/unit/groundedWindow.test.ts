@@ -29,7 +29,36 @@ describe("grounded-opponent window", () => {
         guard: "none",
       })
     ).toBe(false);
+    it("successful clinch trip starts and expires the grounded window", () => {
+    const match = new MayQuvMatch(fighter("a"), fighter("b"));
+    const trip = techniqueById("inside_trip")!;
+    const events: Array<[string, boolean]> = [];
+    match.onGroundedWindowChanged = (side, active) => {
+      events.push([side, active]);
+    };
+
+    expect(match.enterClinch("player", "over_under")).toBe(true);
+    expect(
+      match.throwTechnique("player", trip, 0, {
+        relativeVelocityMps: 6,
+        contactQuality: "clean",
+        guard: "none",
+      })
+    ).toBe(true);
+
+    match.step(trip.startupFrames);
+
+    expect(match.player.positionId).toBe("standing_over_grounded");
+    expect(match.opponent.positionId).toBe("seated_guard");
+    expect(events).toContainEqual(["opponent", true]);
+
+    match.step(trip.startupFrames + 241);
+
+    expect(match.player.positionId).toBe("standing_open");
+    expect(match.opponent.positionId).toBe("standing_open");
+    expect(events).toContainEqual(["opponent", false]);
   });
+});
 
   it("accepts grounded attacks only while standing over a grounded opponent", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
