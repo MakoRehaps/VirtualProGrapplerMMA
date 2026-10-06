@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "competitive_invariants": {
+    "hp_max": 100,
+    "stamina_max": 100,
+    "selectable_numeric_stats": false,
+    "visible_numeric_power_stats": false,
+    "stat_grind": false,
+    "coach_stat_buffs": false,
+    "cosmetic_bonuses": false,
+    "styles_free": true,
+    "techniques_free": true,
+    "stances_free": true,
+    "fighter_reroll_free": true
+  },
+  "player_choice": [
+    "appearance",
+    "clothing",
+    "body dimensions within legal simulation bounds",
+    "body mass",
+    "style",
+    "stance where style permits",
+    "technique decisions during combat"
+  ],
+  "simulation_derives": [
+    "acceleration",
+    "deceleration",
+    "rotational_inertia",
+    "momentum",
+    "push_resistance",
+    "impact_effective_mass",
+    "balance_response",
+    "movement_stamina_cost",
+    "reach"
+  ],
+  "principle": "Style decides tools. Body physics decides physical behavior. Player decisions decide outcomes."
+}
