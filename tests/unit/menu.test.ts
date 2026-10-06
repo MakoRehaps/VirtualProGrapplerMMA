@@ -30,9 +30,9 @@ describe("main menu data", () => {
   it("offers exactly the three root options", () => {
     const root = pageByKey(ROOT_PAGE)!;
     expect(root.menuItems.map((i) => i.displayName)).toEqual([
-      "Multi Play",
-      "Single Play",
-      "Commissioner",
+      "Fight",
+      "World Kumite",
+      "Dojo",
     ]);
   });
 
@@ -46,10 +46,10 @@ describe("main menu data", () => {
     }
   });
 
-  it("reaches Combat System Test through Commissioner and Smackdown Mall", () => {
+  it("reaches Combat Prototype through Dojo and Style Lab", () => {
     const commissioner = pageByKey("commissioner")!;
     const mallItem = commissioner.menuItems.find(
-      (i) => i.displayName === "Smackdown Mall"
+      (i) => i.displayName === "Style Lab"
     );
     expect(mallItem).toBeDefined();
 
@@ -58,7 +58,7 @@ describe("main menu data", () => {
 
     const mall = pageByKey("smackdownMall")!;
     const test = mall.menuItems.find(
-      (i) => i.displayName === "Combat System Test"
+      (i) => i.displayName === "Combat Prototype"
     );
     expect(test).toBeDefined();
     expect(resolveTarget(test!.target)).toEqual({
