@@ -1,9 +1,11 @@
 <template>
   <div v-if="snapshot" class="debug">
     <div class="debug__head">
-      <span class="debug__title">Combat</span>
+      <span class="debug__title">MAY' QUV Combat</span>
       <span class="debug__frame">frame {{ frame }}</span>
-      <span class="debug__frame">rng {{ snapshot.draws }}</span>
+      <span v-if="snapshot.winner" class="debug__winner">
+        {{ snapshot.winner }} wins by {{ snapshot.finish }}
+      </span>
     </div>
 
     <div class="debug__pair">
@@ -14,57 +16,40 @@
       >
         <header class="fighter__name">
           {{ snapshot[side].name }}
-          <span class="fighter__tag">{{ side }}</span>
+          <span class="fighter__tag">{{ snapshot[side].styleId }}</span>
         </header>
 
-        <div class="bar">
-          <div class="bar__label">Health</div>
+        <div
+          v-for="bar in bars"
+          :key="bar.key"
+          class="bar"
+        >
+          <div class="bar__label">{{ bar.label }}</div>
           <div class="bar__track">
-            <!-- Max health is a hard ceiling that never regenerates, so it is
-                 drawn behind current health rather than as its own bar. -->
-            <div
-              class="bar__max"
-              :style="{ width: pct(snapshot[side].maxHealth, 255) }"
-            />
             <div
               class="bar__fill"
-              :style="{ width: pct(snapshot[side].currentHealth, 255) }"
+              :class="`bar__fill--${bar.key}`"
+              :style="{ width: pct(snapshot[side][bar.key], 100) }"
             />
           </div>
-          <div class="bar__value">
-            {{ snapshot[side].currentHealth }}
-            <span class="bar__sub">/ {{ snapshot[side].maxHealth }}</span>
-          </div>
+          <div class="bar__value">{{ snapshot[side][bar.key] }}</div>
         </div>
 
-        <div class="bar">
-          <div class="bar__label">Spirit</div>
-          <div class="bar__track">
-            <div
-              class="bar__fill bar__fill--spirit"
-              :style="{ width: pct(snapshot[side].spirit, 100) }"
-            />
-          </div>
-          <div class="bar__value">{{ snapshot[side].spirit }}</div>
+        <div class="fighter__meta">
+          <span>{{ snapshot[side].stanceId }}</span>
+          <span>{{ snapshot[side].positionId }}</span>
         </div>
 
         <div class="joints">
-          <div
-            v-for="part in parts"
-            :key="part"
-            class="joint"
-            :class="{ 'joint--held': snapshot[side].holding === part }"
-          >
-            <span class="joint__name">{{ part.slice(0, 4) }}</span>
+          <div v-for="part in limbParts" :key="part.key" class="joint">
+            <span class="joint__name">{{ part.label }}</span>
             <span class="joint__track">
               <span
                 class="joint__fill"
-                :style="{ width: pct(snapshot[side].jointStamina[part], 50) }"
+                :style="{ width: pct(snapshot[side].limbs[part.key], 100) }"
               />
             </span>
-            <span class="joint__value">
-              {{ snapshot[side].jointStamina[part].toFixed(1) }}
-            </span>
+            <span class="joint__value">{{ snapshot[side].limbs[part.key].toFixed(0) }}</span>
           </div>
         </div>
       </section>
@@ -72,7 +57,7 @@
 
     <div class="debug__log">
       <div v-if="!snapshot.history.length" class="log__empty">
-        No exchanges yet &mdash; get close and press J or K.
+        No exchanges yet — get close and throw.
       </div>
       <div
         v-for="(entry, i) in snapshot.history"
@@ -81,19 +66,15 @@
         :class="{ 'log__row--miss': !entry.connected }"
       >
         <span class="log__frame">f{{ entry.frame }}</span>
-        <span class="log__move">{{ entry.moveName }}</span>
-        <template v-if="entry.connected && entry.breakdown">
+        <span class="log__move">{{ entry.techniqueName }}</span>
+        <template v-if="entry.connected && entry.resolution">
           <span class="log__calc">
-            {{ entry.breakdown.factor1 }}+{{ entry.breakdown.factor2 }}+{{
-              entry.breakdown.factor3
-            }}
-            = {{ entry.breakdown.subtotal }}
+            {{ entry.resolution.effectiveMassKg }}kg /
+            {{ entry.resolution.impactEnergy }}J
           </span>
-          <span class="log__dmg">
-            &minus;{{ entry.breakdown.currentHealthDamage }} hp
-          </span>
+          <span class="log__dmg">−{{ entry.resolution.hpDamage }} hp</span>
           <span class="log__max">
-            &minus;{{ entry.breakdown.maxHealthDamage }} max
+            −{{ entry.resolution.consciousnessDamage }} con
           </span>
         </template>
         <span v-else class="log__miss">{{ entry.missReason }}</span>
@@ -104,23 +85,16 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import type { MatchSnapshot } from "@/combat/Match";
-import { BODY_PARTS } from "@/combat/types";
+import type { MayQuvMatchSnapshot } from "@/combat/MayQuvMatch";
 
-/**
- * Read-only view of the combat simulation.
- *
- * The systems it shows are correct regardless of animation, so this is how
- * the damage maths gets verified while the move set is still a couple of
- * strikes. It polls rather than subscribing: the numbers only need to be
- * readable, not frame-accurate.
- */
+type BarKey = "hp" | "stamina" | "consciousness" | "balance";
+
 export default defineComponent({
   name: "CombatDebug",
 
   props: {
     source: {
-      type: Function as PropType<() => MatchSnapshot | null>,
+      type: Function as PropType<() => MayQuvMatchSnapshot | null>,
       required: true,
     },
     frameSource: {
@@ -131,8 +105,19 @@ export default defineComponent({
 
   data() {
     return {
-      parts: BODY_PARTS,
-      snapshot: null as MatchSnapshot | null,
+      bars: [
+        { key: "hp" as BarKey, label: "HP" },
+        { key: "stamina" as BarKey, label: "Stam" },
+        { key: "consciousness" as BarKey, label: "Con" },
+        { key: "balance" as BarKey, label: "Bal" },
+      ],
+      limbParts: [
+        { key: "leftArm" as const, label: "L arm" },
+        { key: "rightArm" as const, label: "R arm" },
+        { key: "leftLeg" as const, label: "L leg" },
+        { key: "rightLeg" as const, label: "R leg" },
+      ],
+      snapshot: null as MayQuvMatchSnapshot | null,
       frame: 0,
       timer: 0,
     };
@@ -243,9 +228,9 @@ export default defineComponent({
   background: #57b972;
 }
 
-.bar__fill--spirit {
-  background: #d8a13c;
-}
+.bar__fill--stamina { background: #d8a13c; }
+.bar__fill--consciousness { background: #6ea8ff; }
+.bar__fill--balance { background: #b789d6; }
 
 .bar__value {
   min-width: 4.2rem;
@@ -254,6 +239,21 @@ export default defineComponent({
 
 .bar__sub {
   opacity: 0.45;
+}
+
+.fighter__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+  opacity: 0.55;
+  font-size: 0.62rem;
+}
+
+.debug__winner {
+  margin-left: auto;
+  color: #ffd166;
+  text-transform: uppercase;
 }
 
 .joints {
@@ -289,7 +289,6 @@ export default defineComponent({
   opacity: 0.7;
 }
 
-/* Below 15.0 the wrestler visibly holds the limb. */
 .joint--held .joint__fill {
   background: #ff8a5c;
 }
