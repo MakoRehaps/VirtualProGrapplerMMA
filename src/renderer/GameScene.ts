@@ -32,6 +32,7 @@ import { CollisionDebugView } from "./CollisionDebugView";
 import { ProceduralClinchAnimator, type ClinchPoseId } from "./ProceduralClinchAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
+import { GamepadTechniqueInput } from "../game/GamepadTechniqueInput";
 import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
@@ -40,6 +41,7 @@ import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
 import { createDefaultMoveset, techniqueForMovesetInput, validateMoveset, type FighterMoveset, type MovesetButton } from "../combat/moveset";
+import { listMovesets } from "../combat/movesetStore";
 import { InputBuffer } from "../sim/InputBuffer";
 import {
   MODEL_ROOT,
@@ -66,6 +68,7 @@ export class GameScene {
   private camera: ArcRotateCamera;
   private shadows: ShadowGenerator;
   private input: InputController;
+  private readonly gamepadTechnique = new GamepadTechniqueInput();
   private arenaFloor: Mesh | null = null;
 
   private playerRoot: TransformNode | null = null;
@@ -127,6 +130,30 @@ export class GameScene {
       const dt = this.engine.getDeltaTime() / 1000;
 
       // Presentation runs at display rate...
+      const gamepadFrame = this.gamepadTechnique.update();
+      for (const button of gamepadFrame.buttons) {
+        this.tryMovesetButton(button);
+      }
+      if (gamepadFrame.clinchToggle && this.match) {
+        const position = this.match.player.positionId;
+        const clinchPositions = new Set([
+          "single_collar_tie",
+          "thai_plum",
+          "over_under",
+          "double_underhooks",
+          "rear_clinch",
+          "front_headlock",
+        ]);
+
+        if (position === "seated_guard") {
+          this.technicalStandup("player");
+        } else if (clinchPositions.has(position)) {
+          this.exitClinch();
+        } else {
+          this.tryEnterClinch("over_under");
+        }
+      }
+
       this.controller?.update(dt);
       // The opponent has no AI, but it always squares up to the player.
       this.opponent?.update(dt, this.playerRoot?.position ?? null);
@@ -794,7 +821,7 @@ export class GameScene {
     const player = this.fighterLoadout(playerId, "player");
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
-    this.playerMoveset = createDefaultMoveset(player.styleId);
+    this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
     this.playerCollision = this.playerRig ? new FighterCollisionRig(this.playerRig, player.body.heightM) : null;
     this.opponentCollision = this.opponentRig ? new FighterCollisionRig(this.opponentRig, opponent.body.heightM) : null;
 
