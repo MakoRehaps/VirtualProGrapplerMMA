@@ -3,6 +3,10 @@ import rulesetsJson from "#data/game/rulesets.json";
 import { freshJudgingStats, scoreWholeFight, type JudgingScore, type JudgingStats } from "./judging";
 import { resolveTechniqueImpact } from "./mayQuvDamage";
 import { regionConsequences } from "./regionalCondition";
+import {
+  resolveSubmission,
+  type SubmissionResolution,
+} from "./submission";
 import { ACTIVE_COMBAT_PROFILE, isPositionActive, isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
 import {
   createFighterState,
@@ -29,6 +33,7 @@ export interface MayQuvExchange {
   connected: boolean;
   missReason?: string;
   resolution?: CombatResolution;
+  submission?: SubmissionResolution;
 }
 
 export interface MayQuvFighterSnapshot {
@@ -141,6 +146,20 @@ export class MayQuvMatch {
 
     if (technique.context === "takedown") {
       return position === "standing_close" || position === "front_headlock";
+    }
+
+    if (technique.context === "ground") {
+      return [
+        "open_guard",
+        "closed_guard",
+        "half_guard",
+        "side_control",
+        "north_south",
+        "mount",
+        "back_control",
+        "turtle",
+        "leg_entanglement",
+      ].includes(position);
     }
 
     if (technique.context === "standing") {
@@ -412,6 +431,42 @@ export class MayQuvMatch {
 
     if (hit.technique.type === "control") {
       this.resolveControlTechnique(hit, defenderSide, frame);
+      return;
+    }
+
+    if (hit.technique.type === "submission") {
+      const submission = resolveSubmission(
+        this.stateOf(hit.attacker),
+        this.stateOf(defenderSide),
+        hit.technique
+      );
+
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: true,
+        submission,
+      });
+
+      if (submission.tapped) {
+        this.winner = hit.attacker;
+        this.finish = "submission";
+        this.pending.length = 0;
+        this.onFinished?.("submission", this.winner);
+      } else if (submission.escaped) {
+        const attacker = this.stateOf(hit.attacker);
+        const defender = this.stateOf(defenderSide);
+        const next = isPositionActive("scramble")
+          ? "scramble"
+          : "standing_open";
+        attacker.positionId = next;
+        defender.positionId = next;
+        this.onPositionChanged?.(
+          this.player.positionId,
+          this.opponent.positionId
+        );
+      }
       return;
     }
 
