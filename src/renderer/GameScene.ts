@@ -25,10 +25,10 @@ import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
-import { Match, Side } from "../combat/Match";
-import { MOVES } from "../combat/moves";
-import { profileFor } from "../combat/profiles";
-import { MoveData } from "../combat/types";
+import { MayQuvMatch } from "../combat/MayQuvMatch";
+import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
+import { styleById, techniqueById } from "../data/combatCatalog";
+import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
 import { InputBuffer } from "../sim/InputBuffer";
 import {
@@ -80,7 +80,7 @@ export class GameScene {
   /** Fixed-rate clock the combat simulation advances on. */
   private readonly clock = new FixedStep();
   private readonly inputBuffer = new InputBuffer();
-  private match: Match | null = null;
+  private match: MayQuvMatch | null = null;
 
   private readonly onResize: () => void;
 
@@ -492,6 +492,30 @@ export class GameScene {
     return missing;
   }
 
+  private fighterLoadout(characterId: string, side: CombatSide): FighterLoadout {
+    const styleCycle = ["boxing", "combat_sambo", "judo", "american_kickboxing"];
+    const index = Math.abs(
+      [...characterId].reduce((n, ch) => n + ch.charCodeAt(0), 0)
+    ) % styleCycle.length;
+    const styleId = styleCycle[index];
+    const style = styleById(styleId);
+    const massKg = side === "player" ? 77 : 82;
+    const heightM = side === "player" ? 1.78 : 1.82;
+
+    return {
+      id: characterId,
+      name: characterId,
+      styleId,
+      stanceId: style?.default_stance ?? "neutral_fighting",
+      body: {
+        massKg,
+        heightM,
+        reachM: heightM * 1.02,
+        centerOfMassHeightRatio: 0.56,
+      },
+    };
+  }
+
   /**
    * Opens a new match: fresh health, stamina and RNG for both wrestlers, and
    * the strike inputs wired through to the damage engine.
@@ -499,19 +523,53 @@ export class GameScene {
   private startMatch(playerId: string, opponentId: string): void {
     this.clock.reset();
     this.inputBuffer.clear();
-    this.match = new Match(profileFor(playerId), profileFor(opponentId));
 
-    // Range is a scene question, so the match asks rather than assumes.
-    this.match.canConnect = (attacker: Side) => this.inStrikeRange(attacker);
+    const player = this.fighterLoadout(playerId, "player");
+    const opponent = this.fighterLoadout(opponentId, "opponent");
+    this.match = new MayQuvMatch(player, opponent);
 
-    // A thrown strike is registered on the simulation clock; the damage lands
-    // later, on the move's hit frame.
+    this.match.canConnect = (attacker: CombatSide) =>
+      this.inStrikeRange(attacker);
+
+    const movement = deriveMovementPhysics(player.body, player.stanceId);
+    this.controller?.setMovementPhysics({
+      walkSpeed: movement.walkSpeed,
+      runSpeed: movement.runSpeed,
+      acceleration: movement.acceleration,
+      pivotScale: movement.pivotScale,
+    });
+
+    // Legacy animation buttons are translated into real MAY' QUV techniques
+    // while the animation library is replaced incrementally.
     this.controller?.setStrikeHandler((moveId) => {
-      const move: MoveData | null = MOVES[moveId] ?? null;
-      if (!move || !this.match) return;
+      if (!this.match) return;
+      const techniqueId =
+        moveId === "weak-arm-strike-1"
+          ? "cross"
+          : moveId === "weak-leg-strike-1"
+            ? "front_kick"
+            : "flying_knee";
+      const technique = techniqueById(techniqueId);
+      if (!technique) return;
+
       this.inputBuffer.press("strike", this.clock.frame);
       this.inputBuffer.release("strike", this.clock.frame);
-      this.match.throwMove("player", move, this.clock.frame);
+
+      const relativeVelocityMps =
+        technique.weapon.includes("leg") || technique.weapon.includes("knee")
+          ? 8.0
+          : 6.2;
+
+      this.match.throwTechnique(
+        "player",
+        technique,
+        this.clock.frame,
+        {
+          relativeVelocityMps,
+          contactQuality: "clean",
+          guard: "none",
+        }
+      );
     });
   }
 
@@ -519,7 +577,7 @@ export class GameScene {
    * Whether an attack can reach: close enough, and roughly facing the target.
    * A wrestler swinging with his back turned should miss.
    */
-  private inStrikeRange(attacker: Side): boolean {
+  private inStrikeRange(attacker: CombatSide): boolean {
     if (!this.playerRoot || !this.opponent) return false;
 
     const from = attacker === "player" ? this.playerRoot : this.opponent.root;
