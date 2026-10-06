@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "constants",
+    "target_zones",
+    "contact_quality",
+    "guard_absorption",
+    "finish_rules",
+    "event_persistence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "constants": {
+      "type": "object",
+      "properties": {
+        "hp_max": {
+          "const": 100
+        },
+        "stamina_max": {
+          "const": 100
+        },
+        "consciousness_max": {
+          "const": 100
+        },
+        "balance_max": {
+          "const": 100
+        },
+        "limb_condition_max": {
+          "const": 100
+        }
+      }
+    },
+    "target_zones": {
+      "type": "object"
+    },
+    "contact_quality": {
+      "type": "object"
+    },
+    "guard_absorption": {
+      "type": "object"
+    },
+    "finish_rules": {
+      "type": "object",
+      "properties": {
+        "normal_tko": {
+          "const": false
+        }
+      }
+    },
+    "event_persistence": {
+      "type": "object"
+    }
+  }
+}
