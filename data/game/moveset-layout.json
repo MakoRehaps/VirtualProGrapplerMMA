@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "description": "Contextual XInput technique slots for player-authored MAY' QUV movesets. Techniques are free to equip when legal for the selected style.",
+  "buttons": [
+    "a",
+    "b",
+    "x",
+    "y"
+  ],
+  "contexts": {
+    "standing": {
+      "position_ids": [
+        "standing_open",
+        "standing_close"
+      ],
+      "technique_contexts": [
+        "standing"
+      ],
+      "slots": [
+        {
+          "slot_id": "standing_a",
+          "button": "a",
+          "label": "Standing A"
+        },
+        {
+          "slot_id": "standing_b",
+          "button": "b",
+          "label": "Standing B"
+        },
+        {
+          "slot_id": "standing_x",
+          "button": "x",
+          "label": "Standing X"
+        },
+        {
+          "slot_id": "standing_y",
+          "button": "y",
+          "label": "Standing Y"
+        }
+      ]
+    },
+    "clinch": {
+      "position_ids": [
+        "single_collar_tie",
+        "thai_plum",
+        "over_under",
+        "double_underhooks",
+        "rear_clinch",
+        "front_headlock"
+      ],
+      "technique_contexts": [
+        "clinch"
+      ],
+      "slots": [
+        {
+          "slot_id": "clinch_a",
+          "button": "a",
+          "label": "Clinch A"
+        },
+        {
+          "slot_id": "clinch_b",
+          "button": "b",
+          "label": "Clinch B"
+        },
+        {
+          "slot_id": "clinch_x",
+          "button": "x",
+          "label": "Clinch X"
+        },
+        {
+          "slot_id": "clinch_y",
+          "button": "y",
+          "label": "Clinch Y"
+        }
+      ]
+    },
+    "grounded_opponent": {
+      "position_ids": [
+        "standing_over_grounded"
+      ],
+      "technique_contexts": [
+        "grounded_opponent"
+      ],
+      "slots": [
+        {
+          "slot_id": "grounded_a",
+          "button": "a",
+          "label": "Grounded A"
+        },
+        {
+          "slot_id": "grounded_b",
+          "button": "b",
+          "label": "Grounded B"
+        },
+        {
+          "slot_id": "grounded_x",
+          "button": "x",
+          "label": "Grounded X"
+        },
+        {
+          "slot_id": "grounded_y",
+          "button": "y",
+          "label": "Grounded Y"
+        }
+      ]
+    }
+  },
+  "rules": {
+    "gameplay_unlock_cost": 0,
+    "style_restrictions_enforced": true,
+    "active_ruleset_restrictions_enforced": true,
+    "duplicate_techniques_allowed": true,
+    "edit_between_matches": true,
+    "edit_during_ranked_match": false
+  }
+}
