@@ -39,6 +39,7 @@ import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
 import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
+import { createDefaultMoveset, techniqueForMovesetInput, validateMoveset, type FighterMoveset, type MovesetButton } from "../combat/moveset";
 import { InputBuffer } from "../sim/InputBuffer";
 import {
   MODEL_ROOT,
@@ -102,6 +103,7 @@ export class GameScene {
   private readonly clock = new FixedStep();
   private readonly inputBuffer = new InputBuffer();
   private match: MayQuvMatch | null = null;
+  private playerMoveset: FighterMoveset | null = null;
 
   private readonly onResize: () => void;
 
@@ -230,7 +232,37 @@ export class GameScene {
     this.animations.play(group.name, { loop: true, restart: true });
   }
 
-  tryPlayerTechnique(techniqueId: string): boolean {
+  setPlayerMoveset(moveset: FighterMoveset): boolean {
+    if (!this.match) return false;
+    if (moveset.styleId !== this.match.player.loadout.styleId) return false;
+
+    const validation = validateMoveset(moveset);
+    if (!validation.valid) return false;
+
+    this.playerMoveset = {
+      ...moveset,
+      slots: { ...moveset.slots },
+    };
+    return true;
+  }
+
+  get currentPlayerMoveset(): FighterMoveset | null {
+    return this.playerMoveset
+      ? { ...this.playerMoveset, slots: { ...this.playerMoveset.slots } }
+      : null;
+  }
+
+  tryMovesetButton(button: MovesetButton): boolean {
+    if (!this.match || !this.playerMoveset) return false;
+    const techniqueId = techniqueForMovesetInput(
+      this.playerMoveset,
+      this.match.player.positionId,
+      button
+    );
+    return techniqueId ? this.tryPlayerTechnique(techniqueId) : false;
+  }
+
+    tryPlayerTechnique(techniqueId: string): boolean {
     if (!this.match || !this.animations) return false;
     const technique = techniqueById(techniqueId);
     if (!technique) return false;
@@ -762,6 +794,7 @@ export class GameScene {
     const player = this.fighterLoadout(playerId, "player");
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
+    this.playerMoveset = createDefaultMoveset(player.styleId);
     this.playerCollision = this.playerRig ? new FighterCollisionRig(this.playerRig, player.body.heightM) : null;
     this.opponentCollision = this.opponentRig ? new FighterCollisionRig(this.opponentRig, opponent.body.heightM) : null;
 
@@ -984,6 +1017,7 @@ export class GameScene {
     this.animations?.dispose();
     this.animations = null;
     this.controller = null;
+    this.playerMoveset = null;
 
     for (const node of this.loadedNodes) {
       node.dispose(false, true);
