@@ -36,7 +36,7 @@ export interface MayQuvFighterSnapshot {
   stamina: number;
   consciousness: number;
   balance: number;
-  limbs: FighterCondition["limbs"];
+  regions: FighterCondition["regions"];
   positionId: string;
 }
 
@@ -161,7 +161,7 @@ export class MayQuvMatch {
       stamina: Math.round(s.condition.stamina * 10) / 10,
       consciousness: Math.round(s.condition.consciousness * 10) / 10,
       balance: Math.round(s.condition.balance * 10) / 10,
-      limbs: { ...s.condition.limbs },
+      regions: { ...s.condition.regions },
       positionId: s.positionId,
     });
     return {
