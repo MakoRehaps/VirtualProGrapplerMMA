@@ -69,6 +69,7 @@ export interface ImpactSample {
   contactQuality: "glancing" | "partial" | "clean" | "perfect";
   guard: "none" | "partial" | "solid";
   actualRegion?: keyof RegionalCondition;
+  staminaCommitted?: number;
 }
 
 export interface RegionalEffects {
