@@ -6,6 +6,67 @@
     <div v-if="!started" class="overlay">
       <h1 class="overlay__title">Choose your character</h1>
 
+      <div class="fighter-setup">
+        <label>
+          Fighter name
+          <input v-model.trim="fighterName" maxlength="24" />
+        </label>
+
+        <label>
+          Style
+          <select v-model="fighterStyle">
+            <option
+              v-for="style in styles"
+              :key="style.style_id"
+              :value="style.style_id"
+            >
+              {{ style.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Height
+          <input
+            v-model.number="fighterHeight"
+            type="range"
+            :min="bodyBounds.min_height_m"
+            :max="bodyBounds.max_height_m"
+            step="0.01"
+          />
+          <span>{{ fighterHeight.toFixed(2) }} m</span>
+        </label>
+
+        <label>
+          Weight
+          <input
+            v-model.number="fighterMass"
+            type="range"
+            :min="bodyBounds.min_mass_kg"
+            :max="bodyBounds.max_mass_kg"
+            step="1"
+          />
+          <span>{{ fighterMass.toFixed(0) }} kg</span>
+        </label>
+
+        <label>
+          Reach
+          <input
+            v-model.number="fighterReach"
+            type="range"
+            :min="reachMin"
+            :max="reachMax"
+            step="0.01"
+          />
+          <span>{{ fighterReach.toFixed(2) }} m</span>
+        </label>
+
+        <p>
+          No weight classes. Body size changes continuous physics only;
+          HP stays 100.
+        </p>
+      </div>
+
       <div class="roster">
         <button
           v-for="character in characters"
@@ -101,6 +162,8 @@ import { CHARACTERS, CharacterDefinition } from "@/game/config";
 import CombatDebug from "./CombatDebug.vue";
 import MovesetEditor from "./MovesetEditor.vue";
 import type { FighterMoveset } from "@/combat/moveset";
+import type { FighterLoadout } from "@/combat/mayQuvTypes";
+import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
 
 export default defineComponent({
   name: "Game",
@@ -112,12 +175,24 @@ export default defineComponent({
   data() {
     return {
       characters: CHARACTERS,
+      styles: STYLES,
+      bodyBounds: BODY_PHYSICS.legal_body_envelope,
+      fighterName: "Fighter",
+      fighterStyle: "boxing",
+      fighterHeight: BODY_PHYSICS.reference_body.height_m,
+      fighterMass: BODY_PHYSICS.reference_body.mass_kg,
+      fighterReach: BODY_PHYSICS.reference_body.reach_m,
       started: false,
       loadingId: null as string | null,
       error: "" as string,
       warning: "" as string,
       movesetOpen: false,
       selectedCharacter: null as CharacterDefinition | null,
+      selectedSetup: null as
+        | (Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
+            name?: string;
+          })
+        | null,
       matchResult: null as ReturnType<GameScene["matchSnapshot"]>,
       resultTimer: 0,
       // markRaw keeps Vue from proxying the whole Babylon scene graph, which
@@ -138,6 +213,22 @@ export default defineComponent({
   },
 
   computed: {
+    reachMin(): number {
+      return Math.round(
+        this.fighterHeight *
+          this.bodyBounds.min_reach_to_height_ratio *
+          100
+      ) / 100;
+    },
+
+    reachMax(): number {
+      return Math.round(
+        this.fighterHeight *
+          this.bodyBounds.max_reach_to_height_ratio *
+          100
+      ) / 100;
+    },
+
     resultTitle(): string {
       if (!this.matchResult) return "";
       if (!this.matchResult.winner) return "Draw";
@@ -163,11 +254,27 @@ export default defineComponent({
       this.warning = "";
 
       try {
-        const missing = await this.game!.loadCharacter(character);
+        const style = styleById(this.fighterStyle);
+        const setup = {
+          name: this.fighterName || "Fighter",
+          styleId: this.fighterStyle,
+          stanceId: style?.default_stance ?? "neutral_fighting",
+          body: {
+            massKg: this.fighterMass,
+            heightM: this.fighterHeight,
+            reachM: this.fighterReach,
+            centerOfMassHeightRatio: 0.56,
+          },
+        };
+        const missing = await this.game!.loadCharacter(character, setup);
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
         }
         this.selectedCharacter = character;
+        this.selectedSetup = {
+          ...setup,
+          body: { ...setup.body },
+        };
         this.started = true;
         this.matchResult = null;
         window.clearInterval(this.resultTimer);
@@ -190,7 +297,10 @@ export default defineComponent({
       this.movesetOpen = false;
       this.warning = "";
       try {
-        const missing = await this.game.loadCharacter(this.selectedCharacter);
+        const missing = await this.game.loadCharacter(
+          this.selectedCharacter,
+          this.selectedSetup ?? undefined
+        );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
         }
@@ -267,6 +377,36 @@ export default defineComponent({
   color: #ff8a80;
   max-width: 40rem;
   text-align: center;
+}
+
+.fighter-setup {
+  width: min(100%, 46rem);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.04);
+}
+
+.fighter-setup label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+}
+
+.fighter-setup input,
+.fighter-setup select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fighter-setup p {
+  grid-column: 1 / -1;
+  margin: 0;
+  opacity: 0.65;
+  font-size: 0.78rem;
 }
 
 .roster {
