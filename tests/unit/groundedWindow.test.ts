@@ -8,7 +8,8 @@ function fighter(id: string, styleId = "american_kickboxing"): FighterLoadout {
     id,
     name: id,
     styleId,
-    stanceId: "american_kickboxing",
+    stanceId:
+      styleId === "adimurai" ? "traditional_upright" : "american_kickboxing",
     body: {
       massKg: 77,
       heightM: 1.78,
@@ -22,6 +23,7 @@ describe("grounded-opponent window", () => {
   it("rejects grounded attacks from neutral standing", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
     const soccer = techniqueById("soccer_kick_head")!;
+
     expect(
       match.throwTechnique("player", soccer, 0, {
         relativeVelocityMps: 8,
@@ -29,39 +31,7 @@ describe("grounded-opponent window", () => {
         guard: "none",
       })
     ).toBe(false);
-    it("successful clinch trip starts and expires the grounded window", () => {
-    const match = new MayQuvMatch(
-      fighter("a", "adimurai"),
-      fighter("b", "adimurai")
-    );
-    const trip = techniqueById("inside_trip")!;
-    const events: Array<[string, boolean]> = [];
-    match.onGroundedWindowChanged = (side, active) => {
-      events.push([side, active]);
-    };
-
-    expect(match.enterClinch("player", "over_under")).toBe(true);
-    expect(
-      match.throwTechnique("player", trip, 0, {
-        relativeVelocityMps: 6,
-        contactQuality: "clean",
-        guard: "none",
-      })
-    ).toBe(true);
-
-    match.step(trip.startupFrames);
-
-    expect(match.player.positionId).toBe("standing_over_grounded");
-    expect(match.opponent.positionId).toBe("seated_guard");
-    expect(events).toContainEqual(["opponent", true]);
-
-    match.step(trip.startupFrames + 241);
-
-    expect(match.player.positionId).toBe("standing_open");
-    expect(match.opponent.positionId).toBe("standing_open");
-    expect(events).toContainEqual(["opponent", false]);
   });
-});
 
   it("accepts grounded attacks only while standing over a grounded opponent", () => {
     const match = new MayQuvMatch(fighter("a"), fighter("b"));
@@ -87,5 +57,39 @@ describe("grounded-opponent window", () => {
     expect(match.requestTechnicalStandup("opponent")).toBe(true);
     expect(match.player.positionId).toBe("standing_open");
     expect(match.opponent.positionId).toBe("standing_open");
+  });
+
+  it("successful clinch trip starts and expires the grounded window", () => {
+    const match = new MayQuvMatch(
+      fighter("a", "adimurai"),
+      fighter("b", "adimurai")
+    );
+    const trip = techniqueById("inside_trip")!;
+    const events: Array<[string, boolean]> = [];
+
+    match.onGroundedWindowChanged = (side, active) => {
+      events.push([side, active]);
+    };
+
+    expect(match.enterClinch("player", "over_under")).toBe(true);
+    expect(
+      match.throwTechnique("player", trip, 0, {
+        relativeVelocityMps: 6,
+        contactQuality: "clean",
+        guard: "none",
+      })
+    ).toBe(true);
+
+    match.step(trip.startupFrames);
+
+    expect(match.player.positionId).toBe("standing_over_grounded");
+    expect(match.opponent.positionId).toBe("seated_guard");
+    expect(events).toContainEqual(["opponent", true]);
+
+    match.step(trip.startupFrames + 241);
+
+    expect(match.player.positionId).toBe("standing_open");
+    expect(match.opponent.positionId).toBe("standing_open");
+    expect(events).toContainEqual(["opponent", false]);
   });
 });
