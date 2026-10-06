@@ -6,6 +6,7 @@ import bodyPhysicsJson from "#data/combat/body-physics.json";
 import rulesetsJson from "#data/game/rulesets.json";
 import competitionJson from "#data/game/competition.json";
 import combatProfileJson from "#data/game/combat-profile.json";
+import martialPosesJson from "#data/biomechanics/martial-poses.json";
 import type { TechniqueRuntime } from "@/combat/mayQuvTypes";
 
 export interface StyleRecord {
@@ -57,6 +58,7 @@ export const BODY_PHYSICS = bodyPhysicsJson;
 export const RULESETS = rulesetsJson.rulesets;
 export const COMPETITION_MODES = competitionJson.modes;
 export const ACTIVE_COMBAT_PROFILE = combatProfileJson;
+export const MARTIAL_POSES = martialPosesJson;
 
 export function techniqueById(id: string): TechniqueRuntime | null {
   return techniqueMap.get(id) ?? null;
@@ -115,4 +117,23 @@ export function activeTechniquesForStyle(styleId: string): TechniqueRuntime[] {
 
 export function isPositionActive(positionId: string): boolean {
   return activePositionIds.has(positionId);
+}
+
+
+export function martialPoseById(id: string) {
+  return MARTIAL_POSES.stance_profiles.find((p) => p.pose_id === id) ?? null;
+}
+
+export function motionProfileById(id: string) {
+  return MARTIAL_POSES.motion_profiles.find((p) => p.motion_id === id) ?? null;
+}
+
+export function motionProfilesForTechnique(techniqueId: string) {
+  return MARTIAL_POSES.motion_profiles.filter((p) =>
+    p.technique_ids.includes(techniqueId)
+  );
+}
+
+export function biomechSourceById(id: string) {
+  return MARTIAL_POSES.sources.find((s) => s.source_id === id) ?? null;
 }
