@@ -116,10 +116,16 @@ export function resolveTechniqueImpact(
     ) / 10
   );
 
-  const staminaSpent = Math.round(technique.staminaCost * attackerRegional.staminaCostScale * 10) / 10;
-  attacker.condition.stamina = clamp100(
-    attacker.condition.stamina - staminaSpent
-  );
+  const staminaSpent =
+    sample.staminaCommitted ??
+    Math.round(
+      technique.staminaCost * attackerRegional.staminaCostScale * 10
+    ) / 10;
+  if (sample.staminaCommitted === undefined) {
+    attacker.condition.stamina = clamp100(
+      attacker.condition.stamina - staminaSpent
+    );
+  }
   defender.condition.hp = clamp100(defender.condition.hp - hpDamage);
   defender.condition.consciousness = clamp100(
     defender.condition.consciousness - consciousnessDamage
