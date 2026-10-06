@@ -91,7 +91,7 @@ export class CharacterController {
   /** Notified when a strike is thrown; wired to the combat simulation. */
   private strikeHandler: ((moveId: string) => void) | null = null;
   private techniqueClipResolver: ((moveId: string) => string | null) | null = null;
-  private idleClip = Anim.IDLE;
+  private idleClip: string = Anim.IDLE;
 
   constructor(
     public readonly root: TransformNode,
