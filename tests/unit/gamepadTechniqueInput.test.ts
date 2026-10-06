@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { GamepadTechniqueInput } from "@/game/GamepadTechniqueInput";
+import {
+  GamepadTechniqueInput,
+  gamepadSlotConnected,
+} from "@/game/GamepadTechniqueInput";
 
 function fakePad(buttons: boolean[]): Gamepad {
   return {
@@ -20,6 +23,19 @@ function fakePad(buttons: boolean[]): Gamepad {
 }
 
 describe("GamepadTechniqueInput", () => {
+  it("reports exact controller-slot availability", () => {
+    const p1 = fakePad([false, false, false, false, false, false]);
+    const p2 = {
+      ...fakePad([false, false, false, false, false, false]),
+      index: 1,
+      id: "Xbox Controller P2",
+    } as Gamepad;
+
+    expect(gamepadSlotConnected(0, () => [p1, p2])).toBe(true);
+    expect(gamepadSlotConnected(1, () => [p1, p2])).toBe(true);
+    expect(gamepadSlotConnected(1, () => [p1, null])).toBe(false);
+  });
+
   it("emits face buttons only on the press edge", () => {
     let pad = fakePad([false, false, false, false, false, false]);
     const input = new GamepadTechniqueInput(() => [pad]);
