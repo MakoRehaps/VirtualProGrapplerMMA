@@ -25,6 +25,11 @@ interface Difficulty {
 
 export class BotBrain {
   private nextDecisionFrame = 0;
+  private guardUntilFrame = -1;
+  private evadeUntilFrame = -1;
+  private grappleDefenseUntilFrame = -1;
+  private evadeHorizontal = 0;
+  private evadeVertical = 0;
   private readonly difficulty: Difficulty;
 
   constructor(
@@ -45,6 +50,18 @@ export class BotBrain {
     if (this.match.winner || frame < this.nextDecisionFrame) return;
 
     const state = this.match.stateOf(this.side);
+
+    const defenseRoll = this.match.rng.nextInt(1000);
+    const defenseThreshold = Math.round(
+      100 + this.difficulty.transition_skill * 120
+    );
+    if (defenseRoll < defenseThreshold) {
+      this.chooseDefense(frame, state.positionId);
+      this.nextDecisionFrame =
+        frame + this.difficulty.reaction_frames + 6;
+      return;
+    }
+
     if (
       (state.positionId === "standing_open" ||
         state.positionId === "standing_close") &&
@@ -92,6 +109,72 @@ export class BotBrain {
         frame + chosen.startupFrames + chosen.recoveryFrames
       );
     }
+  }
+
+  defenseState(frame: number): {
+    guard: boolean;
+    evasion: { horizontal: number; vertical: number };
+    grapple: { sprawl: boolean; whizzer: boolean };
+  } {
+    return {
+      guard: frame <= this.guardUntilFrame,
+      evasion:
+        frame <= this.evadeUntilFrame
+          ? {
+              horizontal: this.evadeHorizontal,
+              vertical: this.evadeVertical,
+            }
+          : { horizontal: 0, vertical: 0 },
+      grapple:
+        frame <= this.grappleDefenseUntilFrame
+          ? {
+              sprawl: this.evadeVertical < -0.25,
+              whizzer: Math.abs(this.evadeHorizontal) >= 0.25,
+            }
+          : { sprawl: false, whizzer: false },
+    };
+  }
+
+  private chooseDefense(frame: number, positionId: string): void {
+    const duration =
+      this.difficulty.reaction_frames +
+      6 +
+      this.match.rng.nextInt(8);
+
+    const inClinch = [
+      "single_collar_tie",
+      "thai_plum",
+      "over_under",
+      "double_underhooks",
+      "rear_clinch",
+      "front_headlock",
+    ].includes(positionId);
+
+    if (inClinch) {
+      this.grappleDefenseUntilFrame = frame + duration;
+      this.evadeHorizontal =
+        this.match.rng.nextInt(2) === 0 ? -0.7 : 0.7;
+      this.evadeVertical = 0;
+      return;
+    }
+
+    const mode = this.match.rng.nextInt(3);
+    if (mode === 0) {
+      this.guardUntilFrame = frame + duration;
+      return;
+    }
+
+    this.evadeUntilFrame = frame + duration;
+    if (mode === 1) {
+      this.evadeHorizontal =
+        this.match.rng.nextInt(2) === 0 ? -0.75 : 0.75;
+      this.evadeVertical = 0;
+    } else {
+      this.evadeHorizontal = 0;
+      this.evadeVertical = this.match.rng.nextInt(2) === 0 ? -0.72 : 0.72;
+    }
+
+    this.grappleDefenseUntilFrame = frame + duration;
   }
 
   private shouldTryClinch(styleId: string): boolean {
