@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "description": "Authoritative combat positions for 1v1 MAY' QUV.",
+  "positions": [
+    {
+      "position_id": "standing_open",
+      "name": "Standing Open",
+      "phase": "standing",
+      "advantage": "neutral",
+      "actions": [
+        "strike",
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "position_id": "standing_close",
+      "name": "Standing Close",
+      "phase": "standing",
+      "advantage": "neutral",
+      "actions": [
+        "strike",
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "position_id": "single_collar_tie",
+      "name": "Single Collar Tie",
+      "phase": "clinch",
+      "advantage": "shared",
+      "actions": [
+        "strike",
+        "throw",
+        "takedown",
+        "control"
+      ]
+    },
+    {
+      "position_id": "thai_plum",
+      "name": "Thai Plum",
+      "phase": "clinch",
+      "advantage": "attacker",
+      "actions": [
+        "strike",
+        "throw",
+        "control"
+      ]
+    },
+    {
+      "position_id": "over_under",
+      "name": "Over-Under Clinch",
+      "phase": "clinch",
+      "advantage": "shared",
+      "actions": [
+        "throw",
+        "takedown",
+        "control"
+      ]
+    },
+    {
+      "position_id": "double_underhooks",
+      "name": "Double Underhooks",
+      "phase": "clinch",
+      "advantage": "attacker",
+      "actions": [
+        "throw",
+        "takedown",
+        "control"
+      ]
+    },
+    {
+      "position_id": "rear_clinch",
+      "name": "Rear Clinch",
+      "phase": "clinch",
+      "advantage": "attacker",
+      "actions": [
+        "throw",
+        "takedown",
+        "control"
+      ]
+    },
+    {
+      "position_id": "front_headlock",
+      "name": "Front Headlock / Sprawl",
+      "phase": "clinch",
+      "advantage": "attacker",
+      "actions": [
+        "strike",
+        "submission",
+        "transition"
+      ]
+    },
+    {
+      "position_id": "open_guard",
+      "name": "Open Guard",
+      "phase": "ground",
+      "advantage": "bottom",
+      "actions": [
+        "strike",
+        "submission",
+        "sweep",
+        "escape"
+      ]
+    },
+    {
+      "position_id": "closed_guard",
+      "name": "Closed Guard",
+      "phase": "ground",
+      "advantage": "bottom",
+      "actions": [
+        "strike",
+        "submission",
+        "sweep",
+        "pass"
+      ]
+    },
+    {
+      "position_id": "half_guard",
+      "name": "Half Guard",
+      "phase": "ground",
+      "advantage": "shared",
+      "actions": [
+        "strike",
+        "submission",
+        "sweep",
+        "pass"
+      ]
+    },
+    {
+      "position_id": "side_control",
+      "name": "Side Control",
+      "phase": "ground",
+      "advantage": "top",
+      "actions": [
+        "strike",
+        "submission",
+        "transition"
+      ]
+    },
+    {
+      "position_id": "north_south",
+      "name": "North-South",
+      "phase": "ground",
+      "advantage": "top",
+      "actions": [
+        "strike",
+        "submission",
+        "transition"
+      ]
+    },
+    {
+      "position_id": "mount",
+      "name": "Mount",
+      "phase": "ground",
+      "advantage": "top",
+      "actions": [
+        "strike",
+        "submission",
+        "transition"
+      ]
+    },
+    {
+      "position_id": "back_control",
+      "name": "Back Control",
+      "phase": "ground",
+      "advantage": "attacker",
+      "actions": [
+        "strike",
+        "submission",
+        "transition"
+      ]
+    },
+    {
+      "position_id": "turtle",
+      "name": "Turtle",
+      "phase": "ground",
+      "advantage": "defender",
+      "actions": [
+        "strike",
+        "submission",
+        "transition",
+        "escape"
+      ]
+    },
+    {
+      "position_id": "seated_guard",
+      "name": "Seated Guard",
+      "phase": "grounded_opponent",
+      "advantage": "bottom",
+      "actions": [
+        "strike",
+        "takedown",
+        "escape",
+        "standup"
+      ]
+    },
+    {
+      "position_id": "standing_over_grounded",
+      "name": "Standing Over Grounded Opponent",
+      "phase": "grounded_opponent",
+      "advantage": "top",
+      "actions": [
+        "strike",
+        "pass",
+        "disengage"
+      ]
+    },
+    {
+      "position_id": "leg_entanglement",
+      "name": "Leg Entanglement",
+      "phase": "ground",
+      "advantage": "shared",
+      "actions": [
+        "submission",
+        "transition",
+        "escape"
+      ]
+    },
+    {
+      "position_id": "scramble",
+      "name": "Scramble",
+      "phase": "transition",
+      "advantage": "shared",
+      "actions": [
+        "takedown",
+        "escape",
+        "transition"
+      ]
+    }
+  ]
+}
