@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "name": "Adaptive Coach",
+  "persistent_npc": true,
+  "generated_with_player": true,
+  "changes_player_stats": false,
+  "causes_persistent_damage": false,
+  "purpose": "Teach the human player to use their chosen style and understand matchups.",
+  "observes": [
+    "preferred_range",
+    "stance_usage",
+    "technique_frequency",
+    "combo_length",
+    "takedown_attempts",
+    "takedown_defense",
+    "clinch_outcomes",
+    "ground_positions",
+    "submission_attempts",
+    "escape_failures",
+    "guard_habits",
+    "movement_direction",
+    "stamina_mistakes",
+    "repeated_patterns"
+  ],
+  "lesson_order": [
+    "movement",
+    "guard",
+    "range_control",
+    "striking_defense",
+    "countering",
+    "clinch",
+    "takedown_defense",
+    "ground_survival",
+    "escapes",
+    "submissions",
+    "mixed_combat",
+    "adaptive_matchups"
+  ],
+  "adaptation": {
+    "future_input_reading": false,
+    "hidden_damage_bonus": false,
+    "hidden_health_bonus": false,
+    "allowed": [
+      "choose_counter_style",
+      "change_stance",
+      "select_technique_package",
+      "change_pressure",
+      "change_range_goal",
+      "recreate_problem_position",
+      "imitate_style_threat"
+    ],
+    "starts_with_one_problem": true,
+    "combines_problems_after_mastery": true
+  },
+  "feedback": {
+    "before_fight": true,
+    "after_fight": true,
+    "show_hidden_numeric_stats": false,
+    "examples": [
+      "You retreat in straight lines when pressured.",
+      "You are vulnerable to takedowns during long combinations.",
+      "You escape mount better to your left than your right."
+    ]
+  }
+}
