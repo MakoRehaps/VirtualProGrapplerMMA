@@ -11,7 +11,7 @@ export function normalizeFighterSetup(
   setup: FighterSetupInput
 ): FighterLoadout {
   const bounds = BODY_PHYSICS.legal_body_envelope;
-  const style = styleById(setup.styleId);
+  const style = styleById(setup.styleId) ?? styleById("boxing");
 
   const heightM = Math.min(
     bounds.max_height_m,
