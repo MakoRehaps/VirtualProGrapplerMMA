@@ -1,0 +1,1345 @@
+{
+  "schema_version": 1,
+  "description": "Universal unarmed technique catalog. Styles grant access to techniques; techniques do not grant stats.",
+  "techniques": [
+    {
+      "technique_id": "jab",
+      "name": "Jab",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "lead_hand",
+      "power": 22,
+      "startup_frames": 8,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "cross",
+      "name": "Cross",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 30,
+      "startup_frames": 10,
+      "active_frames": 3,
+      "recovery_frames": 16,
+      "stamina_cost": 5,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "lead_hook",
+      "name": "Lead Hook",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "lead_hand",
+      "power": 28,
+      "startup_frames": 12,
+      "active_frames": 3,
+      "recovery_frames": 18,
+      "stamina_cost": 6,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "rear_hook",
+      "name": "Rear Hook",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 32,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 20,
+      "stamina_cost": 7,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "lead_uppercut",
+      "name": "Lead Uppercut",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "lead_hand",
+      "power": 30,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 19,
+      "stamina_cost": 6,
+      "tags": [
+        "boxing",
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "rear_uppercut",
+      "name": "Rear Uppercut",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 34,
+      "startup_frames": 14,
+      "active_frames": 3,
+      "recovery_frames": 22,
+      "stamina_cost": 7,
+      "tags": [
+        "boxing",
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "overhand",
+      "name": "Overhand",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 36,
+      "startup_frames": 16,
+      "active_frames": 3,
+      "recovery_frames": 26,
+      "stamina_cost": 8,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "body_jab",
+      "name": "Body Jab",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "lead_hand",
+      "power": 18,
+      "startup_frames": 9,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "body_cross",
+      "name": "Body Cross",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "rear_hand",
+      "power": 26,
+      "startup_frames": 11,
+      "active_frames": 3,
+      "recovery_frames": 15,
+      "stamina_cost": 5,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "palm_strike",
+      "name": "Palm Strike",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "lead_hand",
+      "power": 24,
+      "startup_frames": 9,
+      "active_frames": 3,
+      "recovery_frames": 14,
+      "stamina_cost": 5,
+      "tags": [
+        "boxing",
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "hammerfist",
+      "name": "Hammerfist",
+      "type": "strike",
+      "context": "ground",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 30,
+      "startup_frames": 12,
+      "active_frames": 3,
+      "recovery_frames": 18,
+      "stamina_cost": 6,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "backfist",
+      "name": "Backfist",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 26,
+      "startup_frames": 12,
+      "active_frames": 3,
+      "recovery_frames": 17,
+      "stamina_cost": 6,
+      "tags": [
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "spinning_backfist",
+      "name": "Spinning Backfist",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_hand",
+      "power": 40,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 32,
+      "stamina_cost": 10,
+      "tags": [
+        "long",
+        "boxing"
+      ]
+    },
+    {
+      "technique_id": "front_kick",
+      "name": "Front Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "lead_leg",
+      "power": 28,
+      "startup_frames": 15,
+      "active_frames": 3,
+      "recovery_frames": 22,
+      "stamina_cost": 7,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "teep",
+      "name": "Teep",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "lead_leg",
+      "power": 24,
+      "startup_frames": 11,
+      "active_frames": 3,
+      "recovery_frames": 16,
+      "stamina_cost": 5,
+      "tags": [
+        "kicking",
+        "long"
+      ]
+    },
+    {
+      "technique_id": "round_kick_body",
+      "name": "Round Kick - Body",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "rear_leg",
+      "power": 34,
+      "startup_frames": 16,
+      "active_frames": 3,
+      "recovery_frames": 25,
+      "stamina_cost": 8,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "round_kick_head",
+      "name": "Round Kick - Head",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_leg",
+      "power": 42,
+      "startup_frames": 21,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "low_kick",
+      "name": "Low Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "lead_leg",
+      "weapon": "rear_leg",
+      "power": 28,
+      "startup_frames": 14,
+      "active_frames": 3,
+      "recovery_frames": 21,
+      "stamina_cost": 7,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "calf_kick",
+      "name": "Calf Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "lead_leg",
+      "weapon": "rear_leg",
+      "power": 24,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 19,
+      "stamina_cost": 6,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "side_kick",
+      "name": "Side Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "rear_leg",
+      "power": 36,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 28,
+      "stamina_cost": 9,
+      "tags": [
+        "long",
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "spinning_back_kick",
+      "name": "Spinning Back Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "torso",
+      "weapon": "rear_leg",
+      "power": 46,
+      "startup_frames": 24,
+      "active_frames": 3,
+      "recovery_frames": 38,
+      "stamina_cost": 12,
+      "tags": [
+        "long",
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "axe_kick",
+      "name": "Axe Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_leg",
+      "power": 40,
+      "startup_frames": 23,
+      "active_frames": 3,
+      "recovery_frames": 36,
+      "stamina_cost": 12,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "hook_kick",
+      "name": "Hook Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_leg",
+      "power": 38,
+      "startup_frames": 21,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "crescent_kick",
+      "name": "Crescent Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "lead_leg",
+      "power": 32,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 27,
+      "stamina_cost": 9,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "question_mark_kick",
+      "name": "Question Mark Kick",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_leg",
+      "power": 40,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 35,
+      "stamina_cost": 11,
+      "tags": [
+        "kicking"
+      ]
+    },
+    {
+      "technique_id": "flying_knee",
+      "name": "Flying Knee",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_knee",
+      "power": 48,
+      "startup_frames": 26,
+      "active_frames": 3,
+      "recovery_frames": 40,
+      "stamina_cost": 13,
+      "tags": [
+        "kicking",
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "lead_knee",
+      "name": "Lead Knee",
+      "type": "strike",
+      "context": "clinch",
+      "target": "torso",
+      "weapon": "lead_knee",
+      "power": 30,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 20,
+      "stamina_cost": 7,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "rear_knee",
+      "name": "Rear Knee",
+      "type": "strike",
+      "context": "clinch",
+      "target": "torso",
+      "weapon": "rear_knee",
+      "power": 36,
+      "startup_frames": 15,
+      "active_frames": 3,
+      "recovery_frames": 24,
+      "stamina_cost": 8,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "knee_head",
+      "name": "Knee to Head",
+      "type": "strike",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "rear_knee",
+      "power": 44,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 30,
+      "stamina_cost": 10,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "lead_elbow",
+      "name": "Lead Elbow",
+      "type": "strike",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "lead_elbow",
+      "power": 34,
+      "startup_frames": 12,
+      "active_frames": 3,
+      "recovery_frames": 21,
+      "stamina_cost": 7,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "rear_elbow",
+      "name": "Rear Elbow",
+      "type": "strike",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "rear_elbow",
+      "power": 38,
+      "startup_frames": 14,
+      "active_frames": 3,
+      "recovery_frames": 24,
+      "stamina_cost": 8,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "spinning_elbow",
+      "name": "Spinning Elbow",
+      "type": "strike",
+      "context": "standing",
+      "target": "head",
+      "weapon": "rear_elbow",
+      "power": 44,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 36,
+      "stamina_cost": 12,
+      "tags": [
+        "boxing",
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "headbutt",
+      "name": "Headbutt",
+      "type": "strike",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "head",
+      "power": 38,
+      "startup_frames": 11,
+      "active_frames": 3,
+      "recovery_frames": 18,
+      "stamina_cost": 6,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "double_leg",
+      "name": "Double Leg",
+      "type": "takedown",
+      "context": "standing",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 30,
+      "stamina_cost": 10,
+      "tags": [
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "single_leg",
+      "name": "Single Leg",
+      "type": "takedown",
+      "context": "standing",
+      "target": "leg",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 27,
+      "stamina_cost": 9,
+      "tags": [
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "high_crotch",
+      "name": "High Crotch",
+      "type": "takedown",
+      "context": "standing",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 19,
+      "active_frames": 3,
+      "recovery_frames": 29,
+      "stamina_cost": 10,
+      "tags": [
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "body_lock_trip",
+      "name": "Body Lock Trip",
+      "type": "takedown",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 17,
+      "active_frames": 3,
+      "recovery_frames": 25,
+      "stamina_cost": 8,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "inside_trip",
+      "name": "Inside Trip",
+      "type": "takedown",
+      "context": "clinch",
+      "target": "leg",
+      "weapon": "leg",
+      "power": 0,
+      "startup_frames": 14,
+      "active_frames": 3,
+      "recovery_frames": 22,
+      "stamina_cost": 7,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "outside_trip",
+      "name": "Outside Trip",
+      "type": "takedown",
+      "context": "clinch",
+      "target": "leg",
+      "weapon": "leg",
+      "power": 0,
+      "startup_frames": 15,
+      "active_frames": 3,
+      "recovery_frames": 23,
+      "stamina_cost": 8,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "osoto_gari",
+      "name": "Osoto Gari",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "leg",
+      "power": 0,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 28,
+      "stamina_cost": 9,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "ouchi_gari",
+      "name": "Ouchi Gari",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "leg",
+      "power": 0,
+      "startup_frames": 17,
+      "active_frames": 3,
+      "recovery_frames": 26,
+      "stamina_cost": 9,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "harai_goshi",
+      "name": "Harai Goshi",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "hip",
+      "power": 0,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "uchi_mata",
+      "name": "Uchi Mata",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "hip",
+      "power": 0,
+      "startup_frames": 23,
+      "active_frames": 3,
+      "recovery_frames": 35,
+      "stamina_cost": 12,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "seoi_nage",
+      "name": "Seoi Nage",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "shoulder",
+      "power": 0,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "hip_toss",
+      "name": "Hip Toss",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "hip",
+      "power": 0,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 31,
+      "stamina_cost": 10,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "suplex",
+      "name": "Suplex",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 28,
+      "active_frames": 3,
+      "recovery_frames": 44,
+      "stamina_cost": 14,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "lateral_drop",
+      "name": "Lateral Drop",
+      "type": "throw",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 26,
+      "active_frames": 3,
+      "recovery_frames": 41,
+      "stamina_cost": 13,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "snapdown",
+      "name": "Snapdown",
+      "type": "takedown",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 14,
+      "active_frames": 3,
+      "recovery_frames": 20,
+      "stamina_cost": 7,
+      "tags": [
+        "clinch",
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "sprawl",
+      "name": "Sprawl",
+      "type": "defense",
+      "context": "takedown",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 10,
+      "active_frames": 3,
+      "recovery_frames": 14,
+      "stamina_cost": 5,
+      "tags": [
+        "takedown"
+      ]
+    },
+    {
+      "technique_id": "whizzer",
+      "name": "Whizzer",
+      "type": "defense",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "arm",
+      "power": 0,
+      "startup_frames": 9,
+      "active_frames": 3,
+      "recovery_frames": 13,
+      "stamina_cost": 4,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "underhook",
+      "name": "Underhook",
+      "type": "control",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "arm",
+      "power": 0,
+      "startup_frames": 7,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "double_underhooks",
+      "name": "Double Underhooks",
+      "type": "control",
+      "context": "clinch",
+      "target": "body",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 9,
+      "active_frames": 3,
+      "recovery_frames": 13,
+      "stamina_cost": 4,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "thai_plum",
+      "name": "Thai Plum",
+      "type": "control",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 10,
+      "active_frames": 3,
+      "recovery_frames": 15,
+      "stamina_cost": 5,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "collar_tie",
+      "name": "Collar Tie",
+      "type": "control",
+      "context": "clinch",
+      "target": "head",
+      "weapon": "arm",
+      "power": 0,
+      "startup_frames": 7,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "clinch"
+      ]
+    },
+    {
+      "technique_id": "guard_pull",
+      "name": "Guard Pull",
+      "type": "transition",
+      "context": "standing",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 15,
+      "active_frames": 3,
+      "recovery_frames": 22,
+      "stamina_cost": 7,
+      "tags": [
+        "takedown",
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "closed_guard",
+      "name": "Closed Guard Control",
+      "type": "control",
+      "context": "ground",
+      "target": "body",
+      "weapon": "legs",
+      "power": 0,
+      "startup_frames": 6,
+      "active_frames": 3,
+      "recovery_frames": 8,
+      "stamina_cost": 4,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "half_guard",
+      "name": "Half Guard Control",
+      "type": "control",
+      "context": "ground",
+      "target": "body",
+      "weapon": "legs",
+      "power": 0,
+      "startup_frames": 6,
+      "active_frames": 3,
+      "recovery_frames": 8,
+      "stamina_cost": 4,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "side_control",
+      "name": "Side Control",
+      "type": "control",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 6,
+      "active_frames": 3,
+      "recovery_frames": 8,
+      "stamina_cost": 4,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "mount_control",
+      "name": "Mount Control",
+      "type": "control",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 7,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "back_control",
+      "name": "Back Control",
+      "type": "control",
+      "context": "ground",
+      "target": "body",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 7,
+      "active_frames": 3,
+      "recovery_frames": 10,
+      "stamina_cost": 4,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "guard_pass",
+      "name": "Guard Pass",
+      "type": "transition",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 26,
+      "stamina_cost": 9,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "half_guard_pass",
+      "name": "Half Guard Pass",
+      "type": "transition",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 16,
+      "active_frames": 3,
+      "recovery_frames": 24,
+      "stamina_cost": 8,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "bridge_escape",
+      "name": "Bridge Escape",
+      "type": "escape",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 15,
+      "active_frames": 3,
+      "recovery_frames": 22,
+      "stamina_cost": 7,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "shrimp_escape",
+      "name": "Shrimp Escape",
+      "type": "escape",
+      "context": "ground",
+      "target": "body",
+      "weapon": "body",
+      "power": 0,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 20,
+      "stamina_cost": 7,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "technical_standup",
+      "name": "Technical Stand-Up",
+      "type": "escape",
+      "context": "ground",
+      "target": "body",
+      "weapon": "legs",
+      "power": 0,
+      "startup_frames": 12,
+      "active_frames": 3,
+      "recovery_frames": 18,
+      "stamina_cost": 6,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "armbar",
+      "name": "Armbar",
+      "type": "submission",
+      "context": "ground",
+      "target": "arm",
+      "weapon": "hips",
+      "power": 0,
+      "startup_frames": 24,
+      "active_frames": 3,
+      "recovery_frames": 36,
+      "stamina_cost": 12,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "kimura",
+      "name": "Kimura",
+      "type": "submission",
+      "context": "ground",
+      "target": "arm",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "americana",
+      "name": "Americana",
+      "type": "submission",
+      "context": "ground",
+      "target": "arm",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 31,
+      "stamina_cost": 10,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "rear_naked_choke",
+      "name": "Rear Naked Choke",
+      "type": "submission",
+      "context": "ground",
+      "target": "neck",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 24,
+      "active_frames": 3,
+      "recovery_frames": 36,
+      "stamina_cost": 12,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "guillotine",
+      "name": "Guillotine",
+      "type": "submission",
+      "context": "clinch",
+      "target": "neck",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 22,
+      "active_frames": 3,
+      "recovery_frames": 34,
+      "stamina_cost": 11,
+      "tags": [
+        "clinch",
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "triangle_choke",
+      "name": "Triangle Choke",
+      "type": "submission",
+      "context": "ground",
+      "target": "neck",
+      "weapon": "legs",
+      "power": 0,
+      "startup_frames": 25,
+      "active_frames": 3,
+      "recovery_frames": 38,
+      "stamina_cost": 13,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "heel_hook",
+      "name": "Heel Hook",
+      "type": "submission",
+      "context": "ground",
+      "target": "leg",
+      "weapon": "legs",
+      "power": 0,
+      "startup_frames": 24,
+      "active_frames": 3,
+      "recovery_frames": 37,
+      "stamina_cost": 12,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "kneebar",
+      "name": "Kneebar",
+      "type": "submission",
+      "context": "ground",
+      "target": "leg",
+      "weapon": "hips",
+      "power": 0,
+      "startup_frames": 23,
+      "active_frames": 3,
+      "recovery_frames": 35,
+      "stamina_cost": 12,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "ankle_lock",
+      "name": "Straight Ankle Lock",
+      "type": "submission",
+      "context": "ground",
+      "target": "leg",
+      "weapon": "arms",
+      "power": 0,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 30,
+      "stamina_cost": 10,
+      "tags": [
+        "submission"
+      ]
+    },
+    {
+      "technique_id": "ground_punch",
+      "name": "Ground Punch",
+      "type": "strike",
+      "context": "ground",
+      "target": "head",
+      "weapon": "hand",
+      "power": 28,
+      "startup_frames": 9,
+      "active_frames": 3,
+      "recovery_frames": 14,
+      "stamina_cost": 5,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "ground_elbow",
+      "name": "Ground Elbow",
+      "type": "strike",
+      "context": "ground",
+      "target": "head",
+      "weapon": "elbow",
+      "power": 34,
+      "startup_frames": 11,
+      "active_frames": 3,
+      "recovery_frames": 17,
+      "stamina_cost": 6,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "soccer_kick_head",
+      "name": "Soccer Kick to Head",
+      "type": "strike",
+      "context": "grounded_opponent",
+      "target": "head",
+      "weapon": "leg",
+      "power": 50,
+      "startup_frames": 24,
+      "active_frames": 3,
+      "recovery_frames": 38,
+      "stamina_cost": 12,
+      "tags": [
+        "ground",
+        "pride"
+      ]
+    },
+    {
+      "technique_id": "stomp_head",
+      "name": "Stomp to Head",
+      "type": "strike",
+      "context": "grounded_opponent",
+      "target": "head",
+      "weapon": "leg",
+      "power": 52,
+      "startup_frames": 26,
+      "active_frames": 3,
+      "recovery_frames": 40,
+      "stamina_cost": 13,
+      "tags": [
+        "ground",
+        "pride"
+      ]
+    },
+    {
+      "technique_id": "stomp_body",
+      "name": "Stomp to Body",
+      "type": "strike",
+      "context": "grounded_opponent",
+      "target": "torso",
+      "weapon": "leg",
+      "power": 40,
+      "startup_frames": 20,
+      "active_frames": 3,
+      "recovery_frames": 31,
+      "stamina_cost": 10,
+      "tags": [
+        "ground",
+        "pride"
+      ]
+    },
+    {
+      "technique_id": "grounded_knee_head",
+      "name": "Knee to Grounded Head",
+      "type": "strike",
+      "context": "grounded_opponent",
+      "target": "head",
+      "weapon": "knee",
+      "power": 46,
+      "startup_frames": 19,
+      "active_frames": 3,
+      "recovery_frames": 30,
+      "stamina_cost": 10,
+      "tags": [
+        "ground",
+        "pride"
+      ]
+    },
+    {
+      "technique_id": "upkick",
+      "name": "Upkick",
+      "type": "strike",
+      "context": "ground",
+      "target": "head",
+      "weapon": "leg",
+      "power": 38,
+      "startup_frames": 18,
+      "active_frames": 3,
+      "recovery_frames": 28,
+      "stamina_cost": 9,
+      "tags": [
+        "ground"
+      ]
+    },
+    {
+      "technique_id": "leg_kick_grounded",
+      "name": "Kick to Grounded Leg",
+      "type": "strike",
+      "context": "grounded_opponent",
+      "target": "leg",
+      "weapon": "leg",
+      "power": 28,
+      "startup_frames": 13,
+      "active_frames": 3,
+      "recovery_frames": 20,
+      "stamina_cost": 7,
+      "tags": [
+        "ground"
+      ]
+    }
+  ]
+}
