@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "power_policy",
+    "tokens",
+    "cosmetic_tiers"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "power_policy": {
+      "type": "object",
+      "required": [
+        "moves_unlocked_from_start",
+        "styles_unlocked_from_start",
+        "stances_unlocked_from_start",
+        "practice_tools_unlocked_from_start",
+        "fighter_reroll_free",
+        "stat_progression",
+        "cosmetic_power_bonuses"
+      ],
+      "properties": {
+        "moves_unlocked_from_start": {
+          "const": true
+        },
+        "styles_unlocked_from_start": {
+          "const": true
+        },
+        "stances_unlocked_from_start": {
+          "const": true
+        },
+        "practice_tools_unlocked_from_start": {
+          "const": true
+        },
+        "fighter_reroll_free": {
+          "const": true
+        },
+        "stat_progression": {
+          "const": false
+        },
+        "cosmetic_power_bonuses": {
+          "const": false
+        }
+      }
+    },
+    "tokens": {
+      "type": "object"
+    },
+    "cosmetic_tiers": {
+      "type": "array",
+      "minItems": 1
+    }
+  }
+}
