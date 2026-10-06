@@ -75,6 +75,7 @@ function schemaTargets() {
     ["data/schemas/rulesets.schema.json", ["data/game/rulesets.json"]],
     ["data/schemas/competition.schema.json", ["data/game/competition.json"]],
     ["data/schemas/cosmetics.schema.json", ["data/cosmetics/catalog.json"]],
+    ["data/schemas/combat-profile.schema.json", ["data/game/combat-profile.json"]],
     ["data/schemas/body-physics.schema.json", ["data/combat/body-physics.json"]],
     ["data/schemas/events.schema.json", ["data/combat/events.json"]],
     ["data/schemas/damage-model.schema.json", ["data/combat/damage-model.json"]],
@@ -261,6 +262,31 @@ function checkMayQuvInvariants(errors) {
   if (!normal || normal.damage_persistence !== "none") errors.push("normal multiplayer must not persist damage between fights");
 }
 
+
+function checkCombatProfile(errors) {
+  const profile = load("data/game/combat-profile.json");
+  const positions = load("data/combat/positions.json").positions;
+  const techniques = load("data/combat/techniques.json").techniques;
+  const positionIds = new Set(positions.map((x) => x.position_id));
+  const techniqueIds = new Set(techniques.map((x) => x.technique_id));
+
+  for (const id of [...profile.active_positions, ...profile.disabled_positions]) {
+    if (!positionIds.has(id)) errors.push(`combat profile references missing position ${id}`);
+  }
+  for (const id of profile.disabled_technique_ids) {
+    if (!techniqueIds.has(id)) errors.push(`combat profile disables missing technique ${id}`);
+  }
+  for (const id of profile.grounded_window.allowed_attacks) {
+    if (!techniqueIds.has(id)) errors.push(`grounded window references missing technique ${id}`);
+  }
+  if (profile.active_positions.some((id) => profile.disabled_positions.includes(id))) {
+    errors.push("combat profile position cannot be both active and disabled");
+  }
+  if (profile.finishes.includes("submission")) {
+    errors.push("default MAY' QUV combat profile must not use submissions");
+  }
+}
+
 function checkMenuTargets(errors) {
   const menu = load("data/ui/main-menu.json");
   const pages = Object.keys(menu.pages);
@@ -287,6 +313,7 @@ export function validateAll() {
   checkStyleStances(errors);
   checkMayQuvReferences(errors);
   checkMayQuvInvariants(errors);
+  checkCombatProfile(errors);
   return { errors, notes };
 }
 
