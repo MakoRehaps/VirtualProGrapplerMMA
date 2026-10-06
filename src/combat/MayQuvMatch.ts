@@ -54,6 +54,7 @@ export interface MayQuvMatchSnapshot {
   elapsedFrames: number;
   timeLimitFrames: number | null;
   decision: JudgingScore | null;
+  rulesetId: string;
 }
 
 export class MayQuvMatch {
@@ -85,6 +86,7 @@ export class MayQuvMatch {
   private readonly judgingStats: Record<CombatSide, JudgingStats> =
     freshJudgingStats();
   private readonly timeLimitFrames: number | null;
+  private readonly rulesetId: string;
   private decision: JudgingScore | null = null;
 
   constructor(
@@ -92,14 +94,18 @@ export class MayQuvMatch {
     opponentLoadout: FighterLoadout,
     seed = 0x4d415951,
     playerCondition?: FighterCondition,
-    opponentCondition?: FighterCondition
+    opponentCondition?: FighterCondition,
+    rulesetId = "may_quv_standard"
   ) {
     this.rng = new Rng(seed);
-    const standardRuleset = rulesetsJson.rulesets.find(
-      (r) => r.ruleset_id === "may_quv_standard"
-    );
+    this.rulesetId = rulesetId;
+    const ruleset =
+      rulesetsJson.rulesets.find((r) => r.ruleset_id === rulesetId) ??
+      rulesetsJson.rulesets.find(
+        (r) => r.ruleset_id === "may_quv_standard"
+      );
     const roundSeconds =
-      standardRuleset?.rounds?.reduce((sum, seconds) => sum + seconds, 0) ?? 0;
+      ruleset?.rounds?.reduce((sum, seconds) => sum + seconds, 0) ?? 0;
     this.timeLimitFrames = roundSeconds > 0 ? roundSeconds * 60 : null;
 
     this.player = createFighterState(playerLoadout);
@@ -572,6 +578,7 @@ export class MayQuvMatch {
       elapsedFrames: this.lastStepFrame,
       timeLimitFrames: this.timeLimitFrames,
       decision: this.decision ? { ...this.decision } : null,
+      rulesetId: this.rulesetId,
     };
   }
 }
