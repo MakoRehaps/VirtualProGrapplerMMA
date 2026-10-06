@@ -44,7 +44,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "South Indian martial tradition represented through its living unarmed practice."
+      "notes": "South Indian martial tradition represented through its living unarmed practice.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "aikido",
@@ -87,7 +88,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Living Japanese grappling art centered on blending, off-balancing, throws and joint controls."
+      "notes": "Living Japanese grappling art centered on blending, off-balancing, throws and joint controls.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "alysh",
@@ -130,7 +132,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Central Asian belt wrestling."
+      "notes": "Central Asian belt wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "american_kickboxing",
@@ -172,7 +175,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Full-contact American kickboxing tradition."
+      "notes": "Full-contact American kickboxing tradition.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "angampora",
@@ -216,7 +220,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sri Lankan martial tradition; game entry uses its unarmed component."
+      "notes": "Sri Lankan martial tradition; game entry uses its unarmed component.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "army_hand_to_hand_combat",
@@ -261,7 +266,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Russian military-derived competitive hand-to-hand system."
+      "notes": "Russian military-derived competitive hand-to-hand system.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "ashihara_karate",
@@ -304,7 +310,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sabaki-oriented knockdown karate."
+      "notes": "Sabaki-oriented knockdown karate.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "ashyrtmaly_aba",
@@ -345,7 +352,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Turkish jacket wrestling recognized in international traditional-wrestling competition."
+      "notes": "Turkish jacket wrestling recognized in international traditional-wrestling competition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "baguazhang",
@@ -389,7 +397,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Chinese internal art known for circular footwork, angle changes and throwing methods."
+      "notes": "Chinese internal art known for circular footwork, angle changes and throwing methods.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "bajiquan",
@@ -430,7 +439,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Chinese style known for explosive short-range power and elbows."
+      "notes": "Chinese style known for explosive short-range power and elbows.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "bando",
@@ -474,7 +484,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Burmese martial-art family; this entry represents its unarmed methods."
+      "notes": "Burmese martial-art family; this entry represents its unarmed methods.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "bare_knuckle_boxing",
@@ -517,7 +528,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Bare-knuckle rules emphasize hand durability, clinch fighting and compact punching."
+      "notes": "Bare-knuckle rules emphasize hand durability, clinch fighting and compact punching.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "bashkir_kuresh",
@@ -559,7 +571,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Bashkir belt wrestling tradition."
+      "notes": "Bashkir belt wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "beach_wrestling",
@@ -600,7 +613,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern international wrestling style contested on sand."
+      "notes": "Modern international wrestling style contested on sand.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "bokator",
@@ -645,7 +659,8 @@
         "ground_bias": 35,
         "aggression_bias": 50
       },
-      "notes": "Cambodian traditional martial art with striking and grappling components."
+      "notes": "Cambodian traditional martial art with striking and grappling components.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "bokh",
@@ -688,7 +703,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Mongolian traditional wrestling."
+      "notes": "Mongolian traditional wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "boli_khela",
@@ -729,7 +745,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Bengali wrestling competition."
+      "notes": "Traditional Bengali wrestling competition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "boxing",
@@ -770,7 +787,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern gloved boxing; elite hand striking, footwork and defense."
+      "notes": "Modern gloved boxing; elite hand striking, footwork and defense.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "brazilian_jiu_jitsu",
@@ -814,7 +832,8 @@
         "ground_bias": 100,
         "aggression_bias": 50
       },
-      "notes": "Ground-focused submission grappling developed in Brazil from judo/jujutsu."
+      "notes": "Ground-focused submission grappling developed in Brazil from judo/jujutsu.",
+      "default_stance": "submission_grappler"
     },
     {
       "style_id": "canarian_wrestling",
@@ -857,7 +876,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Canarian jacket/belt wrestling."
+      "notes": "Canarian jacket/belt wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "capoeira",
@@ -900,7 +920,8 @@
         "ground_bias": 0,
         "aggression_bias": 65
       },
-      "notes": "Afro-Brazilian martial art emphasizing deceptive movement, kicks and sweeps."
+      "notes": "Afro-Brazilian martial art emphasizing deceptive movement, kicks and sweeps.",
+      "default_stance": "capoeira_ginga"
     },
     {
       "style_id": "catch_wrestling",
@@ -946,7 +967,8 @@
         "ground_bias": 95,
         "aggression_bias": 50
       },
-      "notes": "Submission-oriented wrestling descended from Lancashire catch-as-catch-can."
+      "notes": "Submission-oriented wrestling descended from Lancashire catch-as-catch-can.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "chidaoba",
@@ -988,7 +1010,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Georgian jacket wrestling known for dynamic throws."
+      "notes": "Georgian jacket wrestling known for dynamic throws.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "choy_li_fut",
@@ -1031,7 +1054,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Southern Chinese striking art using wide circular hand techniques and kicks."
+      "notes": "Southern Chinese striking art using wide circular hand techniques and kicks.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "combat_hapkido",
@@ -1076,7 +1100,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern self-defense system derived from Hapkido."
+      "notes": "Modern self-defense system derived from Hapkido.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "combat_jiu_jitsu",
@@ -1119,7 +1144,8 @@
         "ground_bias": 100,
         "aggression_bias": 50
       },
-      "notes": "Submission grappling ruleset allowing limited open-hand ground strikes."
+      "notes": "Submission grappling ruleset allowing limited open-hand ground strikes.",
+      "default_stance": "submission_grappler"
     },
     {
       "style_id": "combat_judo",
@@ -1163,7 +1189,8 @@
         "ground_bias": 60,
         "aggression_bias": 50
       },
-      "notes": "Game category for modern judo-derived full-combat rulesets that add striking."
+      "notes": "Game category for modern judo-derived full-combat rulesets that add striking.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "combat_sambo",
@@ -1212,7 +1239,8 @@
         "ground_bias": 75,
         "aggression_bias": 85
       },
-      "notes": "Combat form of Sambo integrating strikes and submissions."
+      "notes": "Combat form of Sambo integrating strikes and submissions.",
+      "default_stance": "sambo_hybrid"
     },
     {
       "style_id": "combat_submission_wrestling",
@@ -1256,7 +1284,8 @@
         "ground_bias": 100,
         "aggression_bias": 50
       },
-      "notes": "Modern submission-wrestling system blending catch, judo, sambo and jiu-jitsu influences."
+      "notes": "Modern submission-wrestling system blending catch, judo, sambo and jiu-jitsu influences.",
+      "default_stance": "submission_grappler"
     },
     {
       "style_id": "coreeda",
@@ -1297,7 +1326,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern revival/reconstruction of an Australian Indigenous wrestling tradition."
+      "notes": "Modern revival/reconstruction of an Australian Indigenous wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "cornish_wrestling",
@@ -1338,7 +1368,8 @@
         "ground_bias": 10,
         "aggression_bias": 50
       },
-      "notes": "Jacket wrestling tradition from Cornwall."
+      "notes": "Jacket wrestling tradition from Cornwall.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "cumberland_westmorland_wrestling",
@@ -1380,7 +1411,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "English backhold wrestling tradition."
+      "notes": "English backhold wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "daito_ryu_aikijujutsu",
@@ -1423,7 +1455,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Japanese jujutsu lineage emphasizing joint control, off-balancing and throws."
+      "notes": "Traditional Japanese jujutsu lineage emphasizing joint control, off-balancing and throws.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "dambe",
@@ -1465,7 +1498,8 @@
         "ground_bias": 0,
         "aggression_bias": 100
       },
-      "notes": "Hausa striking sport centered on a dominant wrapped punching hand."
+      "notes": "Hausa striking sport centered on a dominant wrapped punching hand.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "defendo",
@@ -1510,7 +1544,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Canadian close-combat/self-defense lineage derived from wartime combatives."
+      "notes": "Canadian close-combat/self-defense lineage derived from wartime combatives.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "defendu",
@@ -1554,7 +1589,8 @@
         "ground_bias": 0,
         "aggression_bias": 95
       },
-      "notes": "Fairbairn-era close-combat system maintained through modern revival and derivative training."
+      "notes": "Fairbairn-era close-combat system maintained through modern revival and derivative training.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "dumog",
@@ -1595,7 +1631,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Filipino grappling/wrestling methods."
+      "notes": "Filipino grappling/wrestling methods.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "engolo",
@@ -1636,7 +1673,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Angolan combat game/martial tradition associated with inverted and kicking movement."
+      "notes": "Angolan combat game/martial tradition associated with inverted and kicking movement.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "enshin_karate",
@@ -1681,7 +1719,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sabaki karate with grabs, sweeps and throws."
+      "notes": "Sabaki karate with grabs, sweeps and throws.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "evala",
@@ -1722,7 +1761,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional wrestling associated with Kabye Evala ceremonies."
+      "notes": "Traditional wrestling associated with Kabye Evala ceremonies.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "fagatua",
@@ -1764,7 +1804,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Tokelauan wrestling documented as a living/revived Pacific combat tradition."
+      "notes": "Traditional Tokelauan wrestling documented as a living/revived Pacific combat tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "folkstyle_wrestling",
@@ -1806,7 +1847,8 @@
         "ground_bias": 85,
         "aggression_bias": 50
       },
-      "notes": "US scholastic/collegiate wrestling emphasizing control and escapes."
+      "notes": "US scholastic/collegiate wrestling emphasizing control and escapes.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "freestyle_wrestling",
@@ -1848,7 +1890,8 @@
         "ground_bias": 70,
         "aggression_bias": 50
       },
-      "notes": "Olympic wrestling allowing attacks to the legs."
+      "notes": "Olympic wrestling allowing attacks to the legs.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "glima",
@@ -1889,7 +1932,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Icelandic wrestling tradition."
+      "notes": "Icelandic wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "goju_ryu_karate",
@@ -1932,7 +1976,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Close-range Okinawan/Japanese karate emphasizing hard-soft methods, body conditioning and circular defense."
+      "notes": "Close-range Okinawan/Japanese karate emphasizing hard-soft methods, body conditioning and circular defense.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "gongkwon_yusul",
@@ -1978,7 +2023,8 @@
         "ground_bias": 55,
         "aggression_bias": 50
       },
-      "notes": "Modern Korean hybrid martial art integrating striking and grappling."
+      "notes": "Modern Korean hybrid martial art integrating striking and grappling.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "gouren",
@@ -2020,7 +2066,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Breton jacket wrestling."
+      "notes": "Breton jacket wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "grappling_uww",
@@ -2063,7 +2110,8 @@
         "ground_bias": 100,
         "aggression_bias": 50
       },
-      "notes": "International submission-grappling ruleset governed as an associated wrestling style."
+      "notes": "International submission-grappling ruleset governed as an associated wrestling style.",
+      "default_stance": "submission_grappler"
     },
     {
       "style_id": "greco_roman_wrestling",
@@ -2105,7 +2153,8 @@
         "ground_bias": 60,
         "aggression_bias": 50
       },
-      "notes": "Olympic upper-body wrestling; leg attacks are prohibited."
+      "notes": "Olympic upper-body wrestling; leg attacks are prohibited.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "gulesh",
@@ -2146,7 +2195,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Azerbaijani wrestling."
+      "notes": "Traditional Azerbaijani wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "hapkido",
@@ -2191,7 +2241,8 @@
         "ground_bias": 35,
         "aggression_bias": 50
       },
-      "notes": "Korean martial art combining kicks, throws and joint locks."
+      "notes": "Korean martial art combining kicks, throws and joint locks.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "hisardut",
@@ -2236,7 +2287,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Israeli self-defense system combining striking and grappling."
+      "notes": "Israeli self-defense system combining striking and grappling.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "huka_huka",
@@ -2277,7 +2329,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Indigenous Brazilian wrestling practiced among peoples of the Xingu."
+      "notes": "Indigenous Brazilian wrestling practiced among peoples of the Xingu.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "hung_gar",
@@ -2320,7 +2373,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Southern Chinese system emphasizing rooted stances and powerful hand techniques."
+      "notes": "Southern Chinese system emphasizing rooted stances and powerful hand techniques.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "inbuan",
@@ -2362,7 +2416,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Mizo wrestling based on lifting and throwing from a belt-like grip."
+      "notes": "Traditional Mizo wrestling based on lifting and throwing from a belt-like grip.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "irish_collarg_elbow",
@@ -2404,7 +2459,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Historic Irish standing jacket-and-grip wrestling with modern revival."
+      "notes": "Historic Irish standing jacket-and-grip wrestling with modern revival.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "jeet_kune_do",
@@ -2450,7 +2506,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Bruce Lee's adaptive martial philosophy represented as a mobile cross-range fighting system."
+      "notes": "Bruce Lee's adaptive martial philosophy represented as a mobile cross-range fighting system.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "judo",
@@ -2494,7 +2551,8 @@
         "ground_bias": 60,
         "aggression_bias": 50
       },
-      "notes": "Throwing and grappling art founded by Jigoro Kano."
+      "notes": "Throwing and grappling art founded by Jigoro Kano.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "jujutsu",
@@ -2538,7 +2596,8 @@
         "ground_bias": 70,
         "aggression_bias": 50
       },
-      "notes": "Umbrella category for living Japanese jujutsu schools."
+      "notes": "Umbrella category for living Japanese jujutsu schools.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "kajukenbo",
@@ -2584,7 +2643,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Hawaiian-born hybrid martial art combining karate, judo/jujutsu, kenpo and boxing influences."
+      "notes": "Hawaiian-born hybrid martial art combining karate, judo/jujutsu, kenpo and boxing influences.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "kalaripayattu_unarmed",
@@ -2627,7 +2687,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Unarmed subset of Kalaripayattu."
+      "notes": "Unarmed subset of Kalaripayattu.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "kapap",
@@ -2672,7 +2733,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Israeli close-combat system; unarmed subset only."
+      "notes": "Israeli close-combat system; unarmed subset only.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "karakucak",
@@ -2713,7 +2775,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Turkish free wrestling."
+      "notes": "Traditional Turkish free wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "karate_kyokushin",
@@ -2757,7 +2820,8 @@
         "ground_bias": 0,
         "aggression_bias": 85
       },
-      "notes": "Full-contact knockdown karate known for body conditioning and powerful kicks."
+      "notes": "Full-contact knockdown karate known for body conditioning and powerful kicks.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "karate_shotokan",
@@ -2801,7 +2865,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Linear karate emphasizing distance, timing and decisive attacks."
+      "notes": "Linear karate emphasizing distance, timing and decisive attacks.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "kazakh_kuresi",
@@ -2843,7 +2908,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Kazakh traditional wrestling."
+      "notes": "Kazakh traditional wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "kenpo_karate",
@@ -2886,7 +2952,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "American Kenpo/Kenpo Karate family."
+      "notes": "American Kenpo/Kenpo Karate family.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "khapsagai",
@@ -2928,7 +2995,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sakha/Yakut traditional wrestling."
+      "notes": "Sakha/Yakut traditional wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "khuresh",
@@ -2970,7 +3038,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Tuvan traditional wrestling."
+      "notes": "Tuvan traditional wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "kokawa",
@@ -3013,7 +3082,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Hausa traditional wrestling."
+      "notes": "Hausa traditional wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "kokh",
@@ -3054,7 +3124,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Armenian wrestling."
+      "notes": "Traditional Armenian wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "krav_maga",
@@ -3099,7 +3170,8 @@
         "ground_bias": 0,
         "aggression_bias": 95
       },
-      "notes": "Modern self-defense system; game representation limited to unarmed techniques."
+      "notes": "Modern self-defense system; game representation limited to unarmed techniques.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "kudo",
@@ -3145,7 +3217,8 @@
         "ground_bias": 45,
         "aggression_bias": 50
       },
-      "notes": "Japanese mixed combat sport combining knockdown karate, judo-style grappling and head-protected striking."
+      "notes": "Japanese mixed combat sport combining knockdown karate, judo-style grappling and head-protected striking.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "kuk_sool_won",
@@ -3190,7 +3263,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern Korean martial system drawing from multiple Korean traditions."
+      "notes": "Modern Korean martial system drawing from multiple Korean traditions.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "kurash",
@@ -3234,7 +3308,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Uzbek jacket wrestling."
+      "notes": "Uzbek jacket wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "kuttu_varisai",
@@ -3277,7 +3352,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "South Indian unarmed striking tradition associated with Tamil martial practice."
+      "notes": "South Indian unarmed striking tradition associated with Tamil martial practice.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "lancashire_wrestling",
@@ -3319,7 +3395,8 @@
         "ground_bias": 75,
         "aggression_bias": 50
       },
-      "notes": "Traditional English catch-as-catch-can wrestling."
+      "notes": "Traditional English catch-as-catch-can wrestling.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "leonese_wrestling",
@@ -3361,7 +3438,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Spanish belt wrestling."
+      "notes": "Traditional Spanish belt wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "lethwei",
@@ -3404,7 +3482,8 @@
         "ground_bias": 0,
         "aggression_bias": 100
       },
-      "notes": "Burmese bare-knuckle striking allowing headbutts."
+      "notes": "Burmese bare-knuckle striking allowing headbutts.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "limalama",
@@ -3449,7 +3528,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Polynesian-American martial system with Samoan cultural roots and mixed striking/grappling."
+      "notes": "Polynesian-American martial system with Samoan cultural roots and mixed striking/grappling.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "lotar",
@@ -3494,7 +3574,8 @@
         "ground_bias": 0,
         "aggression_bias": 95
       },
-      "notes": "Israeli close-quarters combat training umbrella represented only by unarmed methods."
+      "notes": "Israeli close-quarters combat training umbrella represented only by unarmed methods.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "lua",
@@ -3539,7 +3620,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Revived Hawaiian martial tradition; this entry represents unarmed methods only."
+      "notes": "Revived Hawaiian martial tradition; this entry represents unarmed methods only.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "luta_livre_esportiva",
@@ -3582,7 +3664,8 @@
         "ground_bias": 100,
         "aggression_bias": 50
       },
-      "notes": "Brazilian no-gi submission wrestling."
+      "notes": "Brazilian no-gi submission wrestling.",
+      "default_stance": "submission_grappler"
     },
     {
       "style_id": "lutte_senegalaise",
@@ -3627,7 +3710,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Senegalese wrestling; professional forms may include striking."
+      "notes": "Senegalese wrestling; professional forms may include striking.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "lutte_traditionnelle",
@@ -3671,7 +3755,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "West African traditional wrestling ruleset practiced in multiple countries."
+      "notes": "West African traditional wrestling ruleset practiced in multiple countries.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "malakhra",
@@ -3713,7 +3798,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sindhi belt/waistcloth wrestling tradition."
+      "notes": "Sindhi belt/waistcloth wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "malla_yuddha",
@@ -3756,7 +3842,8 @@
         "ground_bias": 65,
         "aggression_bias": 50
       },
-      "notes": "Living/revived South Asian grappling tradition."
+      "notes": "Living/revived South Asian grappling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "mcmap",
@@ -3801,7 +3888,8 @@
         "ground_bias": 0,
         "aggression_bias": 95
       },
-      "notes": "U.S. Marine Corps Martial Arts Program; unarmed material only."
+      "notes": "U.S. Marine Corps Martial Arts Program; unarmed material only.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "mma",
@@ -3846,7 +3934,8 @@
         "ground_bias": 65,
         "aggression_bias": 50
       },
-      "notes": "Modern mixed martial arts; broad baseline rather than a regional style."
+      "notes": "Modern mixed martial arts; broad baseline rather than a regional style.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "modern_army_combatives",
@@ -3891,7 +3980,8 @@
         "ground_bias": 75,
         "aggression_bias": 90
       },
-      "notes": "Current U.S. Army combatives program represented through its unarmed curriculum."
+      "notes": "Current U.S. Army combatives program represented through its unarmed curriculum.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "moraingy",
@@ -3933,7 +4023,8 @@
         "ground_bias": 0,
         "aggression_bias": 95
       },
-      "notes": "Malagasy bare-fist striking tradition."
+      "notes": "Malagasy bare-fist striking tradition.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "muay_boran",
@@ -3975,7 +4066,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Umbrella term for pre-modern Thai fighting methods still practiced today."
+      "notes": "Umbrella term for pre-modern Thai fighting methods still practiced today.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "muay_lao",
@@ -4018,7 +4110,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Laotian ring striking tradition related to mainland Southeast Asian kickboxing."
+      "notes": "Laotian ring striking tradition related to mainland Southeast Asian kickboxing.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "muay_thai",
@@ -4061,7 +4154,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Thai eight-limb striking with strong clinch fighting."
+      "notes": "Thai eight-limb striking with strong clinch fighting.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "mukna",
@@ -4103,7 +4197,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Manipuri wrestling."
+      "notes": "Traditional Manipuri wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "musangwe",
@@ -4145,7 +4240,8 @@
         "ground_bias": 0,
         "aggression_bias": 100
       },
-      "notes": "Venda bare-knuckle boxing tradition."
+      "notes": "Venda bare-knuckle boxing tradition.",
+      "default_stance": "boxing_orthodox"
     },
     {
       "style_id": "musti_yuddha",
@@ -4185,7 +4281,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional South Asian fist-fighting lineage; surviving practice is limited."
+      "notes": "Traditional South Asian fist-fighting lineage; surviving practice is limited.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "mutaraha",
@@ -4226,7 +4323,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Emirati wrestling."
+      "notes": "Traditional Emirati wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "naban",
@@ -4269,7 +4367,8 @@
         "ground_bias": 65,
         "aggression_bias": 50
       },
-      "notes": "Traditional Burmese wrestling with throws, controls and submission-oriented techniques."
+      "notes": "Traditional Burmese wrestling with throws, controls and submission-oriented techniques.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "nhat_nam",
@@ -4312,7 +4411,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Vietnamese martial system with striking and grappling components."
+      "notes": "Vietnamese martial system with striking and grappling components.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "nippon_kempo",
@@ -4356,7 +4456,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Japanese armored full-contact combat sport mixing striking, throws and ground control."
+      "notes": "Japanese armored full-contact combat sport mixing striking, throws and ground control.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "northern_shaolin",
@@ -4399,7 +4500,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Northern Chinese martial tradition characterized in gameplay by mobile long-range kicking and striking."
+      "notes": "Northern Chinese martial tradition characterized in gameplay by mobile long-range kicking and striking.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "nuba_wrestling",
@@ -4440,7 +4542,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional wrestling of Nuba communities."
+      "notes": "Traditional wrestling of Nuba communities.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "pahlavani_wrestling",
@@ -4482,7 +4585,8 @@
         "ground_bias": 55,
         "aggression_bias": 50
       },
-      "notes": "Iranian traditional wrestling associated with the zurkhaneh/Pahlavani culture."
+      "notes": "Iranian traditional wrestling associated with the zurkhaneh/Pahlavani culture.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "panantukan",
@@ -4523,7 +4627,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Filipino empty-hand boxing concepts associated with FMA."
+      "notes": "Filipino empty-hand boxing concepts associated with FMA.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "pancrase_hybrid",
@@ -4568,7 +4673,8 @@
         "ground_bias": 75,
         "aggression_bias": 50
       },
-      "notes": "Open-palm striking and submission-heavy Japanese hybrid ruleset."
+      "notes": "Open-palm striking and submission-heavy Japanese hybrid ruleset.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "pankration_modern",
@@ -4614,7 +4720,8 @@
         "ground_bias": 65,
         "aggression_bias": 50
       },
-      "notes": "Modern sport revival inspired by ancient pankration."
+      "notes": "Modern sport revival inspired by ancient pankration.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "pehlwani",
@@ -4657,7 +4764,8 @@
         "ground_bias": 70,
         "aggression_bias": 50
       },
-      "notes": "South Asian traditional wrestling."
+      "notes": "South Asian traditional wrestling.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "pencak_silat",
@@ -4704,7 +4812,8 @@
         "ground_bias": 30,
         "aggression_bias": 50
       },
-      "notes": "Large family of Southeast Asian martial traditions; this entry models common unarmed competition/self-defense concepts."
+      "notes": "Large family of Southeast Asian martial traditions; this entry models common unarmed competition/self-defense concepts.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "pradal_serey",
@@ -4746,7 +4855,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Cambodian ring striking art with elbows, knees and clinch."
+      "notes": "Cambodian ring striking art with elbows, knees and clinch.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "ranggeln",
@@ -4788,7 +4898,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Alpine folk wrestling tradition still contested at festivals."
+      "notes": "Alpine folk wrestling tradition still contested at festivals.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "sambo",
@@ -4835,7 +4946,8 @@
         "ground_bias": 75,
         "aggression_bias": 50
       },
-      "notes": "Jacket grappling sport blending regional wrestling and judo influences."
+      "notes": "Jacket grappling sport blending regional wrestling and judo influences.",
+      "default_stance": "sambo_hybrid"
     },
     {
       "style_id": "sambo_freestyle",
@@ -4880,7 +4992,8 @@
         "ground_bias": 80,
         "aggression_bias": 50
       },
-      "notes": "Modern rules variant of Sambo that broadens legal submission techniques."
+      "notes": "Modern rules variant of Sambo that broadens legal submission techniques.",
+      "default_stance": "sambo_hybrid"
     },
     {
       "style_id": "sanda",
@@ -4924,7 +5037,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Chinese full-contact kickboxing with throws and catches."
+      "notes": "Chinese full-contact kickboxing with throws and catches.",
+      "default_stance": "sanda_hybrid"
     },
     {
       "style_id": "sarit_sarak",
@@ -4968,7 +5082,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Unarmed component associated with the Manipuri Thang-Ta tradition."
+      "notes": "Unarmed component associated with the Manipuri Thang-Ta tradition.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "savate",
@@ -5012,7 +5127,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "French kickboxing emphasizing precision, footwear-based kicking and range."
+      "notes": "French kickboxing emphasizing precision, footwear-based kicking and range.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "schwingen",
@@ -5054,7 +5170,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Swiss breeches wrestling."
+      "notes": "Swiss breeches wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "scottish_backhold",
@@ -5095,7 +5212,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Standing backhold wrestling; falling first loses."
+      "notes": "Standing backhold wrestling; falling first loses.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "seidokaikan",
@@ -5138,7 +5256,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Japanese full-contact karate lineage closely associated with modern kickboxing."
+      "notes": "Japanese full-contact karate lineage closely associated with modern kickboxing.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "shidokan_karate",
@@ -5184,7 +5303,8 @@
         "ground_bias": 30,
         "aggression_bias": 50
       },
-      "notes": "Triathlon-style Japanese full-contact karate combining knockdown striking, kickboxing and grappling."
+      "notes": "Triathlon-style Japanese full-contact karate combining knockdown striking, kickboxing and grappling.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "shito_ryu_karate",
@@ -5228,7 +5348,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Large technical karate system preserving many kata and both linear and circular tactics."
+      "notes": "Large technical karate system preserving many kata and both linear and circular tactics.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "shoot_wrestling",
@@ -5274,7 +5395,8 @@
         "ground_bias": 90,
         "aggression_bias": 50
       },
-      "notes": "Japanese submission-fighting lineage that grew from professional wrestling."
+      "notes": "Japanese submission-fighting lineage that grew from professional wrestling.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "shootfighting",
@@ -5321,7 +5443,8 @@
         "ground_bias": 75,
         "aggression_bias": 50
       },
-      "notes": "Modern hybrid combat-sport family descended from shoot wrestling."
+      "notes": "Modern hybrid combat-sport family descended from shoot wrestling.",
+      "default_stance": "wrestling_crouch"
     },
     {
       "style_id": "shooto",
@@ -5367,7 +5490,8 @@
         "ground_bias": 70,
         "aggression_bias": 50
       },
-      "notes": "Japanese mixed combat sport founded by Satoru Sayama."
+      "notes": "Japanese mixed combat sport founded by Satoru Sayama.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "shorin_ryu_karate",
@@ -5411,7 +5535,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Major Okinawan karate family emphasizing speed, natural movement and angles."
+      "notes": "Major Okinawan karate family emphasizing speed, natural movement and angles.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "shorinji_kempo",
@@ -5456,7 +5581,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Japanese martial system combining striking, releases, locks and throws."
+      "notes": "Japanese martial system combining striking, releases, locks and throws.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "shuai_jiao",
@@ -5498,7 +5624,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Chinese jacket wrestling emphasizing fast throws."
+      "notes": "Chinese jacket wrestling emphasizing fast throws.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "sikaran",
@@ -5539,7 +5666,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Filipino kicking art."
+      "notes": "Filipino kicking art.",
+      "default_stance": "taekwondo_side_on"
     },
     {
       "style_id": "silat_melayu",
@@ -5585,7 +5713,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Malay silat traditions represented through their unarmed striking, sweeps, throws and controls."
+      "notes": "Malay silat traditions represented through their unarmed striking, sweeps, throws and controls.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "silat_olahraga",
@@ -5631,7 +5760,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Sport silat ruleset focused on strikes, catches, sweeps and throws."
+      "notes": "Sport silat ruleset focused on strikes, catches, sweeps and throws.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "ssireum",
@@ -5673,7 +5803,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Korean belt wrestling."
+      "notes": "Korean belt wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "sumo",
@@ -5715,7 +5846,8 @@
         "ground_bias": 0,
         "aggression_bias": 90
       },
-      "notes": "Japanese ring-out and throw wrestling."
+      "notes": "Japanese ring-out and throw wrestling.",
+      "default_stance": "sumo_square"
     },
     {
       "style_id": "systema",
@@ -5760,7 +5892,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Russian martial-art family emphasizing relaxation, movement and adaptive response."
+      "notes": "Russian martial-art family emphasizing relaxation, movement and adaptive response.",
+      "default_stance": "close_combat_square"
     },
     {
       "style_id": "taekkyeon",
@@ -5803,7 +5936,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Korean martial art with rhythmic footwork, kicks and trips."
+      "notes": "Traditional Korean martial art with rhythmic footwork, kicks and trips.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "taekwondo",
@@ -5846,7 +5980,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Korean kicking art and Olympic combat sport."
+      "notes": "Korean kicking art and Olympic combat sport.",
+      "default_stance": "taekwondo_side_on"
     },
     {
       "style_id": "taijiquan_combat",
@@ -5889,7 +6024,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Combat-oriented Taijiquan representation emphasizing push-hands sensitivity, balance breaking and strikes."
+      "notes": "Combat-oriented Taijiquan representation emphasizing push-hands sensitivity, balance breaking and strikes.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "tang_soo_do",
@@ -5932,7 +6068,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Korean striking art influenced by karate and indigenous traditions."
+      "notes": "Korean striking art influenced by karate and indigenous traditions.",
+      "default_stance": "taekwondo_side_on"
     },
     {
       "style_id": "tarung_derajat",
@@ -5975,7 +6112,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Indonesian full-contact martial art and combat sport."
+      "notes": "Indonesian full-contact martial art and combat sport.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "tatar_koresh",
@@ -6017,7 +6155,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Tatar belt wrestling tradition."
+      "notes": "Tatar belt wrestling tradition.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "tomoi",
@@ -6060,7 +6199,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Malaysian ring striking tradition, especially associated with northern Malaysia."
+      "notes": "Malaysian ring striking tradition, especially associated with northern Malaysia.",
+      "default_stance": "muay_thai_square"
     },
     {
       "style_id": "tongbeiquan",
@@ -6101,7 +6241,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Northern Chinese striking family using long, whipping power."
+      "notes": "Northern Chinese striking family using long, whipping power.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "tranta",
@@ -6143,7 +6284,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Romanian/Moldovan folk wrestling."
+      "notes": "Romanian/Moldovan folk wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "turkmen_goresh",
@@ -6185,7 +6327,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Turkmen belt/jacket wrestling with classic and freestyle competition forms."
+      "notes": "Traditional Turkmen belt/jacket wrestling with classic and freestyle competition forms.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "uechi_ryu_karate",
@@ -6229,7 +6372,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Okinawan karate known for close-range conditioning and Sanchin training."
+      "notes": "Okinawan karate known for close-range conditioning and Sanchin training.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "vale_tudo",
@@ -6274,7 +6418,8 @@
         "ground_bias": 65,
         "aggression_bias": 90
       },
-      "notes": "Brazilian minimal-rules mixed fighting tradition."
+      "notes": "Brazilian minimal-rules mixed fighting tradition.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "vat_co_truyen",
@@ -6315,7 +6460,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Vietnamese wrestling."
+      "notes": "Traditional Vietnamese wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "vo_co_truyen_vietnam",
@@ -6358,7 +6504,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Traditional Vietnamese martial-arts umbrella represented through unarmed competition methods."
+      "notes": "Traditional Vietnamese martial-arts umbrella represented through unarmed competition methods.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "vovinam",
@@ -6403,7 +6550,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Vietnamese martial art combining striking, throws and locks."
+      "notes": "Vietnamese martial art combining striking, throws and locks.",
+      "default_stance": "neutral_fighting"
     },
     {
       "style_id": "wado_ryu_karate",
@@ -6447,7 +6595,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Karate system strongly influenced by Japanese jujutsu body movement and evasion."
+      "notes": "Karate system strongly influenced by Japanese jujutsu body movement and evasion.",
+      "default_stance": "karate_blade"
     },
     {
       "style_id": "white_crane_kung_fu",
@@ -6491,7 +6640,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Southern Chinese martial family emphasizing short power, structure and evasive hand fighting."
+      "notes": "Southern Chinese martial family emphasizing short power, structure and evasive hand fighting.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "wing_chun",
@@ -6533,7 +6683,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Southern Chinese close-range striking system."
+      "notes": "Southern Chinese close-range striking system.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "xilam",
@@ -6576,7 +6727,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Modern Mexican martial-art system inspired by indigenous cultural themes."
+      "notes": "Modern Mexican martial-art system inspired by indigenous cultural themes.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "xingyiquan",
@@ -6618,7 +6770,8 @@
         "ground_bias": 0,
         "aggression_bias": 85
       },
-      "notes": "Chinese internal martial art emphasizing direct entry and whole-body power."
+      "notes": "Chinese internal martial art emphasizing direct entry and whole-body power.",
+      "default_stance": "traditional_upright"
     },
     {
       "style_id": "yağlı_güreş",
@@ -6661,7 +6814,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Turkish oil wrestling."
+      "notes": "Turkish oil wrestling.",
+      "default_stance": "judo_grip_ready"
     },
     {
       "style_id": "yaw_yan",
@@ -6703,7 +6857,8 @@
         "ground_bias": 0,
         "aggression_bias": 50
       },
-      "notes": "Filipino kickboxing system known for powerful rotational kicks."
+      "notes": "Filipino kickboxing system known for powerful rotational kicks.",
+      "default_stance": "traditional_upright"
     }
   ]
 }
