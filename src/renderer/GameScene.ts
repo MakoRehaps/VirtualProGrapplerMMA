@@ -854,6 +854,16 @@ export class GameScene {
       };
     };
 
+    this.match.grappleDefenseState = (side) => {
+      if (side !== "player" || !this.input.grappleDefense) {
+        return { sprawl: false, whizzer: false };
+      }
+      return {
+        sprawl: this.input.swayVertical <= -0.35,
+        whizzer: Math.abs(this.input.swayHorizontal) >= 0.35,
+      };
+    };
+
     this.match.contactRegion = (attacker, technique) => {
       const attackRig = attacker === "player" ? this.playerCollision : this.opponentCollision;
       const defendRig = attacker === "player" ? this.opponentCollision : this.playerCollision;
