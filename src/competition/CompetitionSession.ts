@@ -1,5 +1,6 @@
 import type { FighterCondition } from "@/combat/mayQuvTypes";
 import { EventConditionStore } from "./EventConditionStore";
+import competitionJson from "#data/game/competition.json";
 
 export type CompetitionModeId =
   | "normal_mp"
@@ -13,8 +14,10 @@ export type CompetitionModeId =
 
 export interface CompetitionStatus {
   weeklyQualified: boolean;
+  weeklyTournamentWins: number;
   monthlyQualifierOneWon: boolean;
   monthlyQualifierTwoWon: boolean;
+  monthlyTournamentWins: number;
 }
 
 const ROUTE_TO_MODE: Record<string, CompetitionModeId> = {
@@ -38,12 +41,27 @@ export class CompetitionSession {
   private readonly conditions = new EventConditionStore();
   private status: CompetitionStatus = {
     weeklyQualified: false,
+    weeklyTournamentWins: 0,
     monthlyQualifierOneWon: false,
     monthlyQualifierTwoWon: false,
+    monthlyTournamentWins: 0,
   };
+
+  private readonly weeklyWinsRequired =
+    competitionJson.weekly_event.tournament_wins_required ?? 1;
+  private readonly monthlyWinsRequired =
+    competitionJson.monthly_event.tournament_wins_required ?? 1;
 
   snapshot(): CompetitionStatus {
     return { ...this.status };
+  }
+
+  get weeklyRoundsRequired(): number {
+    return this.weeklyWinsRequired;
+  }
+
+  get monthlyRoundsRequired(): number {
+    return this.monthlyWinsRequired;
   }
 
   canEnter(modeId: CompetitionModeId): boolean {
@@ -75,19 +93,35 @@ export class CompetitionSession {
 
     if (modeId === "weekly_qualifier") {
       this.status.weeklyQualified = won;
+      this.status.weeklyTournamentWins = 0;
       if (!won) this.conditions.resetWeekly();
       return;
     }
 
     if (modeId === "weekly_tournament") {
-      this.status.weeklyQualified = false;
-      this.conditions.resetWeekly();
+      if (!won) {
+        this.status.weeklyQualified = false;
+        this.status.weeklyTournamentWins = 0;
+        this.conditions.resetWeekly();
+        return;
+      }
+
+      this.status.weeklyTournamentWins += 1;
+      if (
+        this.status.weeklyTournamentWins >=
+        this.weeklyWinsRequired
+      ) {
+        this.status.weeklyQualified = false;
+        this.status.weeklyTournamentWins = 0;
+        this.conditions.resetWeekly();
+      }
       return;
     }
 
     if (modeId === "monthly_qualifier_one") {
       this.status.monthlyQualifierOneWon = won;
       this.status.monthlyQualifierTwoWon = false;
+      this.status.monthlyTournamentWins = 0;
       if (!won) this.conditions.resetMonthly();
       return;
     }
@@ -102,17 +136,34 @@ export class CompetitionSession {
     }
 
     if (modeId === "monthly_grand_tournament") {
-      this.status.monthlyQualifierOneWon = false;
-      this.status.monthlyQualifierTwoWon = false;
-      this.conditions.resetMonthly();
+      if (!won) {
+        this.status.monthlyQualifierOneWon = false;
+        this.status.monthlyQualifierTwoWon = false;
+        this.status.monthlyTournamentWins = 0;
+        this.conditions.resetMonthly();
+        return;
+      }
+
+      this.status.monthlyTournamentWins += 1;
+      if (
+        this.status.monthlyTournamentWins >=
+        this.monthlyWinsRequired
+      ) {
+        this.status.monthlyQualifierOneWon = false;
+        this.status.monthlyQualifierTwoWon = false;
+        this.status.monthlyTournamentWins = 0;
+        this.conditions.resetMonthly();
+      }
     }
   }
 
   resetAll(): void {
     this.status = {
       weeklyQualified: false,
+      weeklyTournamentWins: 0,
       monthlyQualifierOneWon: false,
       monthlyQualifierTwoWon: false,
+      monthlyTournamentWins: 0,
     };
     this.conditions.resetAll();
   }
