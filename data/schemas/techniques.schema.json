@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "techniques"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "techniques": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "technique_id",
+          "name",
+          "type",
+          "context",
+          "target",
+          "weapon",
+          "power",
+          "startup_frames",
+          "active_frames",
+          "recovery_frames",
+          "stamina_cost",
+          "tags"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "technique_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "weapon": {
+            "type": "string"
+          },
+          "power": {
+            "type": "number",
+            "minimum": 0
+          },
+          "startup_frames": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active_frames": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "recovery_frames": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stamina_cost": {
+            "type": "number",
+            "minimum": 0
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
