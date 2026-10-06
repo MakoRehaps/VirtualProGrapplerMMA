@@ -1,6 +1,6 @@
 <template>
   <MainMenu v-if="screen === 'menu'" @launch="launch" />
-  <Game v-else @exit="exit" />
+  <Game v-else :launch-route="launchRoute" @exit="exit" />
 </template>
 
 <script lang="ts">
@@ -54,6 +54,7 @@ export default defineComponent({
   data() {
     return {
       screen: screenFromLocation(),
+      launchRoute: "test.combat_system",
     };
   },
 
@@ -66,7 +67,8 @@ export default defineComponent({
   },
 
   methods: {
-    launch() {
+    launch(routeId = "test.combat_system") {
+      this.launchRoute = routeId;
       this.screen = 'game';
       this.syncHash();
     },
