@@ -466,9 +466,12 @@ export default defineComponent({
         this.competitionMode === "weekly_qualifier" ||
         this.competitionMode === "weekly_tournament"
       ) {
-        return status.weeklyQualified
-          ? "Weekly qualified"
-          : "Weekly qualifier required";
+        if (status.weeklyQualified) {
+          return this.competitionMode === "weekly_tournament"
+            ? `Weekly round ${status.weeklyTournamentWins + 1} of ${COMPETITION_SESSION.weeklyRoundsRequired}`
+            : "Weekly qualified";
+        }
+        return "Weekly qualifier required";
       }
 
       if (
@@ -477,7 +480,9 @@ export default defineComponent({
         this.competitionMode === "monthly_grand_tournament"
       ) {
         if (status.monthlyQualifierTwoWon) {
-          return "Monthly qualifiers complete";
+          return this.competitionMode === "monthly_grand_tournament"
+            ? `Grand Tournament round ${status.monthlyTournamentWins + 1} of ${COMPETITION_SESSION.monthlyRoundsRequired}`
+            : "Monthly qualifiers complete";
         }
         if (status.monthlyQualifierOneWon) {
           return "Monthly Qualifier I complete";
@@ -510,6 +515,22 @@ export default defineComponent({
       if (this.competitionMode === "monthly_qualifier_two") {
         return "match_setup.ladder_match";
       }
+
+      const status = COMPETITION_SESSION.snapshot();
+      if (
+        this.competitionMode === "weekly_tournament" &&
+        status.weeklyQualified
+      ) {
+        return "match_setup.pay_per_view";
+      }
+      if (
+        this.competitionMode === "monthly_grand_tournament" &&
+        status.monthlyQualifierOneWon &&
+        status.monthlyQualifierTwoWon
+      ) {
+        return "match_setup.ladder_match";
+      }
+
       return null;
     },
 
@@ -523,6 +544,15 @@ export default defineComponent({
       if (this.competitionMode === "monthly_qualifier_two") {
         return "Continue to Grand Tournament";
       }
+
+      const status = COMPETITION_SESSION.snapshot();
+      if (this.competitionMode === "weekly_tournament") {
+        return `Continue to Weekly Round ${status.weeklyTournamentWins + 1}`;
+      }
+      if (this.competitionMode === "monthly_grand_tournament") {
+        return `Continue to Grand Tournament Round ${status.monthlyTournamentWins + 1}`;
+      }
+
       return "";
     },
 
