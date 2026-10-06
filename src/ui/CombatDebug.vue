@@ -41,12 +41,12 @@
         </div>
 
         <div class="joints">
-          <div v-for="part in limbParts" :key="part.key" class="joint">
+          <div v-for="part in regionParts" :key="part.key" class="joint">
             <span class="joint__name">{{ part.label }}</span>
             <span class="joint__track">
               <span
                 class="joint__fill"
-                :style="{ width: pct(snapshot[side].limbs[part.key], 100) }"
+                :style="{ width: pct(snapshot[side].regions[part.key], 100) }"
               />
             </span>
             <span class="joint__value">{{ snapshot[side].limbs[part.key].toFixed(0) }}</span>
@@ -74,7 +74,7 @@
           </span>
           <span class="log__dmg">−{{ entry.resolution.hpDamage }} hp</span>
           <span class="log__max">
-            −{{ entry.resolution.consciousnessDamage }} con
+            −{{ entry.resolution.consciousnessDamage }} con / −{{ entry.resolution.regionalDamage }} {{ entry.resolution.targetRegion }}
           </span>
         </template>
         <span v-else class="log__miss">{{ entry.missReason }}</span>
@@ -111,7 +111,9 @@ export default defineComponent({
         { key: "consciousness" as BarKey, label: "Con" },
         { key: "balance" as BarKey, label: "Bal" },
       ],
-      limbParts: [
+      regionParts: [
+        { key: "head" as const, label: "Head" },
+        { key: "body" as const, label: "Body" },
         { key: "leftArm" as const, label: "L arm" },
         { key: "rightArm" as const, label: "R arm" },
         { key: "leftLeg" as const, label: "L leg" },
