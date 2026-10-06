@@ -77,6 +77,7 @@ function schemaTargets() {
     ["data/schemas/cosmetics.schema.json", ["data/cosmetics/catalog.json"]],
     ["data/schemas/combat-profile.schema.json", ["data/game/combat-profile.json"]],
     ["data/schemas/martial-poses.schema.json", ["data/biomechanics/martial-poses.json"]],
+    ["data/schemas/moveset-layout.schema.json", ["data/game/moveset-layout.json"]],
     ["data/schemas/body-physics.schema.json", ["data/combat/body-physics.json"]],
     ["data/schemas/events.schema.json", ["data/combat/events.json"]],
     ["data/schemas/damage-model.schema.json", ["data/combat/damage-model.json"]],
