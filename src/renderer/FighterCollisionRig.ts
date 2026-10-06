@@ -1,4 +1,4 @@
-import { Matrix, Vector3 } from "@babylonjs/core";
+import { Vector3 } from "@babylonjs/core";
 import type { RegionalCondition } from "@/combat/mayQuvTypes";
 import { SkeletonRig, type RigBoneId } from "./SkeletonRig";
 
@@ -36,15 +36,9 @@ function worldPosition(rig: SkeletonRig, id: RigBoneId): Vector3 | null {
   }
   if (!binding) return null;
 
-  const skeleton = binding.bone.getSkeleton();
-  const mesh = skeleton?.meshes?.[0] ?? null;
-  const matrix = binding.bone.getFinalMatrix();
-  if (!mesh) {
-    return Vector3.TransformCoordinates(Vector3.Zero(), matrix);
-  }
   return Vector3.TransformCoordinates(
     Vector3.Zero(),
-    matrix.multiply(mesh.getWorldMatrix())
+    binding.bone.getAbsoluteTransform()
   );
 }
 
