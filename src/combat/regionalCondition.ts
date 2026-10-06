@@ -55,3 +55,26 @@ export function regionFromTarget(raw: string): RegionKey {
       return "body";
   }
 }
+
+
+export function guardLevelFromArmCondition(
+  condition: FighterCondition,
+  requested: "none" | "partial" | "solid"
+): "none" | "partial" | "solid" {
+  if (requested === "none") return "none";
+
+  const averageArm =
+    (condition.regions.leftArm + condition.regions.rightArm) / 2;
+
+  if (averageArm < 25) return "none";
+  if (averageArm < 60 && requested === "solid") return "partial";
+  return requested;
+}
+
+export function canSustainWhizzer(condition: FighterCondition): boolean {
+  const bestArm = Math.max(
+    condition.regions.leftArm,
+    condition.regions.rightArm
+  );
+  return bestArm >= 35;
+}
