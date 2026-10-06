@@ -37,6 +37,24 @@ describe("GamepadTechniqueInput", () => {
     expect(input.update().buttons).toEqual(["a", "x"]);
   });
 
+  it("keeps player two isolated to gamepad slot one", () => {
+    const p1 = fakePad([true, false, false, false, false, false]);
+    const p2 = {
+      ...fakePad([false, true, false, false, false, false]),
+      index: 1,
+      id: "Xbox Controller P2",
+    } as Gamepad;
+
+    const input = new GamepadTechniqueInput(() => [p1, p2], 1);
+    expect(input.update().buttons).toEqual(["b"]);
+  });
+
+  it("does not let a missing P2 pad fall back to P1", () => {
+    const p1 = fakePad([true, false, false, false, false, false]);
+    const input = new GamepadTechniqueInput(() => [p1, null], 1);
+    expect(input.update().buttons).toEqual([]);
+  });
+
   it("emits RB as a clinch toggle edge", () => {
     let pad = fakePad([false, false, false, false, false, false]);
     const input = new GamepadTechniqueInput(() => [pad]);
