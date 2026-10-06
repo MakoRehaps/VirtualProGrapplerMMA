@@ -2,8 +2,16 @@
   <div v-if="snapshot" class="debug">
     <div class="debug__head">
       <strong>MAY' QUV Combat</strong>
-      <span>frame {{ frame }}</span>
-      <span v-if="snapshot.winner">{{ snapshot.winner }} / {{ snapshot.finish }}</span>
+      <span>{{ fightClock }}</span>
+      <span v-if="snapshot.finish">
+        {{ snapshot.winner ?? 'draw' }} / {{ snapshot.finish }}
+      </span>
+    </div>
+
+    <div v-if="snapshot.decision" class="decision">
+      Decision score · Player {{ snapshot.decision.player }}
+      · Opponent {{ snapshot.decision.opponent }}
+      · margin {{ snapshot.decision.margin }}
     </div>
 
     <div v-if="moveset" class="moveset">
@@ -99,6 +107,23 @@ export default defineComponent({
       ],
     };
   },
+  computed: {
+    fightClock(): string {
+      if (!this.snapshot) return "00:00";
+      const limit = this.snapshot.timeLimitFrames;
+      if (limit === null) return "Practice";
+
+      const remaining = Math.max(
+        0,
+        limit - this.snapshot.elapsedFrames
+      );
+      const seconds = Math.ceil(remaining / 60);
+      const minutes = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    },
+  },
+
   mounted() {
     this.timer = window.setInterval(() => {
       this.snapshot = this.source();
@@ -135,6 +160,12 @@ export default defineComponent({
   grid-template-columns: auto auto 1fr;
   margin-bottom: 0.55rem;
 }
+.decision {
+  margin-bottom: 0.45rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
 .moveset {
   display: flex;
   flex-wrap: wrap;
