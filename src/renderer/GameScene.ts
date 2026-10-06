@@ -87,7 +87,9 @@ export class GameScene {
   private opponentPairedProcedural: PairedMartialAnimator | null = null;
   private playerCollision: FighterCollisionRig | null = null;
   private opponentCollision: FighterCollisionRig | null = null;
+  private playerReactions: ProceduralHitReactionAnimator | null = null;
   private opponentReactions: ProceduralHitReactionAnimator | null = null;
+  private playerKnockdown: ProceduralKnockdownAnimator | null = null;
   private opponentKnockdown: ProceduralKnockdownAnimator | null = null;
   private collisionDebug: CollisionDebugView | null = null;
   private clinchProcedural: ProceduralClinchAnimator | null = null;
@@ -849,6 +851,16 @@ export class GameScene {
     this.playerStanceProcedural = player.stanceProcedural;
     this.playerRig = player.rig;
     this.defensiveOverlay = new DefensivePoseOverlay(player.rig);
+    this.playerReactions = new ProceduralHitReactionAnimator(this.scene, player.rig);
+    this.animations.registerMany(this.playerReactions.buildAll());
+    this.playerKnockdown = new ProceduralKnockdownAnimator(this.scene, player.rig);
+    const playerKnockdownClip = this.playerKnockdown.buildKnockdown();
+    const playerStandupClip = this.playerKnockdown.buildTechnicalStandup();
+    this.animations.registerMany(
+      [playerKnockdownClip, playerStandupClip].filter(
+        (x): x is NonNullable<typeof x> => Boolean(x)
+      )
+    );
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
@@ -1082,17 +1094,37 @@ export class GameScene {
     };
 
     this.match.onResolved = (_attacker, defender, resolution) => {
-      if (defender !== "opponent") return;
-      if (!resolution.knockedDown) {
-        this.opponent?.playReaction(`REACT_${resolution.targetRegion}`);
+      if (resolution.knockedDown) return;
+
+      const clip = `REACT_${resolution.targetRegion}`;
+      if (defender === "player") {
+        this.animations?.play(clip, { loop: false, restart: true });
+      } else {
+        this.opponent?.playReaction(clip);
       }
     };
 
     this.match.onGroundedWindowChanged = (side, active) => {
-      if (side !== "opponent") return;
-      this.opponent?.playReaction(
-        active ? "STATE_KNOCKDOWN_SEATED" : "STATE_TECHNICAL_STANDUP"
-      );
+      const clip = active
+        ? "STATE_KNOCKDOWN_SEATED"
+        : "STATE_TECHNICAL_STANDUP";
+
+      if (side === "player") {
+        if (!this.animations) return;
+        if (active) {
+          this.controller?.setExternalPoseLock(true);
+          this.animations.play(clip, { loop: false, restart: true });
+        } else {
+          this.animations.play(clip, {
+            loop: false,
+            restart: true,
+            onEnd: () => this.controller?.setExternalPoseLock(false),
+          });
+        }
+        return;
+      }
+
+      this.opponent?.playReaction(clip);
     };
 
     this.match.onDefended = (defender, kind) => {
@@ -1356,8 +1388,12 @@ export class GameScene {
     this.opponentRig = null;
     this.playerCollision = null;
     this.opponentCollision = null;
+    this.playerReactions?.dispose();
+    this.playerReactions = null;
     this.opponentReactions?.dispose();
     this.opponentReactions = null;
+    this.playerKnockdown?.dispose();
+    this.playerKnockdown = null;
     this.opponentKnockdown?.dispose();
     this.opponentKnockdown = null;
 
