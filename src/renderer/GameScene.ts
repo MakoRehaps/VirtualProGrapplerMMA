@@ -871,6 +871,29 @@ export class GameScene {
       );
     };
 
+    this.match.onPositionChanged = (playerPosition, opponentPosition) => {
+      if (playerPosition !== opponentPosition) return;
+      const supported = new Set<ClinchPoseId>([
+        "single_collar_tie",
+        "thai_plum",
+        "over_under",
+        "double_underhooks",
+        "front_headlock",
+      ]);
+      if (!supported.has(playerPosition as ClinchPoseId)) return;
+
+      const pose = playerPosition as ClinchPoseId;
+      const group = this.clinchProcedural?.build(pose);
+      if (!group || !this.animations) return;
+
+      this.currentClinchPose = pose;
+      this.clinchProcedural?.alignRoots();
+      this.controller?.setExternalPoseLock(true);
+      this.opponent?.setExternalPoseLock(true);
+      this.animations.register(group);
+      this.animations.play(group.name, { loop: true, restart: true });
+    };
+
     const movement = deriveMovementPhysics(player.body, player.stanceId);
     this.controller?.setMovementPhysics({
       walkSpeed: movement.walkSpeed,
