@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vpg-engine.local/schemas/combat-styles.schema.json",
+  "title": "VPG MMA — Unarmed Combat Styles",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "styles"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "styles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/style"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "style": {
+      "type": "object",
+      "required": [
+        "style_id",
+        "name",
+        "origin",
+        "regions",
+        "family",
+        "status",
+        "ranges",
+        "techniques",
+        "gameplay",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "style_id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "origin": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "family": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "striking",
+              "grappling",
+              "wrestling",
+              "submission",
+              "hybrid",
+              "self_defense",
+              "military",
+              "traditional",
+              "combat_sport"
+            ]
+          }
+        },
+        "status": {
+          "enum": [
+            "living",
+            "revival",
+            "modern_hybrid"
+          ]
+        },
+        "ranges": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "long",
+              "boxing",
+              "kicking",
+              "clinch",
+              "takedown",
+              "ground",
+              "submission"
+            ]
+          }
+        },
+        "techniques": {
+          "type": "object",
+          "required": [
+            "punches",
+            "kicks",
+            "knees",
+            "elbows",
+            "headbutts",
+            "throws",
+            "takedowns",
+            "ground_control",
+            "joint_locks",
+            "chokes",
+            "sweeps"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "punches": {
+              "$ref": "#/$defs/score"
+            },
+            "kicks": {
+              "$ref": "#/$defs/score"
+            },
+            "knees": {
+              "$ref": "#/$defs/score"
+            },
+            "elbows": {
+              "$ref": "#/$defs/score"
+            },
+            "headbutts": {
+              "$ref": "#/$defs/score"
+            },
+            "throws": {
+              "$ref": "#/$defs/score"
+            },
+            "takedowns": {
+              "$ref": "#/$defs/score"
+            },
+            "ground_control": {
+              "$ref": "#/$defs/score"
+            },
+            "joint_locks": {
+              "$ref": "#/$defs/score"
+            },
+            "chokes": {
+              "$ref": "#/$defs/score"
+            },
+            "sweeps": {
+              "$ref": "#/$defs/score"
+            }
+          }
+        },
+        "gameplay": {
+          "type": "object",
+          "required": [
+            "pressure",
+            "mobility",
+            "countering",
+            "power",
+            "cardio",
+            "balance",
+            "ground_bias",
+            "aggression_bias"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "pressure": {
+              "$ref": "#/$defs/score"
+            },
+            "mobility": {
+              "$ref": "#/$defs/score"
+            },
+            "countering": {
+              "$ref": "#/$defs/score"
+            },
+            "power": {
+              "$ref": "#/$defs/score"
+            },
+            "cardio": {
+              "$ref": "#/$defs/score"
+            },
+            "balance": {
+              "$ref": "#/$defs/score"
+            },
+            "ground_bias": {
+              "$ref": "#/$defs/score"
+            },
+            "aggression_bias": {
+              "$ref": "#/$defs/score"
+            }
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
