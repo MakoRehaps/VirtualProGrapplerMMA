@@ -212,6 +212,11 @@ import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
 import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
 import {
+  COMPETITION_SESSION,
+  modeForRoute,
+  type CompetitionModeId,
+} from "@/competition/CompetitionSession";
+import {
   deleteFighterPreset,
   listFighterPresets,
   saveFighterPreset,
@@ -222,6 +227,13 @@ export default defineComponent({
   name: "Game",
 
   components: { CombatDebug, MovesetEditor },
+
+  props: {
+    launchRoute: {
+      type: String,
+      default: "test.combat_system",
+    },
+  },
 
   emits: ["exit"],
 
@@ -276,6 +288,10 @@ export default defineComponent({
   },
 
   computed: {
+    competitionMode(): CompetitionModeId {
+      return modeForRoute(this.launchRoute);
+    },
+
     reachMin(): number {
       return Math.round(
         this.fighterHeight *
@@ -370,6 +386,16 @@ export default defineComponent({
       this.warning = "";
 
       try {
+        if (!COMPETITION_SESSION.canEnter(this.competitionMode)) {
+          this.error =
+            this.competitionMode === "weekly_tournament"
+              ? "Win the Weekly Qualifier first."
+              : this.competitionMode === "monthly_qualifier_two"
+                ? "Win Monthly Qualifier I first."
+                : "Win both Monthly Qualifiers first.";
+          return;
+        }
+
         const style = styleById(this.fighterStyle);
         const setup = {
           name: this.fighterName || "Fighter",
@@ -395,11 +421,14 @@ export default defineComponent({
             centerOfMassHeightRatio: 0.56,
           },
         };
+        const startingCondition =
+          COMPETITION_SESSION.startCondition(this.competitionMode);
         const missing = await this.game!.loadCharacter(
           character,
           setup,
           opponentSetup,
-          this.botDifficulty
+          this.botDifficulty,
+          startingCondition
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
@@ -419,7 +448,17 @@ export default defineComponent({
         window.clearInterval(this.resultTimer);
         this.resultTimer = window.setInterval(() => {
           const snapshot = this.game?.matchSnapshot() ?? null;
-          if (snapshot?.finish) this.matchResult = snapshot;
+          if (snapshot?.finish && !this.matchResult) {
+            this.matchResult = snapshot;
+            const condition = this.game?.playerConditionSnapshot();
+            if (condition) {
+              COMPETITION_SESSION.recordFight(
+                this.competitionMode,
+                snapshot.winner === "player",
+                condition
+              );
+            }
+          }
         }, 100);
         // Clicks land on the canvas so keyboard input reaches the window.
         (this.$refs.canvas as HTMLCanvasElement).focus();
@@ -436,11 +475,14 @@ export default defineComponent({
       this.movesetOpen = false;
       this.warning = "";
       try {
+        const startingCondition =
+          COMPETITION_SESSION.startCondition(this.competitionMode);
         const missing = await this.game.loadCharacter(
           this.selectedCharacter,
           this.selectedSetup ?? undefined,
           this.selectedOpponentSetup ?? undefined,
-          this.selectedBotDifficulty
+          this.selectedBotDifficulty,
+          startingCondition
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
