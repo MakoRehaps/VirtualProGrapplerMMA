@@ -25,6 +25,7 @@ import { SkeletonRig } from "./SkeletonRig";
 import { ProceduralMartialAnimator } from "./ProceduralMartialAnimator";
 import { ProceduralStanceAnimator } from "./ProceduralStanceAnimator";
 import { PairedMartialAnimator } from "./PairedMartialAnimator";
+import { FighterCollisionRig, firstHitRegion } from "./FighterCollisionRig";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -70,6 +71,8 @@ export class GameScene {
   private playerRig: SkeletonRig | null = null;
   private opponentRig: SkeletonRig | null = null;
   private pairedProcedural: PairedMartialAnimator | null = null;
+  private playerCollision: FighterCollisionRig | null = null;
+  private opponentCollision: FighterCollisionRig | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -591,9 +594,30 @@ export class GameScene {
     const player = this.fighterLoadout(playerId, "player");
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
+    this.playerCollision = this.playerRig ? new FighterCollisionRig(this.playerRig, player.body.heightM) : null;
+    this.opponentCollision = this.opponentRig ? new FighterCollisionRig(this.opponentRig, opponent.body.heightM) : null;
 
     this.match.canConnect = (attacker: CombatSide) =>
       this.inStrikeRange(attacker);
+
+    this.match.contactRegion = (attacker, technique) => {
+      const attackRig = attacker === "player" ? this.playerCollision : this.opponentCollision;
+      const defendRig = attacker === "player" ? this.opponentCollision : this.playerCollision;
+      if (!attackRig || !defendRig) return null;
+
+      const weapon = technique.weapon;
+      let strike = null;
+      if (weapon.includes("lead_hand")) strike = attackRig.handStrike("left");
+      else if (weapon.includes("rear_hand") || weapon === "hand" || weapon === "arm") strike = attackRig.handStrike("right");
+      else if (weapon.includes("lead_knee")) strike = attackRig.kneeStrike("left");
+      else if (weapon.includes("rear_knee") || weapon === "knee") strike = attackRig.kneeStrike("right");
+      else if (weapon.includes("lead_leg")) strike = attackRig.footStrike("left");
+      else if (weapon.includes("rear_leg") || weapon === "leg") strike = attackRig.footStrike("right");
+      else return null;
+
+      if (!strike) return null;
+      return firstHitRegion(strike, defendRig.hurtVolumes());
+    };
 
     const movement = deriveMovementPhysics(player.body, player.stanceId);
     this.controller?.setMovementPhysics({
@@ -761,6 +785,8 @@ export class GameScene {
     this.playerStanceProcedural = null;
     this.playerRig = null;
     this.opponentRig = null;
+    this.playerCollision = null;
+    this.opponentCollision = null;
 
     this.animations?.dispose();
     this.animations = null;
