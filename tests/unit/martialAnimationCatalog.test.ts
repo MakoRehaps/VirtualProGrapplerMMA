@@ -9,7 +9,7 @@ describe("martial animation catalog", () => {
   it("returns measured karate stance profiles", () => {
     const pose = martialPoseById("karate_zenkutsu_dachi");
     expect(pose?.family).toBe("karate");
-    expect(pose?.geometry.rear_foot_yaw_deg.nominal).toBe(30);
+    expect((pose as any)?.geometry?.rear_foot_yaw_deg?.nominal).toBe(30);
   });
 
   it("has style-specific round kick profiles", () => {
@@ -32,8 +32,10 @@ describe("martial animation catalog", () => {
     const cross = motionProfilesForTechnique("cross")[0];
     expect(jab).toBeTruthy();
     expect(cross).toBeTruthy();
-    expect(
-      cross.kinematics.trunk_rotation_rom_deg.mean
-    ).toBeGreaterThan(jab.kinematics.trunk_rotation_rom_deg.mean);
+    const crossRom = (cross as any)?.kinematics?.trunk_rotation_rom_deg?.mean;
+    const jabRom = (jab as any)?.kinematics?.trunk_rotation_rom_deg?.mean;
+    expect(crossRom).toBeTypeOf("number");
+    expect(jabRom).toBeTypeOf("number");
+    expect(crossRom).toBeGreaterThan(jabRom);
   });
 });
