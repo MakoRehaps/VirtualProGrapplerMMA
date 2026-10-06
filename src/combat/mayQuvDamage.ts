@@ -17,6 +17,17 @@ function clamp100(v: number): number {
   return Math.max(0, Math.min(100, v));
 }
 
+function zoneFromRegion(region: NonNullable<ImpactSample["actualRegion"]>): TargetZone {
+  switch (region) {
+    case "head": return "head";
+    case "body": return "body";
+    case "leftArm": return "left_arm";
+    case "rightArm": return "right_arm";
+    case "leftLeg": return "left_leg";
+    case "rightLeg": return "right_leg";
+  }
+}
+
 function targetZoneFor(raw: string): TargetZone {
   switch (raw) {
     case "head":
@@ -41,7 +52,7 @@ export function resolveTechniqueImpact(
   technique: TechniqueRuntime,
   sample: ImpactSample
 ): CombatResolution {
-  const zone = targetZoneFor(technique.target);
+  const zone = sample.actualRegion ? zoneFromRegion(sample.actualRegion) : targetZoneFor(technique.target);
   const zoneTuning = target[zone] ?? target.body ?? {};
   const region = regionFromTarget(zone);
   const attackerRegional = regionConsequences(attacker.condition);
