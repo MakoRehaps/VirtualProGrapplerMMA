@@ -159,15 +159,22 @@ export function validateMoveset(moveset: FighterMoveset): MovesetValidation {
   return { valid: errors.length === 0, errors };
 }
 
-function candidatesForContext(
+export function legalTechniquesForMovesetContext(
   styleId: string,
   context: MovesetContext
-): string[] {
-  const legal = activeTechniquesForStyle(styleId).filter((technique) =>
+) {
+  return activeTechniquesForStyle(styleId).filter((technique) =>
     (MOVESET_LAYOUT.contexts[context].technique_contexts as string[]).includes(
       technique.context
     )
   );
+}
+
+function candidatesForContext(
+  styleId: string,
+  context: MovesetContext
+): string[] {
+  const legal = legalTechniquesForMovesetContext(styleId, context);
 
   const legalIds = new Set(legal.map((x) => x.techniqueId));
   const ordered = DEFAULT_PRIORITY[context].filter((id) => legalIds.has(id));
