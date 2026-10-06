@@ -61,7 +61,12 @@
           <input v-model.trim="opponentName" maxlength="24" />
         </label>
 
-        <label>
+        <label
+          v-if="
+            competitionMode === 'local_vs' ||
+            competitionMode === 'practice_coach'
+          "
+        >
           Opponent style
           <select v-model="opponentStyle">
             <option
@@ -72,6 +77,17 @@
               {{ style.name }}
             </option>
           </select>
+        </label>
+
+        <label
+          v-if="
+            competitionMode !== 'local_vs' &&
+            competitionMode !== 'practice_coach' &&
+            eventOpponentStyleName
+          "
+        >
+          Event opponent
+          <span>{{ eventOpponentStyleName }}</span>
         </label>
 
         <label v-if="competitionMode === 'local_vs'">
@@ -332,6 +348,7 @@ import {
   modeForRoute,
   type CompetitionModeId,
 } from "@/competition/CompetitionSession";
+import { eventOpponentStyleId } from "@/competition/eventOpponent";
 import {
   deleteFighterPreset,
   listFighterPresets,
@@ -450,6 +467,14 @@ export default defineComponent({
 
     opponentSavedMovesets() {
       return listMovesets(this.opponentStyle);
+    },
+
+    eventOpponentStyleName(): string {
+      const id = eventOpponentStyleId(
+        this.competitionMode,
+        COMPETITION_SESSION.snapshot()
+      );
+      return id ? styleById(id)?.name ?? id : "";
     },
 
     competitionModeName(): string {
@@ -711,13 +736,19 @@ export default defineComponent({
             centerOfMassHeightRatio: 0.56,
           },
         };
-        const opponentStyle = styleById(this.opponentStyle);
+        const automaticOpponentStyleId = eventOpponentStyleId(
+          this.competitionMode,
+          COMPETITION_SESSION.snapshot()
+        );
+        const resolvedOpponentStyleId =
+          automaticOpponentStyleId ?? this.opponentStyle;
+        const opponentStyle = styleById(resolvedOpponentStyleId);
         const opponentSetup = {
           name:
             this.competitionMode === "local_vs"
               ? this.opponentName || "P2"
               : "Opponent",
-          styleId: this.opponentStyle,
+          styleId: resolvedOpponentStyleId,
           stanceId:
             opponentStyle?.default_stance ?? "neutral_fighting",
           body: {
