@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "description": "Cosmetic-only progression. No item modifies combat simulation.",
+  "categories": [
+    "shorts",
+    "shirts",
+    "wraps",
+    "gloves",
+    "boots",
+    "robes",
+    "jackets",
+    "masks",
+    "headwear",
+    "patterns",
+    "colors",
+    "banners",
+    "entrances"
+  ],
+  "items": [
+    {
+      "id": "basic_fight_shorts",
+      "name": "Basic Fight Shorts",
+      "category": "shorts",
+      "tier": 1,
+      "token_cost": 0,
+      "requirement": "starter"
+    },
+    {
+      "id": "cloth_hand_wraps",
+      "name": "Cloth Hand Wraps",
+      "category": "wraps",
+      "tier": 1,
+      "token_cost": 25,
+      "requirement": "complete multiplayer fights"
+    },
+    {
+      "id": "dojo_robe",
+      "name": "Dojo Robe",
+      "category": "robes",
+      "tier": 2,
+      "token_cost": 100,
+      "requirement": "weekly event participation"
+    },
+    {
+      "id": "regional_jacket",
+      "name": "Regional Walkout Jacket",
+      "category": "jackets",
+      "tier": 2,
+      "token_cost": 125,
+      "requirement": "weekly event achievement"
+    },
+    {
+      "id": "veteran_mask",
+      "name": "Veteran Mask",
+      "category": "masks",
+      "tier": 3,
+      "token_cost": 250,
+      "requirement": "multiplayer milestone"
+    },
+    {
+      "id": "veteran_banner",
+      "name": "Veteran Banner",
+      "category": "banners",
+      "tier": 3,
+      "token_cost": 300,
+      "requirement": "multiplayer milestone"
+    },
+    {
+      "id": "kumite_robe",
+      "name": "Kumite Robe",
+      "category": "robes",
+      "tier": 4,
+      "token_cost": 500,
+      "requirement": "monthly event placement"
+    },
+    {
+      "id": "grand_finalist_banner",
+      "name": "Grand Finalist Banner",
+      "category": "banners",
+      "tier": 4,
+      "token_cost": 0,
+      "requirement": "monthly grand final"
+    },
+    {
+      "id": "may_quv_champion_robe",
+      "name": "MAY' QUV Champion Robe",
+      "category": "robes",
+      "tier": 5,
+      "token_cost": 0,
+      "requirement": "win monthly grand tournament"
+    },
+    {
+      "id": "may_quv_champion_banner",
+      "name": "MAY' QUV Champion Banner",
+      "category": "banners",
+      "tier": 5,
+      "token_cost": 0,
+      "requirement": "win monthly grand tournament"
+    }
+  ]
+}
