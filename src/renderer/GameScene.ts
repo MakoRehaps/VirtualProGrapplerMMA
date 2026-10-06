@@ -856,8 +856,9 @@ export class GameScene {
     this.playerKnockdown = new ProceduralKnockdownAnimator(this.scene, player.rig);
     const playerKnockdownClip = this.playerKnockdown.buildKnockdown();
     const playerStandupClip = this.playerKnockdown.buildTechnicalStandup();
+    const playerKoClip = this.playerKnockdown.buildKnockout();
     this.animations.registerMany(
-      [playerKnockdownClip, playerStandupClip].filter(
+      [playerKnockdownClip, playerStandupClip, playerKoClip].filter(
         (x): x is NonNullable<typeof x> => Boolean(x)
       )
     );
@@ -880,8 +881,9 @@ export class GameScene {
     this.opponentKnockdown = new ProceduralKnockdownAnimator(this.scene, other.rig);
     const knockdownClip = this.opponentKnockdown.buildKnockdown();
     const standupClip = this.opponentKnockdown.buildTechnicalStandup();
+    const opponentKoClip = this.opponentKnockdown.buildKnockout();
     this.opponent.registerAnimations(
-      [knockdownClip, standupClip].filter(
+      [knockdownClip, standupClip, opponentKoClip].filter(
         (x): x is NonNullable<typeof x> => Boolean(x)
       )
     );
@@ -1094,6 +1096,20 @@ export class GameScene {
     };
 
     this.match.onResolved = (_attacker, defender, resolution) => {
+      if (resolution.knockedOut) {
+        if (defender === "player") {
+          this.controller?.setExternalPoseLock(true);
+          this.animations?.play("STATE_KNOCKOUT", {
+            loop: false,
+            restart: true,
+          });
+        } else {
+          this.opponent?.setExternalPoseLock(true);
+          this.opponent?.playReaction("STATE_KNOCKOUT");
+        }
+        return;
+      }
+
       if (resolution.knockedDown) return;
 
       const clip = `REACT_${resolution.targetRegion}`;
