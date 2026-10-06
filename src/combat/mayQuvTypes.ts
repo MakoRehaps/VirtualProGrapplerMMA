@@ -25,7 +25,9 @@ export interface FighterLoadout {
   body: FighterBody;
 }
 
-export interface LimbCondition {
+export interface RegionalCondition {
+  head: number;
+  body: number;
   leftArm: number;
   rightArm: number;
   leftLeg: number;
@@ -37,7 +39,7 @@ export interface FighterCondition {
   stamina: number;
   consciousness: number;
   balance: number;
-  limbs: LimbCondition;
+  regions: RegionalCondition;
 }
 
 export interface FighterState {
@@ -68,6 +70,16 @@ export interface ImpactSample {
   guard: "none" | "partial" | "solid";
 }
 
+export interface RegionalEffects {
+  headKoVulnerability: number;
+  bodyStaminaPenalty: number;
+  leftArmOutput: number;
+  rightArmOutput: number;
+  leftLegMobility: number;
+  rightLegMobility: number;
+  balanceScale: number;
+}
+
 export interface CombatResolution {
   eventType: string;
   techniqueId: string;
@@ -76,8 +88,8 @@ export interface CombatResolution {
   consciousnessDamage: number;
   balanceDamage: number;
   staminaSpent: number;
-  limbDamage: number;
-  targetZone: TargetZone;
+  regionalDamage: number;
+  targetRegion: keyof RegionalCondition;
   effectiveMassKg: number;
   impactEnergy: number;
   knockedDown: boolean;
@@ -88,7 +100,7 @@ export const MAX_HP = 100;
 export const MAX_STAMINA = 100;
 export const MAX_CONSCIOUSNESS = 100;
 export const MAX_BALANCE = 100;
-export const MAX_LIMB_CONDITION = 100;
+export const MAX_REGION_CONDITION = 100;
 
 export function freshCondition(): FighterCondition {
   return {
@@ -96,7 +108,14 @@ export function freshCondition(): FighterCondition {
     stamina: MAX_STAMINA,
     consciousness: MAX_CONSCIOUSNESS,
     balance: MAX_BALANCE,
-    limbs: { leftArm: 100, rightArm: 100, leftLeg: 100, rightLeg: 100 },
+    regions: {
+      head: 100,
+      body: 100,
+      leftArm: 100,
+      rightArm: 100,
+      leftLeg: 100,
+      rightLeg: 100,
+    },
   };
 }
 
@@ -106,5 +125,25 @@ export function createFighterState(loadout: FighterLoadout): FighterState {
     condition: freshCondition(),
     positionId: "standing_open",
     guarding: false,
+  };
+}
+
+export function regionalEffects(condition: FighterCondition): RegionalEffects {
+  const headWear = 1 - condition.regions.head / 100;
+  const bodyWear = 1 - condition.regions.body / 100;
+  const leftArm = condition.regions.leftArm / 100;
+  const rightArm = condition.regions.rightArm / 100;
+  const leftLeg = condition.regions.leftLeg / 100;
+  const rightLeg = condition.regions.rightLeg / 100;
+  const worstLeg = Math.min(leftLeg, rightLeg);
+
+  return {
+    headKoVulnerability: 1 + headWear * 0.85,
+    bodyStaminaPenalty: 1 + bodyWear * 0.65,
+    leftArmOutput: 0.55 + leftArm * 0.45,
+    rightArmOutput: 0.55 + rightArm * 0.45,
+    leftLegMobility: 0.5 + leftLeg * 0.5,
+    rightLegMobility: 0.5 + rightLeg * 0.5,
+    balanceScale: 0.55 + worstLeg * 0.45,
   };
 }
