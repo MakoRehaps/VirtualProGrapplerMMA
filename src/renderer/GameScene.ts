@@ -1475,7 +1475,7 @@ export class GameScene {
     const opponentStanceGroup = opponentPreferredPoseId
       ? this.opponentStanceProcedural?.buildPose(opponentPreferredPoseId)
       : null;
-    if (opponentStanceGroup && this.opponentController) {
+    if (opponentStanceGroup && this.opponentController && this.opponent) {
       this.opponent.registerAnimations([opponentStanceGroup]);
       this.opponentController.setIdleClip(opponentStanceGroup.name);
     } else {
