@@ -1,5 +1,6 @@
 import { Rng } from "@/sim/Rng";
 import { resolveTechniqueImpact } from "./mayQuvDamage";
+import { ACTIVE_COMBAT_PROFILE, isPositionActive, isTechniqueActive, styleAllowsTechnique } from "@/data/combatCatalog";
 import {
   createFighterState,
   type CombatResolution,
