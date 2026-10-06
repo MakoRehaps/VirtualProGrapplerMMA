@@ -60,6 +60,7 @@ export class MayQuvMatch {
   finish: MayQuvMatchSnapshot["finish"] = null;
 
   canConnect: ((attacker: CombatSide, technique: TechniqueRuntime) => boolean) | null = null;
+  contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => FighterCondition["regions"] extends infer R ? keyof R : never | null) | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -122,11 +123,12 @@ export class MayQuvMatch {
       return;
     }
 
+    const actualRegion = this.contactRegion?.(hit.attacker, hit.technique) ?? undefined;
     const result = resolveTechniqueImpact(
       this.stateOf(hit.attacker),
       this.stateOf(defenderSide),
       hit.technique,
-      hit.sample
+      { ...hit.sample, actualRegion }
     );
 
     this.record({
