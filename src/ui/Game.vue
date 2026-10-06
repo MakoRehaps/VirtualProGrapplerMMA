@@ -529,6 +529,13 @@ export default defineComponent({
     resultTitle(): string {
       if (!this.matchResult) return "";
       if (!this.matchResult.winner) return "Draw";
+
+      if (this.competitionMode === "local_vs") {
+        return this.matchResult.winner === "player"
+          ? `${this.matchResult.player.name} wins`
+          : `${this.matchResult.opponent.name} wins`;
+      }
+
       return this.matchResult.winner === "player"
         ? "Victory"
         : "Defeat";
