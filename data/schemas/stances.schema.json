@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vpg-engine.local/schemas/stances.schema.json",
+  "title": "MAY' QUV — Base Stances",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "stances"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "stances": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/stance"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "stance": {
+      "type": "object",
+      "required": [
+        "stance_id",
+        "name",
+        "category",
+        "lead_side",
+        "posture",
+        "guard",
+        "feet",
+        "weight",
+        "movement",
+        "readiness",
+        "range_bias",
+        "notes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "stance_id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "striking",
+            "grappling",
+            "hybrid",
+            "traditional",
+            "dynamic"
+          ]
+        },
+        "lead_side": {
+          "enum": [
+            "left",
+            "right",
+            "switch",
+            "square"
+          ]
+        },
+        "posture": {
+          "enum": [
+            "upright",
+            "semi_upright",
+            "neutral",
+            "crouched",
+            "deep_crouch",
+            "dynamic"
+          ]
+        },
+        "guard": {
+          "enum": [
+            "high",
+            "mid",
+            "low",
+            "extended",
+            "long_guard",
+            "open_hands",
+            "wrestling_hands",
+            "grip_ready",
+            "dynamic"
+          ]
+        },
+        "feet": {
+          "type": "object",
+          "required": [
+            "orientation",
+            "width",
+            "rear_heel",
+            "stance_depth"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "orientation": {
+              "enum": [
+                "square",
+                "slightly_blade",
+                "bladed",
+                "side_on",
+                "dynamic"
+              ]
+            },
+            "width": {
+              "enum": [
+                "narrow",
+                "medium",
+                "wide"
+              ]
+            },
+            "rear_heel": {
+              "enum": [
+                "down",
+                "light",
+                "raised",
+                "dynamic"
+              ]
+            },
+            "stance_depth": {
+              "enum": [
+                "shallow",
+                "medium",
+                "deep",
+                "dynamic"
+              ]
+            }
+          }
+        },
+        "weight": {
+          "type": "object",
+          "required": [
+            "front",
+            "rear"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "front": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "rear": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "movement": {
+          "type": "object",
+          "required": [
+            "forward",
+            "backward",
+            "lateral",
+            "pivot",
+            "burst"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "forward": {
+              "$ref": "#/$defs/score"
+            },
+            "backward": {
+              "$ref": "#/$defs/score"
+            },
+            "lateral": {
+              "$ref": "#/$defs/score"
+            },
+            "pivot": {
+              "$ref": "#/$defs/score"
+            },
+            "burst": {
+              "$ref": "#/$defs/score"
+            }
+          }
+        },
+        "readiness": {
+          "type": "object",
+          "required": [
+            "punch",
+            "kick",
+            "clinch",
+            "takedown",
+            "sprawl",
+            "throw",
+            "ground_entry"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "punch": {
+              "$ref": "#/$defs/score"
+            },
+            "kick": {
+              "$ref": "#/$defs/score"
+            },
+            "clinch": {
+              "$ref": "#/$defs/score"
+            },
+            "takedown": {
+              "$ref": "#/$defs/score"
+            },
+            "sprawl": {
+              "$ref": "#/$defs/score"
+            },
+            "throw": {
+              "$ref": "#/$defs/score"
+            },
+            "ground_entry": {
+              "$ref": "#/$defs/score"
+            }
+          }
+        },
+        "range_bias": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "long",
+              "boxing",
+              "kicking",
+              "clinch",
+              "takedown",
+              "ground"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
