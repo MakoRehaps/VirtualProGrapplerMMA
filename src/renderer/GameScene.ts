@@ -40,7 +40,7 @@ import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
 import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
 import { canSustainWhizzer, guardLevelFromArmCondition, regionConsequences } from "../combat/regionalCondition";
-import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
+import { BODY_PHYSICS, preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
 import { createDefaultMoveset, techniqueForMovesetInput, validateMoveset, type FighterMoveset, type MovesetButton } from "../combat/moveset";
@@ -848,7 +848,12 @@ export class GameScene {
     };
   }
 
-  async loadCharacter(definition: CharacterDefinition): Promise<string[]> {
+  async loadCharacter(
+    definition: CharacterDefinition,
+    playerSetup?: Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
+      name?: string;
+    }
+  ): Promise<string[]> {
     this.disposeCharacter();
 
     // The ring defines the play area, so it must be measured before the
@@ -861,6 +866,15 @@ export class GameScene {
       SPAWN.player
     );
     const root = player.root;
+    const normalizedSetup = playerSetup
+      ? this.normalizePlayerSetup(definition.id, playerSetup)
+      : null;
+    if (normalizedSetup) {
+      const heightScale =
+        normalizedSetup.body.heightM /
+        BODY_PHYSICS.reference_body.height_m;
+      root.scaling.scaleInPlace(heightScale);
+    }
     this.loadedNodes.push(...player.nodes);
     this.animations = player.animations;
     this.playerProcedural = player.procedural;
@@ -977,11 +991,58 @@ export class GameScene {
     this.controller.opponentPosition = () => this.opponent?.position ?? null;
     this.controller.setFacing(Math.atan2(0, SPAWN.opponent.z - SPAWN.player.z));
 
-    this.startMatch(definition.id, opponentDef.id);
+    this.startMatch(definition.id, opponentDef.id, normalizedSetup ?? undefined);
 
     // The camera is deliberately not re-aimed at the character: it stays on
     // the ring for the whole match.
     return missing;
+  }
+
+  private normalizePlayerSetup(
+    characterId: string,
+    setup: Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
+      name?: string;
+    }
+  ): FighterLoadout {
+    const bounds = BODY_PHYSICS.legal_body_envelope;
+    const style = styleById(setup.styleId);
+    const heightM = Math.min(
+      bounds.max_height_m,
+      Math.max(bounds.min_height_m, setup.body.heightM)
+    );
+    const massKg = Math.min(
+      bounds.max_mass_kg,
+      Math.max(bounds.min_mass_kg, setup.body.massKg)
+    );
+    const minReach = heightM * bounds.min_reach_to_height_ratio;
+    const maxReach = heightM * bounds.max_reach_to_height_ratio;
+    const reachM = Math.min(
+      maxReach,
+      Math.max(minReach, setup.body.reachM)
+    );
+    const com = Math.min(
+      bounds.center_of_mass_height_ratio.max,
+      Math.max(
+        bounds.center_of_mass_height_ratio.min,
+        setup.body.centerOfMassHeightRatio
+      )
+    );
+
+    return {
+      id: characterId,
+      name: setup.name?.trim() || characterId,
+      styleId: style?.style_id ?? "boxing",
+      stanceId:
+        style?.default_stance === setup.stanceId
+          ? setup.stanceId
+          : style?.default_stance ?? "neutral_fighting",
+      body: {
+        massKg,
+        heightM,
+        reachM,
+        centerOfMassHeightRatio: com,
+      },
+    };
   }
 
   private fighterLoadout(characterId: string, side: CombatSide): FighterLoadout {
@@ -1012,11 +1073,15 @@ export class GameScene {
    * Opens a new match: fresh health, stamina and RNG for both wrestlers, and
    * the strike inputs wired through to the damage engine.
    */
-  private startMatch(playerId: string, opponentId: string): void {
+  private startMatch(
+    playerId: string,
+    opponentId: string,
+    playerOverride?: FighterLoadout
+  ): void {
     this.clock.reset();
     this.inputBuffer.clear();
 
-    const player = this.fighterLoadout(playerId, "player");
+    const player = playerOverride ?? this.fighterLoadout(playerId, "player");
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
