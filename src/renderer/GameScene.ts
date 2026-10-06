@@ -30,6 +30,7 @@ import { ProceduralHitReactionAnimator } from "./ProceduralHitReactionAnimator";
 import { ProceduralKnockdownAnimator } from "./ProceduralKnockdownAnimator";
 import { CollisionDebugView } from "./CollisionDebugView";
 import { ProceduralClinchAnimator, type ClinchPoseId } from "./ProceduralClinchAnimator";
+import { DefensivePoseOverlay } from "./DefensivePoseOverlay";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { GamepadTechniqueInput } from "../game/GamepadTechniqueInput";
@@ -86,6 +87,7 @@ export class GameScene {
   private collisionDebug: CollisionDebugView | null = null;
   private clinchProcedural: ProceduralClinchAnimator | null = null;
   private currentClinchPose: ClinchPoseId | null = null;
+  private defensiveOverlay: DefensivePoseOverlay | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -155,6 +157,10 @@ export class GameScene {
       }
 
       this.controller?.update(dt);
+      this.defensiveOverlay?.apply(
+        this.input.swayHorizontal,
+        this.input.swayVertical
+      );
       // The opponent has no AI, but it always squares up to the player.
       this.opponent?.update(dt, this.playerRoot?.position ?? null);
       // Ropes keep oscillating after the wrestler has left them.
@@ -716,6 +722,7 @@ export class GameScene {
     this.playerProcedural = player.procedural;
     this.playerStanceProcedural = player.stanceProcedural;
     this.playerRig = player.rig;
+    this.defensiveOverlay = new DefensivePoseOverlay(player.rig);
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
@@ -837,6 +844,14 @@ export class GameScene {
     this.match.guardState = (side) => {
       if (side === "player") return this.input.guarding ? "solid" : "none";
       return this.match?.opponent.guarding ? "solid" : "none";
+    };
+
+    this.match.evasionState = (side) => {
+      if (side !== "player") return { horizontal: 0, vertical: 0 };
+      return {
+        horizontal: this.input.swayHorizontal,
+        vertical: this.input.swayVertical,
+      };
     };
 
     this.match.contactRegion = (attacker, technique) => {
@@ -1097,6 +1112,8 @@ export class GameScene {
     this.playerProcedural = null;
     this.playerStanceProcedural?.dispose();
     this.playerStanceProcedural = null;
+    this.defensiveOverlay?.reset();
+    this.defensiveOverlay = null;
     this.playerRig = null;
     this.opponentRig = null;
     this.playerCollision = null;
