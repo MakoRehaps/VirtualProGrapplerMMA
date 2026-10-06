@@ -18,6 +18,27 @@ function clamp(value: number, min = 0, max = 100): number {
   return Math.max(min, Math.min(max, value));
 }
 
+function submissionTargetRegion(
+  defender: FighterState,
+  target: string
+): ReturnType<typeof regionFromTarget> {
+  if (target === "arm" || target === "arms") {
+    return defender.condition.regions.leftArm <=
+      defender.condition.regions.rightArm
+      ? "leftArm"
+      : "rightArm";
+  }
+
+  if (target === "leg" || target === "legs") {
+    return defender.condition.regions.leftLeg <=
+      defender.condition.regions.rightLeg
+      ? "leftLeg"
+      : "rightLeg";
+  }
+
+  return regionFromTarget(target);
+}
+
 /**
  * Deterministic submission resolution.
  *
@@ -35,7 +56,10 @@ export function resolveSubmission(
     throw new Error(`${technique.techniqueId} is not a submission`);
   }
 
-  const region = regionFromTarget(technique.target);
+  const region = submissionTargetRegion(
+    defender,
+    technique.target
+  );
   const attackerCondition = regionConsequences(attacker.condition);
   const defenderCondition = regionConsequences(defender.condition);
 
