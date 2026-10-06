@@ -73,11 +73,14 @@ export class GameScene {
   private camera: ArcRotateCamera;
   private shadows: ShadowGenerator;
   private input: InputController;
+  private opponentInput: InputController | null = null;
   private readonly gamepadTechnique = new GamepadTechniqueInput();
+  private opponentGamepadTechnique: GamepadTechniqueInput | null = null;
   private arenaFloor: Mesh | null = null;
 
   private playerRoot: TransformNode | null = null;
   private controller: CharacterController | null = null;
+  private opponentController: CharacterController | null = null;
   private animations: AnimationController | null = null;
   private playerProcedural: ProceduralMartialAnimator | null = null;
   private opponentProcedural: ProceduralMartialAnimator | null = null;
@@ -120,7 +123,9 @@ export class GameScene {
   private readonly inputBuffer = new InputBuffer();
   private match: MayQuvMatch | null = null;
   private playerMoveset: FighterMoveset | null = null;
+  private opponentMoveset: FighterMoveset | null = null;
   private botBrain: BotBrain | null = null;
+  private humanOpponent = false;
 
   private readonly onResize: () => void;
 
@@ -855,7 +860,8 @@ export class GameScene {
     opponentSetup?: FighterSetupInput,
     botDifficulty: BotDifficultyId = "club",
     playerCondition?: FighterCondition,
-    rulesetId = "may_quv_standard"
+    rulesetId = "may_quv_standard",
+    humanOpponent = false
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -1003,6 +1009,27 @@ export class GameScene {
     this.controller.opponentPosition = () => this.opponent?.position ?? null;
     this.controller.setFacing(Math.atan2(0, SPAWN.opponent.z - SPAWN.player.z));
 
+    if (humanOpponent) {
+      this.opponentInput = new InputController(this.scene, 1, false);
+      this.opponentGamepadTechnique = new GamepadTechniqueInput(
+        undefined,
+        1
+      );
+      this.opponentController = new CharacterController(
+        other.root,
+        other.animations,
+        this.opponentInput,
+        this.camera,
+        this.bounds,
+        this.ropes
+      );
+      this.opponentController.opponentPosition = () =>
+        this.playerRoot?.position ?? null;
+      this.opponentController.setFacing(
+        Math.atan2(0, SPAWN.player.z - SPAWN.opponent.z)
+      );
+    }
+
     this.startMatch(
       definition.id,
       opponentDef.id,
@@ -1010,7 +1037,8 @@ export class GameScene {
       normalizedOpponentSetup ?? undefined,
       botDifficulty,
       playerCondition,
-      rulesetId
+      rulesetId,
+      humanOpponent
     );
 
     // The camera is deliberately not re-aimed at the character: it stays on
@@ -1053,7 +1081,8 @@ export class GameScene {
     opponentOverride?: FighterLoadout,
     botDifficulty: BotDifficultyId = "club",
     playerCondition?: FighterCondition,
-    rulesetId = "may_quv_standard"
+    rulesetId = "may_quv_standard",
+    humanOpponent = false
   ): void {
     this.clock.reset();
     this.inputBuffer.clear();
@@ -1069,8 +1098,12 @@ export class GameScene {
       undefined,
       rulesetId
     );
-    this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
-    this.botBrain = new BotBrain(
+    this.humanOpponent = humanOpponent;
+    this.playerMoveset =
+      listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
+    this.opponentMoveset =
+      listMovesets(opponent.styleId)[0] ?? createDefaultMoveset(opponent.styleId);
+    this.botBrain = humanOpponent ? null : new BotBrain(
       this.match,
       "opponent",
       botDifficulty,
