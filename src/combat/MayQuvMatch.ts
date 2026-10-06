@@ -67,6 +67,7 @@ export class MayQuvMatch {
   onPositionChanged: ((playerPosition: string, opponentPosition: string) => void) | null = null;
   guardState: ((side: CombatSide) => "none" | "partial" | "solid") | null = null;
   evasionState: ((side: CombatSide) => { horizontal: number; vertical: number }) | null = null;
+  grappleDefenseState: ((side: CombatSide) => { sprawl: boolean; whizzer: boolean }) | null = null;
   private counterWindowUntil: Partial<Record<CombatSide, number>> = {};
 
   constructor(
@@ -277,6 +278,43 @@ export class MayQuvMatch {
         techniqueName: hit.technique.name,
         connected: false,
         missReason: "evaded",
+      });
+      return;
+    }
+
+    const grappleDefense = this.grappleDefenseState?.(defenderSide) ?? {
+      sprawl: false,
+      whizzer: false,
+    };
+
+    const isStandingShot =
+      hit.technique.type === "takedown" &&
+      hit.technique.context === "standing";
+    const isClinchTakedown =
+      (hit.technique.type === "takedown" ||
+        hit.technique.type === "throw") &&
+      hit.technique.context === "clinch";
+
+    if (isStandingShot && grappleDefense.sprawl) {
+      this.counterWindowUntil[defenderSide] = frame + 30;
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: false,
+        missReason: "sprawled",
+      });
+      return;
+    }
+
+    if (isClinchTakedown && grappleDefense.whizzer) {
+      this.counterWindowUntil[defenderSide] = frame + 24;
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: false,
+        missReason: "whizzered",
       });
       return;
     }
