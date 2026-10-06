@@ -1332,7 +1332,12 @@ export class GameScene {
 
       const clip = `REACT_${resolution.targetRegion}`;
       if (defender === "player") {
-        this.animations?.play(clip, { loop: false, restart: true });
+        this.controller?.setExternalPoseLock(true);
+        this.animations?.play(clip, {
+          loop: false,
+          restart: true,
+          onEnd: () => this.controller?.setExternalPoseLock(false),
+        });
       } else if (this.humanOpponent) {
         this.setOpponentPoseLock(true);
         this.opponent?.playReaction(clip, () => {
