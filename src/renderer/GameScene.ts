@@ -81,6 +81,7 @@ export class GameScene {
   private opponentKnockdown: ProceduralKnockdownAnimator | null = null;
   private collisionDebug: CollisionDebugView | null = null;
   private clinchProcedural: ProceduralClinchAnimator | null = null;
+  private currentClinchPose: ClinchPoseId | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -197,6 +198,7 @@ export class GameScene {
       this.controller?.setExternalPoseLock(true);
       this.opponent.setExternalPoseLock(true);
       this.animations.register(group);
+      this.currentClinchPose = position;
       this.animations.play(group.name, { loop: true, restart: true });
     }
     return true;
@@ -206,6 +208,7 @@ export class GameScene {
     const exited = this.match?.exitClinch() ?? false;
     if (!exited) return false;
 
+    this.currentClinchPose = null;
     this.controller?.setExternalPoseLock(false);
     this.opponent?.setExternalPoseLock(false);
     return true;
@@ -217,6 +220,14 @@ export class GameScene {
       this.opponent?.playReaction("STATE_TECHNICAL_STANDUP");
     }
     return stood;
+  }
+
+  private resumeClinchPose(): void {
+    if (!this.currentClinchPose || !this.animations) return;
+    const group = this.clinchProcedural?.build(this.currentClinchPose);
+    if (!group) return;
+    this.animations.register(group);
+    this.animations.play(group.name, { loop: true, restart: true });
   }
 
   tryPlayerTechnique(techniqueId: string): boolean {
@@ -280,9 +291,13 @@ export class GameScene {
     if (!queued) return false;
 
     if (animationName) {
+      const returnToClinch = this.currentClinchPose !== null;
       this.animations.play(animationName, {
         loop: false,
         restart: true,
+        onEnd: () => {
+          if (returnToClinch) this.resumeClinchPose();
+        },
       });
     }
 
@@ -937,6 +952,7 @@ export class GameScene {
     this.pairedProcedural = null;
     this.clinchProcedural?.dispose();
     this.clinchProcedural = null;
+    this.currentClinchPose = null;
     this.playerProcedural?.dispose();
     this.playerProcedural = null;
     this.playerStanceProcedural?.dispose();
