@@ -341,8 +341,8 @@
       "motion_id": "roundhouse_muay_thai",
       "family": "muay_thai",
       "technique_ids": [
-        "roundhouse_body",
-        "roundhouse_head",
+        "round_kick_body",
+        "round_kick_head",
         "low_kick"
       ],
       "evidence_level": "measured",
@@ -426,8 +426,8 @@
       "motion_id": "roundhouse_karate",
       "family": "karate",
       "technique_ids": [
-        "roundhouse_body",
-        "roundhouse_head"
+        "round_kick_body",
+        "round_kick_head"
       ],
       "evidence_level": "measured",
       "sources": [
@@ -476,8 +476,8 @@
       "motion_id": "roundhouse_taekwondo",
       "family": "taekwondo",
       "technique_ids": [
-        "roundhouse_body",
-        "roundhouse_head"
+        "round_kick_body",
+        "round_kick_head"
       ],
       "evidence_level": "measured",
       "sources": [
