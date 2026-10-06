@@ -76,18 +76,51 @@ export class InputController {
     window.addEventListener("blur", this.onBlur);
   }
 
-  /** Refreshes the held-key state. Call once per frame before movement. */
+  /** Refreshes keyboard fallback and primary XInput/Gamepad state. */
   update(): void {
     const fwd = this.held.has("KeyW") || this.held.has("ArrowUp");
     const back = this.held.has("KeyS") || this.held.has("ArrowDown");
     const left = this.held.has("KeyA") || this.held.has("ArrowLeft");
     const right = this.held.has("KeyD") || this.held.has("ArrowRight");
 
-    this.vertical = (fwd ? 1 : 0) - (back ? 1 : 0);
-    this.horizontal = (right ? 1 : 0) - (left ? 1 : 0);
-    this.guarding = this.held.has("KeyP");
+    const keyboardVertical = (fwd ? 1 : 0) - (back ? 1 : 0);
+    const keyboardHorizontal = (right ? 1 : 0) - (left ? 1 : 0);
+
+    const pad = this.primaryGamepad();
+    const deadzone = 0.18;
+    const padXRaw = pad?.axes[0] ?? 0;
+    const padYRaw = -(pad?.axes[1] ?? 0);
+    const padX = Math.abs(padXRaw) >= deadzone ? padXRaw : 0;
+    const padY = Math.abs(padYRaw) >= deadzone ? padYRaw : 0;
+
+    // XInput is primary when the stick is being used; keyboard remains the
+    // development/accessibility fallback when the controller is idle.
+    this.horizontal = padX !== 0 ? padX : keyboardHorizontal;
+    this.vertical = padY !== 0 ? padY : keyboardVertical;
+
+    // Standard mapping: LT is button 6. Keyboard P remains fallback.
+    const leftTrigger = pad?.buttons[6]?.value ?? 0;
+    this.guarding = leftTrigger >= 0.5 || this.held.has("KeyP");
 
     this.updateRunMode(fwd || back || left || right);
+  }
+
+  private primaryGamepad(): Gamepad | null {
+    if (typeof navigator === "undefined" || !navigator.getGamepads) return null;
+
+    const pads = Array.from(navigator.getGamepads());
+    for (const pad of pads) {
+      if (!pad || !pad.connected) continue;
+      if (pad.mapping === "standard" || /xbox|xinput/i.test(pad.id)) {
+        return pad;
+      }
+    }
+
+    return pads.find((p): p is Gamepad => Boolean(p?.connected)) ?? null;
+  }
+
+  get gamepadConnected(): boolean {
+    return this.primaryGamepad() !== null;
   }
 
   /**
