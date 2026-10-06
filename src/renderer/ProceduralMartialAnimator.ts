@@ -43,11 +43,29 @@ export class ProceduralMartialAnimator {
     preferredFamily?: string
   ): AnimationGroup | null {
     const profiles = motionProfilesForTechnique(techniqueId);
-    if (!profiles.length) return null;
+    const supportsSynthesized = [
+      "lead_knee",
+      "rear_knee",
+      "knee_head",
+      "lead_elbow",
+      "rear_elbow",
+      "spinning_elbow",
+      "soccer_kick_head",
+      "stomp_head",
+      "stomp_body",
+      "grounded_knee_head",
+    ].includes(techniqueId);
+    if (!profiles.length && !supportsSynthesized) return null;
 
     const profile =
       profiles.find((p) => p.family === preferredFamily) ??
-      profiles[0];
+      profiles[0] ??
+      {
+        motion_id: `synth_${techniqueId}`,
+        family: preferredFamily ?? "synthesized",
+        duration_s: { nominal: 0.72 },
+        evidence_level: "synthesized_runtime_fallback",
+      };
 
     const clipName = `PROC_${techniqueId}_${profile.family}`;
     const existing = this.created.get(clipName);
@@ -111,6 +129,11 @@ export class ProceduralMartialAnimator {
       "grounded_knee_head",
     ]) {
       const profiles = motionProfilesForTechnique(technique);
+      if (!profiles.length) {
+        const group = this.buildTechnique(technique);
+        if (group && !out.includes(group)) out.push(group);
+        continue;
+      }
       for (const profile of profiles) {
         const group = this.buildTechnique(technique, profile.family);
         if (group && !out.includes(group)) out.push(group);
