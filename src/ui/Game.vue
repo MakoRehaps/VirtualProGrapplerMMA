@@ -42,6 +42,20 @@
           </select>
         </label>
 
+        <label v-if="competitionMode === 'local_vs'">
+          P2 moveset
+          <select v-model="opponentMovesetName">
+            <option value="">Default</option>
+            <option
+              v-for="moveset in opponentSavedMovesets"
+              :key="`p2-${moveset.name}`"
+              :value="moveset.name"
+            >
+              {{ moveset.name }}
+            </option>
+          </select>
+        </label>
+
         <label v-if="competitionMode !== 'local_vs'">
           Bot difficulty
           <select v-model="botDifficulty">
@@ -221,7 +235,7 @@ import { CHARACTERS, CharacterDefinition } from "@/game/config";
 import CombatDebug from "./CombatDebug.vue";
 import MovesetEditor from "./MovesetEditor.vue";
 import type { FighterMoveset } from "@/combat/moveset";
-import { loadMoveset } from "@/combat/movesetStore";
+import { listMovesets, loadMoveset } from "@/combat/movesetStore";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
 import { gamepadSlotConnected } from "@/game/GamepadTechniqueInput";
@@ -265,6 +279,7 @@ export default defineComponent({
       fighterName: "Fighter",
       fighterStyle: "boxing",
       opponentStyle: "combat_sambo",
+      opponentMovesetName: "",
       botDifficulty: "club" as BotDifficultyId,
       selectedBotDifficulty: "club" as BotDifficultyId,
       fighterPresets: [] as FighterPreset[],
@@ -326,6 +341,10 @@ export default defineComponent({
           this.bodyBounds.max_reach_to_height_ratio *
           100
       ) / 100;
+    },
+
+    opponentSavedMovesets() {
+      return listMovesets(this.opponentStyle);
     },
 
     competitionModeName(): string {
@@ -539,6 +558,16 @@ export default defineComponent({
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
         }
+        if (
+          this.competitionMode === "local_vs" &&
+          this.opponentMovesetName
+        ) {
+          const p2Moveset = loadMoveset(
+            this.opponentStyle,
+            this.opponentMovesetName
+          );
+          if (p2Moveset) this.game?.setOpponentMoveset(p2Moveset);
+        }
         this.selectedCharacter = character;
         this.selectedSetup = {
           ...setup,
@@ -595,6 +624,16 @@ export default defineComponent({
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
+        }
+        if (
+          this.competitionMode === "local_vs" &&
+          this.opponentMovesetName
+        ) {
+          const p2Moveset = loadMoveset(
+            this.opponentStyle,
+            this.opponentMovesetName
+          );
+          if (p2Moveset) this.game.setOpponentMoveset(p2Moveset);
         }
         (this.$refs.canvas as HTMLCanvasElement).focus();
       } catch (err) {
