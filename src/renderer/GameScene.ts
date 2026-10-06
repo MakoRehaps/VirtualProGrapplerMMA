@@ -1194,9 +1194,13 @@ export class GameScene {
           ? this.input.guarding
             ? "solid"
             : "none"
-          : this.botBrain?.defenseState(this.clock.frame).guard
-            ? "solid"
-            : "none";
+          : this.humanOpponent
+            ? this.opponentInput?.guarding
+              ? "solid"
+              : "none"
+            : this.botBrain?.defenseState(this.clock.frame).guard
+              ? "solid"
+              : "none";
       return guardLevelFromArmCondition(
         this.match!.stateOf(side).condition,
         requested
@@ -1208,6 +1212,12 @@ export class GameScene {
         return {
           horizontal: this.input.swayHorizontal,
           vertical: this.input.swayVertical,
+        };
+      }
+      if (this.humanOpponent && this.opponentInput) {
+        return {
+          horizontal: this.opponentInput.swayHorizontal,
+          vertical: this.opponentInput.swayVertical,
         };
       }
       return (
@@ -1228,6 +1238,18 @@ export class GameScene {
           whizzer:
             Math.abs(this.input.swayHorizontal) >= 0.35 &&
             canSustainWhizzer(this.match!.player.condition),
+        };
+      }
+
+      if (this.humanOpponent && this.opponentInput) {
+        if (!this.opponentInput.grappleDefense) {
+          return { sprawl: false, whizzer: false };
+        }
+        return {
+          sprawl: this.opponentInput.swayVertical <= -0.35,
+          whizzer:
+            Math.abs(this.opponentInput.swayHorizontal) >= 0.35 &&
+            canSustainWhizzer(this.match!.opponent.condition),
         };
       }
 
@@ -1375,6 +1397,17 @@ export class GameScene {
       runSpeed: movement.runSpeed,
       acceleration: movement.acceleration,
       pivotScale: movement.pivotScale,
+    });
+
+    const opponentMovement = deriveMovementPhysics(
+      opponent.body,
+      opponent.stanceId
+    );
+    this.opponentController?.setMovementPhysics({
+      walkSpeed: opponentMovement.walkSpeed,
+      runSpeed: opponentMovement.runSpeed,
+      acceleration: opponentMovement.acceleration,
+      pivotScale: opponentMovement.pivotScale,
     });
 
     const preferredPoseId = preferredBiomechPoseForStyle(player.styleId);
@@ -1607,8 +1640,14 @@ export class GameScene {
     this.animations?.dispose();
     this.animations = null;
     this.controller = null;
+    this.opponentController = null;
+    this.opponentInput?.dispose();
+    this.opponentInput = null;
+    this.opponentGamepadTechnique = null;
     this.playerMoveset = null;
+    this.opponentMoveset = null;
     this.botBrain = null;
+    this.humanOpponent = false;
 
     for (const node of this.loadedNodes) {
       node.dispose(false, true);
