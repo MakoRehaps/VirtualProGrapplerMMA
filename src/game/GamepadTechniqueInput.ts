@@ -23,16 +23,34 @@ export class GamepadTechniqueInput {
   private readonly previous = new Map<number, boolean>();
   private previousRb = false;
 
-  constructor(private readonly provider: GamepadProvider = DEFAULT_PROVIDER) {}
+  constructor(
+    private readonly provider: GamepadProvider = DEFAULT_PROVIDER,
+    private readonly gamepadIndex = 0
+  ) {}
 
   private primary(): Gamepad | null {
     const pads = this.provider();
+    const exact = pads[this.gamepadIndex] ?? null;
+
+    if (
+      exact?.connected &&
+      (exact.mapping === "standard" || /xbox|xinput/i.test(exact.id))
+    ) {
+      return exact;
+    }
+
+    // P2+ must never fall back to another slot: that would let P1's pad
+    // control multiple fighters. P1 keeps a compatibility fallback for
+    // browsers that expose a single controller at a non-zero array slot.
+    if (this.gamepadIndex > 0) return null;
+
     for (const pad of pads) {
       if (!pad || !pad.connected) continue;
       if (pad.mapping === "standard" || /xbox|xinput/i.test(pad.id)) {
         return pad;
       }
     }
+
     return pads.find((p): p is Gamepad => Boolean(p?.connected)) ?? null;
   }
 
