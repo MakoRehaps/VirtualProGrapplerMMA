@@ -39,7 +39,7 @@ import { Opponent } from "./Opponent";
 import { RingRopes } from "./RingRopes";
 import { MayQuvMatch } from "../combat/MayQuvMatch";
 import type { CombatSide, FighterLoadout } from "../combat/mayQuvTypes";
-import { regionConsequences } from "../combat/regionalCondition";
+import { canSustainWhizzer, guardLevelFromArmCondition, regionConsequences } from "../combat/regionalCondition";
 import { preferredBiomechPoseForStyle, styleById, techniqueById } from "../data/combatCatalog";
 import { deriveMovementPhysics } from "../game/bodyPhysics";
 import { FixedStep } from "../sim/FixedStep";
@@ -1004,9 +1004,18 @@ export class GameScene {
       this.inStrikeRange(attacker);
 
     this.match.guardState = (side) => {
-      if (side === "player") return this.input.guarding ? "solid" : "none";
-      const botDefense = this.botBrain?.defenseState(this.clock.frame);
-      return botDefense?.guard ? "solid" : "none";
+      const requested =
+        side === "player"
+          ? this.input.guarding
+            ? "solid"
+            : "none"
+          : this.botBrain?.defenseState(this.clock.frame).guard
+            ? "solid"
+            : "none";
+      return guardLevelFromArmCondition(
+        this.match!.stateOf(side).condition,
+        requested
+      );
     };
 
     this.match.evasionState = (side) => {
@@ -1031,16 +1040,22 @@ export class GameScene {
         }
         return {
           sprawl: this.input.swayVertical <= -0.35,
-          whizzer: Math.abs(this.input.swayHorizontal) >= 0.35,
+          whizzer:
+            Math.abs(this.input.swayHorizontal) >= 0.35 &&
+            canSustainWhizzer(this.match!.player.condition),
         };
       }
 
-      return (
-        this.botBrain?.defenseState(this.clock.frame).grapple ?? {
-          sprawl: false,
-          whizzer: false,
-        }
-      );
+      const bot = this.botBrain?.defenseState(this.clock.frame).grapple ?? {
+        sprawl: false,
+        whizzer: false,
+      };
+      return {
+        sprawl: bot.sprawl,
+        whizzer:
+          bot.whizzer &&
+          canSustainWhizzer(this.match!.opponent.condition),
+      };
     };
 
     this.match.contactRegion = (attacker, technique) => {
