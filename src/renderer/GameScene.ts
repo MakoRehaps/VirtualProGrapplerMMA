@@ -24,6 +24,7 @@ import { AnimationController } from "./AnimationController";
 import { SkeletonRig } from "./SkeletonRig";
 import { ProceduralMartialAnimator } from "./ProceduralMartialAnimator";
 import { ProceduralStanceAnimator } from "./ProceduralStanceAnimator";
+import { PairedMartialAnimator } from "./PairedMartialAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -66,6 +67,9 @@ export class GameScene {
   private animations: AnimationController | null = null;
   private playerProcedural: ProceduralMartialAnimator | null = null;
   private playerStanceProcedural: ProceduralStanceAnimator | null = null;
+  private playerRig: SkeletonRig | null = null;
+  private opponentRig: SkeletonRig | null = null;
+  private pairedProcedural: PairedMartialAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -140,6 +144,22 @@ export class GameScene {
   /** Name of the animation clip currently blended in. Used by tests. */
   get currentAnimation(): string | null {
     return this.animations?.current ?? null;
+  }
+
+  get playerRigBones(): string[] {
+    return this.playerRig?.resolvedBoneIds ?? [];
+  }
+
+  get playerRigUnresolvedBones(): string[] {
+    return this.playerRig?.unresolvedBoneIds ?? [];
+  }
+
+  playDebugThrow(id: "osoto_gari" | "harai_goshi" | "seoi_nage"): boolean {
+    const group = this.pairedProcedural?.buildThrow(id);
+    if (!group || !this.animations) return false;
+    this.animations.register(group);
+    this.animations.play(group.name, { loop: false, restart: true });
+    return true;
   }
 
   /** Player world position. Used by tests. */
@@ -416,6 +436,7 @@ export class GameScene {
     animations: AnimationController;
     procedural: ProceduralMartialAnimator;
     stanceProcedural: ProceduralStanceAnimator;
+    rig: SkeletonRig;
     nodes: TransformNode[];
   }> {
     const result = await ImportMeshAsync(
@@ -463,6 +484,7 @@ export class GameScene {
       animations,
       procedural,
       stanceProcedural,
+      rig,
       nodes,
     };
   }
@@ -484,6 +506,7 @@ export class GameScene {
     this.animations = player.animations;
     this.playerProcedural = player.procedural;
     this.playerStanceProcedural = player.stanceProcedural;
+    this.playerRig = player.rig;
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
@@ -495,6 +518,21 @@ export class GameScene {
     );
     this.opponent = new Opponent(other.root, other.animations);
     this.opponentNodes = other.nodes;
+    this.opponentRig = other.rig;
+
+    if (this.playerRig && this.opponentRig) {
+      this.pairedProcedural = new PairedMartialAnimator(
+        this.scene,
+        root,
+        this.playerRig,
+        other.root,
+        this.opponentRig
+      );
+      for (const id of ["osoto_gari", "harai_goshi", "seoi_nage"] as const) {
+        const group = this.pairedProcedural.buildThrow(id);
+        if (group) this.animations.register(group);
+      }
+    }
 
     const missing = REQUIRED_CLIPS.filter((c) => !this.animations!.has(c));
 
@@ -715,6 +753,15 @@ export class GameScene {
   }
 
   private disposeCharacter(): void {
+    this.pairedProcedural?.dispose();
+    this.pairedProcedural = null;
+    this.playerProcedural?.dispose();
+    this.playerProcedural = null;
+    this.playerStanceProcedural?.dispose();
+    this.playerStanceProcedural = null;
+    this.playerRig = null;
+    this.opponentRig = null;
+
     this.animations?.dispose();
     this.animations = null;
     this.controller = null;
