@@ -3,12 +3,12 @@ import { competitionModeById } from "@/data/combatCatalog";
 
 export type EventDamageKey = "none" | "event_chain" | "monthly_chain";
 
-function cloneCondition(c: FighterCondition): FighterCondition {
+function carryDamage(c: FighterCondition): FighterCondition {
   return {
     hp: c.hp,
-    stamina: c.stamina,
-    consciousness: c.consciousness,
-    balance: c.balance,
+    stamina: 100,
+    consciousness: 100,
+    balance: 100,
     regions: { ...c.regions },
   };
 }
@@ -22,10 +22,10 @@ export class EventConditionStore {
     const persistence = mode?.damage_persistence as EventDamageKey | undefined;
 
     if (persistence === "event_chain") {
-      return cloneCondition(this.weekly ?? freshCondition());
+      return carryDamage(this.weekly ?? freshCondition());
     }
     if (persistence === "monthly_chain") {
-      return cloneCondition(this.monthly ?? freshCondition());
+      return carryDamage(this.monthly ?? freshCondition());
     }
     return freshCondition();
   }
@@ -33,8 +33,8 @@ export class EventConditionStore {
   finishFight(modeId: string, condition: FighterCondition): void {
     const mode = competitionModeById(modeId);
     const persistence = mode?.damage_persistence as EventDamageKey | undefined;
-    if (persistence === "event_chain") this.weekly = cloneCondition(condition);
-    if (persistence === "monthly_chain") this.monthly = cloneCondition(condition);
+    if (persistence === "event_chain") this.weekly = carryDamage(condition);
+    if (persistence === "monthly_chain") this.monthly = carryDamage(condition);
   }
 
   resetWeekly(): void {
