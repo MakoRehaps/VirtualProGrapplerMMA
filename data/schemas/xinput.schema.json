@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "primary_device",
+    "gameplay_players_max",
+    "deterministic_input_buffer",
+    "controls",
+    "rule"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "primary_device": {
+      "const": "xinput"
+    },
+    "gameplay_players_max": {
+      "const": 2
+    },
+    "deterministic_input_buffer": {
+      "const": true
+    },
+    "controls": {
+      "type": "object"
+    },
+    "rule": {
+      "type": "string"
+    }
+  }
+}
