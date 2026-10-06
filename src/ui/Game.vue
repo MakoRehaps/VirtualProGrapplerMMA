@@ -201,6 +201,7 @@ import { CHARACTERS, CharacterDefinition } from "@/game/config";
 import CombatDebug from "./CombatDebug.vue";
 import MovesetEditor from "./MovesetEditor.vue";
 import type { FighterMoveset } from "@/combat/moveset";
+import { loadMoveset } from "@/combat/movesetStore";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
 import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
@@ -322,6 +323,13 @@ export default defineComponent({
       this.fighterMass = preset.setup.body.massKg;
       this.fighterReach = preset.setup.body.reachM;
       await this.choose(character);
+      if (preset.movesetName && this.game) {
+        const moveset = loadMoveset(
+          preset.setup.styleId,
+          preset.movesetName
+        );
+        if (moveset) this.game.setPlayerMoveset(moveset);
+      }
     },
 
     removeFighterPreset(name: string) {
@@ -339,6 +347,7 @@ export default defineComponent({
         version: 1,
         name: this.selectedSetup.name?.trim() || this.fighterName || "Fighter",
         characterId: this.selectedCharacter.id,
+        movesetName: this.game?.currentPlayerMoveset?.name,
         setup: {
           ...this.selectedSetup,
           body: { ...this.selectedSetup.body },
