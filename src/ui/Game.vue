@@ -38,6 +38,7 @@
       v-if="started && game"
       :source="() => game?.matchSnapshot() ?? null"
       :frame-source="() => game?.simFrame ?? 0"
+      :moveset-source="() => game?.movesetSnapshot() ?? null"
     />
 
     <MovesetEditor
