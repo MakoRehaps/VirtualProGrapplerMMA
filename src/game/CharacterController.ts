@@ -31,6 +31,13 @@ export class CharacterController {
   private jumpPhase: JumpPhase = "start";
   /** Current horizontal speed, eased toward the target for smooth starts. */
   private speed = 0;
+  /** Per-fighter movement derived from body mass and stance. */
+  private movementPhysics = {
+    walkSpeed: Tuning.walkSpeed,
+    runSpeed: Tuning.runSpeed,
+    acceleration: Tuning.acceleration,
+    pivotScale: 1,
+  };
   private verticalVelocity = 0;
   /** Facing angle in radians, eased toward the direction of travel. */
   private yaw = 0;
@@ -111,6 +118,16 @@ export class CharacterController {
    */
   setStrikeHandler(handler: ((moveId: string) => void) | null): void {
     this.strikeHandler = handler;
+  }
+
+  /** Applies body/stance-derived locomotion without exposing RPG stats. */
+  setMovementPhysics(values: {
+    walkSpeed: number;
+    runSpeed: number;
+    acceleration: number;
+    pivotScale: number;
+  }): void {
+    this.movementPhysics = { ...values };
   }
 
   /**
@@ -443,14 +460,14 @@ export class CharacterController {
 
     const targetSpeed = wantsMove
       ? runMode !== "none"
-        ? Tuning.runSpeed
-        : Tuning.walkSpeed
+        ? this.movementPhysics.runSpeed
+        : this.movementPhysics.walkSpeed
       : 0;
 
     this.speed = Scalar.MoveTowards(
       this.speed,
       targetSpeed,
-      Tuning.acceleration * dt
+      this.movementPhysics.acceleration * dt
     );
 
     this.updateFacing(runMode, wantsMove, dt);
@@ -491,7 +508,11 @@ export class CharacterController {
 
     if (targetYaw === null) return;
 
-    this.yaw = this.approachAngle(this.yaw, targetYaw, Tuning.turnSpeed * dt);
+    this.yaw = this.approachAngle(
+      this.yaw,
+      targetYaw,
+      Tuning.turnSpeed * this.movementPhysics.pivotScale * dt
+    );
     this.root.rotation.y = this.yaw;
   }
 
@@ -824,7 +845,7 @@ export class CharacterController {
 
     if (this.speed < 0.1) {
       this.animations.play(Anim.IDLE, { loop: true });
-    } else if (this.speed > (Tuning.walkSpeed + Tuning.runSpeed) / 2) {
+    } else if (this.speed > (this.movementPhysics.walkSpeed + this.movementPhysics.runSpeed) / 2) {
       this.animations.play(Anim.RUN, { loop: true });
     } else {
       this.animations.play(Anim.WALK, { loop: true });
