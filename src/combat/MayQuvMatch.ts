@@ -80,6 +80,7 @@ export class MayQuvMatch {
   evasionState: ((side: CombatSide) => { horizontal: number; vertical: number }) | null = null;
   grappleDefenseState: ((side: CombatSide) => { sprawl: boolean; whizzer: boolean }) | null = null;
   onDefended: ((defender: CombatSide, kind: "evade" | "sprawl" | "whizzer") => void) | null = null;
+  onFinished: ((finish: NonNullable<MayQuvMatchSnapshot["finish"]>, winner: CombatSide | null) => void) | null = null;
   private counterWindowUntil: Partial<Record<CombatSide, number>> = {};
   private readonly judgingStats: Record<CombatSide, JudgingStats> =
     freshJudgingStats();
@@ -449,6 +450,7 @@ export class MayQuvMatch {
       this.winner = hit.attacker;
       this.finish = "ko";
       this.pending.length = 0;
+      this.onFinished?.("ko", this.winner);
       return;
     }
 
@@ -521,6 +523,7 @@ export class MayQuvMatch {
     this.winner = side === "player" ? "opponent" : "player";
     this.finish = "forfeit";
     this.pending.length = 0;
+    this.onFinished?.("forfeit", this.winner);
     return true;
   }
 
@@ -530,6 +533,7 @@ export class MayQuvMatch {
     this.winner = this.decision.winner;
     this.finish = "decision";
     this.pending.length = 0;
+    this.onFinished?.("decision", this.winner);
   }
 
   isCounterWindow(side: CombatSide, frame: number): boolean {
