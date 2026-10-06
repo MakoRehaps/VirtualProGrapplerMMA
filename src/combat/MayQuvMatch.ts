@@ -82,6 +82,53 @@ export class MayQuvMatch {
     return side === "player" ? this.player : this.opponent;
   }
 
+  private techniqueLegalFromPosition(
+    state: FighterState,
+    technique: TechniqueRuntime
+  ): boolean {
+    const position = state.positionId;
+
+    if (technique.context === "grounded_opponent") {
+      return position === "standing_over_grounded";
+    }
+
+    if (technique.context === "clinch") {
+      return [
+        "single_collar_tie",
+        "thai_plum",
+        "over_under",
+        "double_underhooks",
+        "rear_clinch",
+        "front_headlock",
+      ].includes(position);
+    }
+
+    if (technique.context === "takedown") {
+      return position === "standing_close" || position === "front_headlock";
+    }
+
+    if (technique.context === "standing") {
+      return position === "standing_open" || position === "standing_close";
+    }
+
+    return false;
+  }
+
+  requestTechnicalStandup(side: CombatSide): boolean {
+    if (!ACTIVE_COMBAT_PROFILE.grounded_window.defender_can_technical_stand) {
+      return false;
+    }
+    if (this.stateOf(side).positionId !== "seated_guard") return false;
+
+    const other: CombatSide = side === "player" ? "opponent" : "player";
+    this.stateOf(side).positionId = "standing_open";
+    if (this.stateOf(other).positionId === "standing_over_grounded") {
+      this.stateOf(other).positionId = "standing_open";
+    }
+    delete this.groundedUntil[side];
+    return true;
+  }
+
   throwTechnique(
     attacker: CombatSide,
     technique: TechniqueRuntime,
@@ -92,6 +139,7 @@ export class MayQuvMatch {
     const state = this.stateOf(attacker);
     if (!styleAllowsTechnique(state.loadout.styleId, technique.techniqueId)) return false;
     if (!isTechniqueActive(technique)) return false;
+    if (!this.techniqueLegalFromPosition(state, technique)) return false;
     if (state.condition.stamina < technique.staminaCost) return false;
 
     this.pending.push({
