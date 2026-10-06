@@ -13,11 +13,24 @@
         </label>
 
         <label>
-          Style
+          Player style
           <select v-model="fighterStyle">
             <option
               v-for="style in styles"
               :key="style.style_id"
+              :value="style.style_id"
+            >
+              {{ style.name }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Opponent style
+          <select v-model="opponentStyle">
+            <option
+              v-for="style in styles"
+              :key="`opponent-${style.style_id}`"
               :value="style.style_id"
             >
               {{ style.name }}
@@ -179,6 +192,7 @@ export default defineComponent({
       bodyBounds: BODY_PHYSICS.legal_body_envelope,
       fighterName: "Fighter",
       fighterStyle: "boxing",
+      opponentStyle: "combat_sambo",
       fighterHeight: BODY_PHYSICS.reference_body.height_m,
       fighterMass: BODY_PHYSICS.reference_body.mass_kg,
       fighterReach: BODY_PHYSICS.reference_body.reach_m,
@@ -189,6 +203,11 @@ export default defineComponent({
       movesetOpen: false,
       selectedCharacter: null as CharacterDefinition | null,
       selectedSetup: null as
+        | (Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
+            name?: string;
+          })
+        | null,
+      selectedOpponentSetup: null as
         | (Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
             name?: string;
           })
@@ -266,7 +285,24 @@ export default defineComponent({
             centerOfMassHeightRatio: 0.56,
           },
         };
-        const missing = await this.game!.loadCharacter(character, setup);
+        const opponentStyle = styleById(this.opponentStyle);
+        const opponentSetup = {
+          name: "Opponent",
+          styleId: this.opponentStyle,
+          stanceId:
+            opponentStyle?.default_stance ?? "neutral_fighting",
+          body: {
+            massKg: 82,
+            heightM: 1.82,
+            reachM: 1.86,
+            centerOfMassHeightRatio: 0.56,
+          },
+        };
+        const missing = await this.game!.loadCharacter(
+          character,
+          setup,
+          opponentSetup
+        );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
         }
@@ -274,6 +310,10 @@ export default defineComponent({
         this.selectedSetup = {
           ...setup,
           body: { ...setup.body },
+        };
+        this.selectedOpponentSetup = {
+          ...opponentSetup,
+          body: { ...opponentSetup.body },
         };
         this.started = true;
         this.matchResult = null;
@@ -299,7 +339,8 @@ export default defineComponent({
       try {
         const missing = await this.game.loadCharacter(
           this.selectedCharacter,
-          this.selectedSetup ?? undefined
+          this.selectedSetup ?? undefined,
+          this.selectedOpponentSetup ?? undefined
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
