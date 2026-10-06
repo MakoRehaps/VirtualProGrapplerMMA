@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "season": {
+    "cadence": "monthly",
+    "reset": [
+      "season_rating",
+      "season_record",
+      "qualification",
+      "event_damage"
+    ],
+    "preserve": [
+      "career_history",
+      "monthly_archives",
+      "cosmetics",
+      "tokens",
+      "titles"
+    ],
+    "public_top_count": 10
+  },
+  "modes": [
+    {
+      "mode_id": "normal_mp",
+      "name": "Ranked Fight",
+      "opponent_pool": "human",
+      "ruleset_id": "may_quv_standard",
+      "damage_persistence": "none",
+      "earns_tokens": true,
+      "affects_rank": true
+    },
+    {
+      "mode_id": "local_vs",
+      "name": "Local VS",
+      "opponent_pool": "human_local",
+      "ruleset_id": "may_quv_standard",
+      "damage_persistence": "none",
+      "earns_tokens": false,
+      "affects_rank": false
+    },
+    {
+      "mode_id": "practice_coach",
+      "name": "Coach Practice",
+      "opponent_pool": "coach_ai",
+      "ruleset_id": "practice",
+      "damage_persistence": "none",
+      "earns_tokens": false,
+      "affects_rank": false
+    },
+    {
+      "mode_id": "weekly_qualifier",
+      "name": "Weekly Qualifier",
+      "opponent_pool": "bots_only",
+      "ruleset_id": "may_quv_event",
+      "damage_persistence": "event_chain",
+      "earns_tokens": true,
+      "affects_rank": false
+    },
+    {
+      "mode_id": "weekly_tournament",
+      "name": "Weekly Kumite",
+      "opponent_pool": "human_then_bot_fill",
+      "ruleset_id": "may_quv_event",
+      "damage_persistence": "event_chain",
+      "earns_tokens": true,
+      "affects_rank": true
+    },
+    {
+      "mode_id": "monthly_qualifier_one",
+      "name": "Monthly Qualifier I",
+      "opponent_pool": "bots_only",
+      "ruleset_id": "may_quv_event",
+      "damage_persistence": "monthly_chain",
+      "earns_tokens": true,
+      "affects_rank": false
+    },
+    {
+      "mode_id": "monthly_qualifier_two",
+      "name": "Monthly Qualifier II",
+      "opponent_pool": "bots_only",
+      "ruleset_id": "may_quv_event",
+      "damage_persistence": "monthly_chain",
+      "earns_tokens": true,
+      "affects_rank": false
+    },
+    {
+      "mode_id": "monthly_grand_tournament",
+      "name": "MAY' QUV Grand Tournament",
+      "opponent_pool": "human_then_bot_fill",
+      "ruleset_id": "may_quv_event",
+      "damage_persistence": "monthly_chain",
+      "earns_tokens": true,
+      "affects_rank": true
+    }
+  ],
+  "weekly_event": {
+    "qualification": [
+      "win weekly_qualifier"
+    ],
+    "bracket_fill": "bots fill empty human slots",
+    "damage_flow": [
+      "weekly_qualifier",
+      "weekly_tournament"
+    ],
+    "reset_damage_after_event": true
+  },
+  "monthly_event": {
+    "qualification": [
+      "win monthly_qualifier_one",
+      "win monthly_qualifier_two"
+    ],
+    "bracket_fill": "bots fill empty human slots",
+    "damage_flow": [
+      "monthly_qualifier_one",
+      "monthly_qualifier_two",
+      "monthly_grand_tournament"
+    ],
+    "reset_damage_after_event": true
+  }
+}
