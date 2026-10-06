@@ -75,12 +75,35 @@ describe("event regional carryover", () => {
     expect(store.startCondition("normal_mp").regions.head).toBe(100);
   });
 
-  it("weekly event chain preserves regional condition", () => {
+  it("weekly event chain preserves HP and regional condition", () => {
     const store = new EventConditionStore();
     const used = freshCondition();
+    used.hp = 73;
     used.regions.leftLeg = 42;
     store.finishFight("weekly_qualifier", used);
-    expect(store.startCondition("weekly_tournament").regions.leftLeg).toBe(42);
+
+    const carried = store.startCondition("weekly_tournament");
+    expect(carried.hp).toBe(73);
+    expect(carried.regions.leftLeg).toBe(42);
+  });
+
+  it("resets transient combat state between event bouts", () => {
+    const store = new EventConditionStore();
+    const used = freshCondition();
+    used.stamina = 18;
+    used.consciousness = 44;
+    used.balance = 31;
+    used.hp = 82;
+    used.regions.head = 66;
+
+    store.finishFight("weekly_qualifier", used);
+    const carried = store.startCondition("weekly_tournament");
+
+    expect(carried.hp).toBe(82);
+    expect(carried.regions.head).toBe(66);
+    expect(carried.stamina).toBe(100);
+    expect(carried.consciousness).toBe(100);
+    expect(carried.balance).toBe(100);
   });
 
   it("monthly chain preserves both qualifier stages", () => {
