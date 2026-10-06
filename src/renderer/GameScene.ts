@@ -383,6 +383,26 @@ export class GameScene {
       : null;
   }
 
+  setOpponentMoveset(moveset: FighterMoveset): boolean {
+    if (!this.match) return false;
+    if (moveset.styleId !== this.match.opponent.loadout.styleId) return false;
+
+    const validation = validateMoveset(moveset);
+    if (!validation.valid) return false;
+
+    this.opponentMoveset = {
+      ...moveset,
+      slots: { ...moveset.slots },
+    };
+    return true;
+  }
+
+  get currentOpponentMoveset(): FighterMoveset | null {
+    return this.opponentMoveset
+      ? { ...this.opponentMoveset, slots: { ...this.opponentMoveset.slots } }
+      : null;
+  }
+
   tryMovesetButton(button: MovesetButton): boolean {
     if (!this.match || !this.playerMoveset) return false;
     const techniqueId = techniqueForMovesetInput(
@@ -1539,7 +1559,38 @@ export class GameScene {
     return this.match?.snapshot() ?? null;
   }
 
-  movesetSnapshot() {
+  opponentMovesetSnapshot() {
+    if (!this.match || !this.opponentMoveset) return null;
+
+    const positionId = this.match.opponent.positionId;
+    const buttons = ["a", "b", "x", "y"] as const;
+    const resolved = Object.fromEntries(
+      buttons.map((button) => {
+        const id = techniqueForMovesetInput(
+          this.opponentMoveset!,
+          positionId,
+          button
+        );
+        return [
+          button,
+          id
+            ? {
+                techniqueId: id,
+                name: techniqueById(id)?.name ?? id,
+              }
+            : null,
+        ];
+      })
+    );
+
+    return {
+      movesetName: this.opponentMoveset.name,
+      positionId,
+      buttons: resolved,
+    };
+  }
+
+    movesetSnapshot() {
     if (!this.match || !this.playerMoveset) return null;
 
     const positionId = this.match.player.positionId;
