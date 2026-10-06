@@ -75,6 +75,15 @@ function schemaTargets() {
     ["data/schemas/rulesets.schema.json", ["data/game/rulesets.json"]],
     ["data/schemas/competition.schema.json", ["data/game/competition.json"]],
     ["data/schemas/cosmetics.schema.json", ["data/cosmetics/catalog.json"]],
+    ["data/schemas/body-physics.schema.json", ["data/combat/body-physics.json"]],
+    ["data/schemas/events.schema.json", ["data/combat/events.json"]],
+    ["data/schemas/damage-model.schema.json", ["data/combat/damage-model.json"]],
+    ["data/schemas/progression.schema.json", ["data/game/progression.json"]],
+    ["data/schemas/rankings.schema.json", ["data/game/rankings.json"]],
+    ["data/schemas/fighter-policy.schema.json", ["data/game/fighter-policy.json"]],
+    ["data/schemas/xinput.schema.json", ["data/game/xinput.json"]],
+    ["data/schemas/bots.schema.json", ["data/ai/bots.json"]],
+    ["data/schemas/coach.schema.json", ["data/ai/coach.json"]],
   ];
 }
 
@@ -220,6 +229,38 @@ function checkMayQuvReferences(errors) {
   }
 }
 
+
+function checkMayQuvInvariants(errors) {
+  const physics = load("data/combat/body-physics.json");
+  const damage = load("data/combat/damage-model.json");
+  const fighter = load("data/game/fighter-policy.json");
+  const progression = load("data/game/progression.json");
+  const coach = load("data/ai/coach.json");
+  const bots = load("data/ai/bots.json");
+  const competition = load("data/game/competition.json");
+
+  if (physics.invariants.hp_max !== 100 || damage.constants.hp_max !== 100 || fighter.competitive_invariants.hp_max !== 100) {
+    errors.push("MAY' QUV invariant broken: HP max must always be 100");
+  }
+  if (damage.finish_rules.normal_tko !== false) errors.push("MAY' QUV invariant broken: normal TKO must remain disabled");
+  if (fighter.competitive_invariants.stat_grind !== false || progression.power_policy.stat_progression !== false) {
+    errors.push("MAY' QUV invariant broken: competitive stat progression is forbidden");
+  }
+  if (!progression.power_policy.moves_unlocked_from_start || !progression.power_policy.styles_unlocked_from_start || !progression.power_policy.stances_unlocked_from_start) {
+    errors.push("MAY' QUV invariant broken: styles, moves and stances must be free from the start");
+  }
+  if (coach.changes_player_stats || coach.causes_persistent_damage) errors.push("practice coach must not alter stats or persistent damage");
+  if (coach.adaptation.future_input_reading || bots.fairness.future_input_reading) errors.push("AI may not read future player inputs");
+  if (bots.fairness.hidden_stat_bonus) errors.push("bots may not receive hidden stat bonuses");
+
+  const qualifiers = competition.modes.filter((m) => m.mode_id.includes("qualifier"));
+  for (const q of qualifiers) {
+    if (q.opponent_pool !== "bots_only") errors.push(`qualifier ${q.mode_id} must remain bots-only`);
+  }
+  const normal = competition.modes.find((m) => m.mode_id === "normal_mp");
+  if (!normal || normal.damage_persistence !== "none") errors.push("normal multiplayer must not persist damage between fights");
+}
+
 function checkMenuTargets(errors) {
   const menu = load("data/ui/main-menu.json");
   const pages = Object.keys(menu.pages);
@@ -245,6 +286,7 @@ export function validateAll() {
   checkMenuTargets(errors);
   checkStyleStances(errors);
   checkMayQuvReferences(errors);
+  checkMayQuvInvariants(errors);
   return { errors, notes };
 }
 
