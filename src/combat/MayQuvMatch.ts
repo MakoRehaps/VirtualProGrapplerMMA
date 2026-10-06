@@ -114,6 +114,51 @@ export class MayQuvMatch {
     return false;
   }
 
+  enterClinch(
+    initiator: CombatSide,
+    position:
+      | "single_collar_tie"
+      | "thai_plum"
+      | "over_under"
+      | "double_underhooks"
+      | "rear_clinch"
+      | "front_headlock" = "over_under"
+  ): boolean {
+    if (this.winner) return false;
+
+    const other: CombatSide = initiator === "player" ? "opponent" : "player";
+    const initiatorState = this.stateOf(initiator);
+    const otherState = this.stateOf(other);
+
+    const standing = new Set(["standing_open", "standing_close"]);
+    if (!standing.has(initiatorState.positionId)) return false;
+    if (!standing.has(otherState.positionId)) return false;
+    if (!isPositionActive(position)) return false;
+
+    initiatorState.positionId = position;
+    otherState.positionId = position;
+    return true;
+  }
+
+  exitClinch(): boolean {
+    const clinchPositions = new Set([
+      "single_collar_tie",
+      "thai_plum",
+      "over_under",
+      "double_underhooks",
+      "rear_clinch",
+      "front_headlock",
+    ]);
+
+    const playerInClinch = clinchPositions.has(this.player.positionId);
+    const opponentInClinch = clinchPositions.has(this.opponent.positionId);
+    if (!playerInClinch && !opponentInClinch) return false;
+
+    this.player.positionId = "standing_close";
+    this.opponent.positionId = "standing_close";
+    return true;
+  }
+
   requestTechnicalStandup(side: CombatSide): boolean {
     if (!ACTIVE_COMBAT_PROFILE.grounded_window.defender_can_technical_stand) {
       return false;
