@@ -46,7 +46,8 @@
         "ranges",
         "techniques",
         "gameplay",
-        "notes"
+        "notes",
+        "default_stance"
       ],
       "additionalProperties": false,
       "properties": {
@@ -205,6 +206,9 @@
         },
         "notes": {
           "type": "string"
+        },
+        "default_stance": {
+          "$ref": "#/$defs/id"
         }
       }
     }
