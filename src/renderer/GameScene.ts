@@ -85,6 +85,7 @@ export class GameScene {
   private playerProcedural: ProceduralMartialAnimator | null = null;
   private opponentProcedural: ProceduralMartialAnimator | null = null;
   private playerStanceProcedural: ProceduralStanceAnimator | null = null;
+  private opponentStanceProcedural: ProceduralStanceAnimator | null = null;
   private playerRig: SkeletonRig | null = null;
   private opponentRig: SkeletonRig | null = null;
   private pairedProcedural: PairedMartialAnimator | null = null;
@@ -1015,6 +1016,7 @@ export class GameScene {
     this.opponentNodes = other.nodes;
     this.opponentRig = other.rig;
     this.opponentProcedural = other.procedural;
+    this.opponentStanceProcedural = other.stanceProcedural;
     this.opponentDefensiveOverlay = new DefensivePoseOverlay(other.rig);
     this.opponentReactions = new ProceduralHitReactionAnimator(this.scene, other.rig);
     this.opponent.registerAnimations(this.opponentReactions.buildAll());
@@ -1466,6 +1468,18 @@ export class GameScene {
       this.controller?.setIdleClip(stanceGroup.name);
     } else {
       this.controller?.setIdleClip(null);
+    }
+
+    const opponentPreferredPoseId =
+      preferredBiomechPoseForStyle(opponent.styleId);
+    const opponentStanceGroup = opponentPreferredPoseId
+      ? this.opponentStanceProcedural?.buildPose(opponentPreferredPoseId)
+      : null;
+    if (opponentStanceGroup && this.opponentController) {
+      this.opponent.registerAnimations([opponentStanceGroup]);
+      this.opponentController.setIdleClip(opponentStanceGroup.name);
+    } else {
+      this.opponentController?.setIdleClip(null);
     }
 
     // Legacy animation buttons are translated into real MAY' QUV techniques
