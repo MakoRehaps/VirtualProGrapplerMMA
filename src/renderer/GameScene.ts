@@ -375,7 +375,33 @@ export class GameScene {
     );
 
     if (!queued) return false;
-    if (animationName) this.opponent.playReaction(animationName);
+    if (animationName) {
+      if (this.currentClinchPose && this.animations) {
+        const group =
+          this.opponentProcedural?.buildTechnique(techniqueId) ??
+          (techniqueId === "osoto_gari" ||
+          techniqueId === "harai_goshi" ||
+          techniqueId === "seoi_nage" ||
+          techniqueId === "inside_trip" ||
+          techniqueId === "outside_trip" ||
+          techniqueId === "body_lock_trip" ||
+          techniqueId === "double_leg" ||
+          techniqueId === "single_leg" ||
+          techniqueId === "high_crotch"
+            ? this.opponentPairedProcedural?.buildThrow(techniqueId)
+            : null);
+        if (group) {
+          this.animations.register(group);
+          this.animations.play(group.name, {
+            loop: false,
+            restart: true,
+            onEnd: () => this.resumeClinchPose(),
+          });
+        }
+      } else {
+        this.opponent.playReaction(animationName);
+      }
+    }
     return true;
   }
 
@@ -934,7 +960,19 @@ export class GameScene {
     const opponent = this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
-    this.botBrain = new BotBrain(this.match, "opponent", "club", (techniqueId) => this.tryOpponentTechnique(techniqueId));
+    this.botBrain = new BotBrain(
+      this.match,
+      "opponent",
+      "club",
+      (techniqueId) => this.tryOpponentTechnique(techniqueId),
+      () => {
+        if (!this.playerRoot || !this.opponent || !this.match) return false;
+        const dx = this.playerRoot.position.x - this.opponent.position.x;
+        const dz = this.playerRoot.position.z - this.opponent.position.z;
+        if (Math.hypot(dx, dz) > 1.05) return false;
+        return this.match.enterClinch("opponent", "over_under");
+      }
+    );
     this.playerCollision = this.playerRig ? new FighterCollisionRig(this.playerRig, player.body.heightM) : null;
     this.opponentCollision = this.opponentRig ? new FighterCollisionRig(this.opponentRig, opponent.body.heightM) : null;
 
