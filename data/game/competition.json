@@ -100,7 +100,9 @@
       "weekly_qualifier",
       "weekly_tournament"
     ],
-    "reset_damage_after_event": true
+    "reset_damage_after_event": true,
+    "bracket_size": 8,
+    "tournament_wins_required": 3
   },
   "monthly_event": {
     "qualification": [
@@ -113,6 +115,8 @@
       "monthly_qualifier_two",
       "monthly_grand_tournament"
     ],
-    "reset_damage_after_event": true
+    "reset_damage_after_event": true,
+    "bracket_size": 16,
+    "tournament_wins_required": 4
   }
 }
