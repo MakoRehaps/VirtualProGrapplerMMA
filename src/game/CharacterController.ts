@@ -90,6 +90,7 @@ export class CharacterController {
   private readonly facingScratch = new Vector3();
   /** Notified when a strike is thrown; wired to the combat simulation. */
   private strikeHandler: ((moveId: string) => void) | null = null;
+  private techniqueClipResolver: ((moveId: string) => string | null) | null = null;
 
   constructor(
     public readonly root: TransformNode,
@@ -118,6 +119,12 @@ export class CharacterController {
    */
   setStrikeHandler(handler: ((moveId: string) => void) | null): void {
     this.strikeHandler = handler;
+  }
+
+  setTechniqueClipResolver(
+    resolver: ((moveId: string) => string | null) | null
+  ): void {
+    this.techniqueClipResolver = resolver;
   }
 
   /** Applies body/stance-derived locomotion without exposing RPG stats. */
@@ -224,12 +231,15 @@ export class CharacterController {
       return;
     }
 
-    const clip = action === "punch" ? Anim.PUNCH : Anim.KICK;
+    const moveId =
+      action === "punch" ? "weak-arm-strike-1" : "weak-leg-strike-1";
+    const clip =
+      this.techniqueClipResolver?.(moveId) ??
+      (action === "punch" ? Anim.PUNCH : Anim.KICK);
+
     // Tell the combat simulation a strike was thrown. It schedules the hit on
     // the move's own frame rather than resolving it here.
-    this.strikeHandler?.(
-      action === "punch" ? "weak-arm-strike-1" : "weak-leg-strike-1"
-    );
+    this.strikeHandler?.(moveId);
     this.state = "attack";
     this.animations.play(clip, {
       loop: false,
