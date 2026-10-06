@@ -21,6 +21,8 @@ import {
 import "@babylonjs/loaders/glTF";
 
 import { AnimationController } from "./AnimationController";
+import { SkeletonRig } from "./SkeletonRig";
+import { ProceduralMartialAnimator } from "./ProceduralMartialAnimator";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -61,6 +63,7 @@ export class GameScene {
   private playerRoot: TransformNode | null = null;
   private controller: CharacterController | null = null;
   private animations: AnimationController | null = null;
+  private playerProcedural: ProceduralMartialAnimator | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -409,6 +412,7 @@ export class GameScene {
   ): Promise<{
     root: TransformNode;
     animations: AnimationController;
+    procedural: ProceduralMartialAnimator;
     nodes: TransformNode[];
   }> {
     const result = await ImportMeshAsync(
@@ -436,9 +440,24 @@ export class GameScene {
     // the scene at once, and searching globally could hit the other one.
     this.applySkinTone(definition, result.meshes);
 
+    const animations = new AnimationController(result.animationGroups);
+    const rig = new SkeletonRig(result.skeletons);
+    const procedural = new ProceduralMartialAnimator(this.scene, rig);
+    animations.registerMany(procedural.buildDefaultSet());
+
+    if (import.meta.env.DEV) {
+      console.info(
+        `[${nodeName}] rig bones:`,
+        rig.resolvedBoneIds,
+        "unresolved:",
+        rig.unresolvedBoneIds
+      );
+    }
+
     return {
       root,
-      animations: new AnimationController(result.animationGroups),
+      animations,
+      procedural,
       nodes,
     };
   }
@@ -458,6 +477,7 @@ export class GameScene {
     const root = player.root;
     this.loadedNodes.push(...player.nodes);
     this.animations = player.animations;
+    this.playerProcedural = player.procedural;
 
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
@@ -541,13 +561,36 @@ export class GameScene {
 
     // Legacy animation buttons are translated into real MAY' QUV techniques
     // while the animation library is replaced incrementally.
+    const styleRecord = styleById(player.styleId);
+    const familyText = [player.styleId, ...(styleRecord?.family ?? [])]
+      .join(" ")
+      .toLowerCase();
+    const preferredMotionFamily =
+      familyText.includes("muay") ? "muay_thai" :
+      familyText.includes("taekwondo") ? "taekwondo" :
+      familyText.includes("karate") ? "karate" :
+      familyText.includes("boxing") ? "boxing" :
+      undefined;
+
+    this.controller?.setTechniqueClipResolver((moveId) => {
+      const techniqueId =
+        moveId === "weak-arm-strike-1" ? "cross" : "round_kick_body";
+      const group = this.playerProcedural?.buildTechnique(
+        techniqueId,
+        preferredMotionFamily
+      );
+      if (!group || !this.animations) return null;
+      this.animations.register(group);
+      return group.name;
+    });
+
     this.controller?.setStrikeHandler((moveId) => {
       if (!this.match) return;
       const techniqueId =
         moveId === "weak-arm-strike-1"
           ? "cross"
           : moveId === "weak-leg-strike-1"
-            ? "front_kick"
+            ? "round_kick_body"
             : "flying_knee";
       const technique = techniqueById(techniqueId);
       if (!technique) return;
