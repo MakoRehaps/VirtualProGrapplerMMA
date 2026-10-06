@@ -851,7 +851,8 @@ export class GameScene {
 
   async loadCharacter(
     definition: CharacterDefinition,
-    playerSetup?: FighterSetupInput
+    playerSetup?: FighterSetupInput,
+    opponentSetup?: FighterSetupInput
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -895,11 +896,20 @@ export class GameScene {
     // The opponent is inert for now; it exists so the player has someone to
     // square up to.
     const opponentDef = opponentFor(definition);
+    const normalizedOpponentSetup = opponentSetup
+      ? normalizeFighterSetup(opponentDef.id, opponentSetup)
+      : null;
     const other = await this.loadWrestler(
       opponentDef,
       "opponentRoot",
       SPAWN.opponent
     );
+    if (normalizedOpponentSetup) {
+      const opponentHeightScale =
+        normalizedOpponentSetup.body.heightM /
+        BODY_PHYSICS.reference_body.height_m;
+      other.root.scaling.scaleInPlace(opponentHeightScale);
+    }
     this.opponent = new Opponent(other.root, other.animations);
     this.opponentNodes = other.nodes;
     this.opponentRig = other.rig;
@@ -990,7 +1000,12 @@ export class GameScene {
     this.controller.opponentPosition = () => this.opponent?.position ?? null;
     this.controller.setFacing(Math.atan2(0, SPAWN.opponent.z - SPAWN.player.z));
 
-    this.startMatch(definition.id, opponentDef.id, normalizedSetup ?? undefined);
+    this.startMatch(
+      definition.id,
+      opponentDef.id,
+      normalizedSetup ?? undefined,
+      normalizedOpponentSetup ?? undefined
+    );
 
     // The camera is deliberately not re-aimed at the character: it stays on
     // the ring for the whole match.
@@ -1028,13 +1043,15 @@ export class GameScene {
   private startMatch(
     playerId: string,
     opponentId: string,
-    playerOverride?: FighterLoadout
+    playerOverride?: FighterLoadout,
+    opponentOverride?: FighterLoadout
   ): void {
     this.clock.reset();
     this.inputBuffer.clear();
 
     const player = playerOverride ?? this.fighterLoadout(playerId, "player");
-    const opponent = this.fighterLoadout(opponentId, "opponent");
+    const opponent =
+      opponentOverride ?? this.fighterLoadout(opponentId, "opponent");
     this.match = new MayQuvMatch(player, opponent);
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
     this.botBrain = new BotBrain(
