@@ -64,6 +64,7 @@ export class MayQuvMatch {
   contactRegion: ((attacker: CombatSide, technique: TechniqueRuntime) => keyof FighterCondition["regions"] | null) | null = null;
   onResolved: ((attacker: CombatSide, defender: CombatSide, resolution: CombatResolution) => void) | null = null;
   onGroundedWindowChanged: ((side: CombatSide, active: boolean) => void) | null = null;
+  onPositionChanged: ((playerPosition: string, opponentPosition: string) => void) | null = null;
 
   constructor(
     playerLoadout: FighterLoadout,
@@ -138,6 +139,7 @@ export class MayQuvMatch {
 
     initiatorState.positionId = position;
     otherState.positionId = position;
+    this.onPositionChanged?.(this.player.positionId, this.opponent.positionId);
     return true;
   }
 
@@ -157,6 +159,7 @@ export class MayQuvMatch {
 
     this.player.positionId = "standing_close";
     this.opponent.positionId = "standing_close";
+    this.onPositionChanged?.(this.player.positionId, this.opponent.positionId);
     return true;
   }
 
@@ -172,6 +175,7 @@ export class MayQuvMatch {
       this.stateOf(other).positionId = "standing_open";
     }
     delete this.groundedUntil[side];
+    this.onPositionChanged?.(this.player.positionId, this.opponent.positionId);
     this.onGroundedWindowChanged?.(side, false);
     return true;
   }
@@ -330,6 +334,7 @@ export class MayQuvMatch {
 
     this.stateOf(hit.attacker).positionId = nextPosition;
     this.stateOf(defenderSide).positionId = nextPosition;
+    this.onPositionChanged?.(this.player.positionId, this.opponent.positionId);
 
     this.record({
       frame,
