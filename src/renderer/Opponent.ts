@@ -46,7 +46,8 @@ export class Opponent {
   update(
     deltaSeconds: number,
     facePoint: Vector3 | null,
-    desiredDistance: number | null = null
+    desiredDistance: number | null = null,
+    movementScale = 1
   ): void {
     if (this.externalPoseLock) return;
     if (facePoint) {
@@ -66,7 +67,7 @@ export class Opponent {
           if (distance > desiredDistance + 0.05) {
             const travel = Math.min(
               distance - desiredDistance,
-              1.7 * deltaSeconds
+              1.7 * Math.max(0.45, Math.min(1, movementScale)) * deltaSeconds
             );
             this.root.position.x += (dx / distance) * travel;
             this.root.position.z += (dz / distance) * travel;
