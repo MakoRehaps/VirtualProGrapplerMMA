@@ -48,6 +48,22 @@
       @close="movesetOpen = false"
     />
 
+    <div v-if="started && matchResult" class="result">
+      <div class="result__panel">
+        <h2>{{ resultTitle }}</h2>
+        <p>{{ resultDetail }}</p>
+        <p v-if="matchResult.decision">
+          Score: Player {{ matchResult.decision.player }}
+          · Opponent {{ matchResult.decision.opponent }}
+        </p>
+        <div class="result__actions">
+          <button @click="rematch">Rematch</button>
+          <button @click="reset">Change fighter</button>
+          <button @click="$emit('exit')">Main menu</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Controls legend, shown once playing. -->
     <div v-if="started" class="hud">
       <div class="hud__keys">
@@ -60,6 +76,13 @@
         <span>Keyboard fallback: WASD · J/K · P</span>
       </div>
       <button class="hud__change" @click="movesetOpen = true">Edit Moveset</button>
+      <button
+        v-if="!matchResult"
+        class="hud__change"
+        @click="forfeitMatch"
+      >
+        Forfeit
+      </button>
       <button class="hud__change" @click="reset">Change character</button>
       <button class="hud__change" @click="$emit('exit')">Main menu</button>
       <p class="hud__hint">
@@ -94,6 +117,9 @@ export default defineComponent({
       error: "" as string,
       warning: "" as string,
       movesetOpen: false,
+      selectedCharacter: null as CharacterDefinition | null,
+      matchResult: null as ReturnType<GameScene["matchSnapshot"]>,
+      resultTimer: 0,
       // markRaw keeps Vue from proxying the whole Babylon scene graph, which
       // would be both slow and subtly break engine internals.
       game: null as GameScene | null,
@@ -106,8 +132,27 @@ export default defineComponent({
   },
 
   beforeUnmount() {
+    window.clearInterval(this.resultTimer);
     this.game?.dispose();
     this.game = null;
+  },
+
+  computed: {
+    resultTitle(): string {
+      if (!this.matchResult) return "";
+      if (!this.matchResult.winner) return "Draw";
+      return this.matchResult.winner === "player"
+        ? "Victory"
+        : "Defeat";
+    },
+
+    resultDetail(): string {
+      if (!this.matchResult?.finish) return "";
+      if (this.matchResult.finish === "ko") return "Knockout";
+      if (this.matchResult.finish === "decision") return "Decision";
+      if (this.matchResult.finish === "forfeit") return "Forfeit";
+      return this.matchResult.finish;
+    },
   },
 
   methods: {
@@ -122,7 +167,14 @@ export default defineComponent({
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
         }
+        this.selectedCharacter = character;
         this.started = true;
+        this.matchResult = null;
+        window.clearInterval(this.resultTimer);
+        this.resultTimer = window.setInterval(() => {
+          const snapshot = this.game?.matchSnapshot() ?? null;
+          if (snapshot?.finish) this.matchResult = snapshot;
+        }, 100);
         // Clicks land on the canvas so keyboard input reaches the window.
         (this.$refs.canvas as HTMLCanvasElement).focus();
       } catch (err) {
@@ -130,6 +182,26 @@ export default defineComponent({
       } finally {
         this.loadingId = null;
       }
+    },
+
+    async rematch() {
+      if (!this.selectedCharacter || !this.game) return;
+      this.matchResult = null;
+      this.movesetOpen = false;
+      this.warning = "";
+      try {
+        const missing = await this.game.loadCharacter(this.selectedCharacter);
+        if (missing.length) {
+          this.warning = `Missing animation clips: ${missing.join(", ")}`;
+        }
+        (this.$refs.canvas as HTMLCanvasElement).focus();
+      } catch (err) {
+        this.warning = `Could not start rematch: ${String(err)}`;
+      }
+    },
+
+    forfeitMatch() {
+      this.game?.forfeitPlayer();
     },
 
     applyMoveset(moveset: FighterMoveset) {
@@ -143,6 +215,9 @@ export default defineComponent({
     reset() {
       this.started = false;
       this.movesetOpen = false;
+      this.matchResult = null;
+      window.clearInterval(this.resultTimer);
+      this.resultTimer = 0;
       this.warning = "";
     },
   },
@@ -333,5 +408,49 @@ kbd {
   margin: 0;
   color: #ffcc80;
   font-size: 0.78rem;
+}
+.result {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 8, 12, 0.72);
+  color: #f2f5f8;
+  pointer-events: auto;
+}
+
+.result__panel {
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0.75rem;
+  background: rgba(16, 23, 34, 0.96);
+  text-align: center;
+}
+
+.result__panel h2 {
+  margin-top: 0;
+}
+
+.result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.result__actions button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 0.4rem;
+  background: rgba(255,255,255,0.08);
+  color: inherit;
+  cursor: pointer;
+}
+
+.result__actions button:hover {
+  background: rgba(255,255,255,0.16);
 }
 </style>
