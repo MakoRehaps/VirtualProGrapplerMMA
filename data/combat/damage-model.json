@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "description": "100-HP damage model and non-HP body conditions.",
+  "constants": {
+    "hp_max": 100,
+    "stamina_max": 100,
+    "consciousness_max": 100,
+    "balance_max": 100,
+    "limb_condition_max": 100
+  },
+  "target_zones": {
+    "head": {
+      "hp_multiplier": 1.15,
+      "consciousness_multiplier": 1.6,
+      "balance_multiplier": 1.25
+    },
+    "torso": {
+      "hp_multiplier": 1,
+      "consciousness_multiplier": 0.45,
+      "balance_multiplier": 0.45
+    },
+    "left_arm": {
+      "hp_multiplier": 0.45,
+      "limb_multiplier": 1
+    },
+    "right_arm": {
+      "hp_multiplier": 0.45,
+      "limb_multiplier": 1
+    },
+    "left_leg": {
+      "hp_multiplier": 0.55,
+      "limb_multiplier": 1.15,
+      "balance_multiplier": 0.85
+    },
+    "right_leg": {
+      "hp_multiplier": 0.55,
+      "limb_multiplier": 1.15,
+      "balance_multiplier": 0.85
+    },
+    "neck": {
+      "hp_multiplier": 0.8,
+      "consciousness_multiplier": 1.2
+    },
+    "body": {
+      "hp_multiplier": 1
+    }
+  },
+  "contact_quality": {
+    "glancing": 0.35,
+    "partial": 0.65,
+    "clean": 1,
+    "perfect": 1.15
+  },
+  "guard_absorption": {
+    "none": 0,
+    "partial": 0.35,
+    "solid": 0.7
+  },
+  "finish_rules": {
+    "normal_tko": false,
+    "ko": "consciousness reaches zero or a deterministic knockout event passes threshold",
+    "submission": "fighter submits or submission resolution reaches finish state",
+    "decision": true,
+    "doctor_stoppage": false
+  },
+  "event_persistence": {
+    "normal_multiplayer": false,
+    "practice": false,
+    "weekly_qualifier_chain": true,
+    "weekly_tournament_chain": true,
+    "monthly_qualifier_chain": true,
+    "monthly_tournament_chain": true,
+    "after_event": false
+  }
+}
