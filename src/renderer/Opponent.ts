@@ -11,6 +11,8 @@ import { Anim, Tuning } from "../game/config";
  * track distance and facing angle against.
  */
 export class Opponent {
+  private externalPoseLock = false;
+
   constructor(
     readonly root: TransformNode,
     private animations: AnimationController
@@ -31,8 +33,18 @@ export class Opponent {
     this.animations.play(name, { loop: false, restart: true });
   }
 
+  setExternalPoseLock(locked: boolean): void {
+    this.externalPoseLock = locked;
+    if (locked) {
+      this.animations.stopAll();
+    } else {
+      this.animations.play(Anim.IDLE, { loop: true, restart: true });
+    }
+  }
+
   /** Turns to face a point and advances animation blending. */
   update(deltaSeconds: number, facePoint: Vector3 | null): void {
+    if (this.externalPoseLock) return;
     if (facePoint) {
       const dx = facePoint.x - this.root.position.x;
       const dz = facePoint.z - this.root.position.z;
