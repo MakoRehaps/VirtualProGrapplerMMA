@@ -105,6 +105,13 @@ const ROUTE_COMBAT_TEST = "test.combat_system";
 const ROUTE_MATCH_PREFIX = "match_setup.";
 const ROUTE_COACH = "single_play.championship";
 const ROUTE_STYLE_LAB = "single_play.survival";
+const BOT_CAPABLE_MATCH_ROUTES = new Set([
+  "match_setup.royal_rumble",
+  "match_setup.pay_per_view",
+  "match_setup.king_of_the_ring",
+  "match_setup.guest_referee",
+  "match_setup.ladder_match",
+]);
 
 export default defineComponent({
   name: "MainMenu",
@@ -234,7 +241,7 @@ export default defineComponent({
 
       if (
         target.id === ROUTE_COMBAT_TEST ||
-        target.id.startsWith(ROUTE_MATCH_PREFIX) ||
+        BOT_CAPABLE_MATCH_ROUTES.has(target.id) ||
         target.id === ROUTE_COACH ||
         target.id === ROUTE_STYLE_LAB
       ) {
