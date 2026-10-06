@@ -28,6 +28,7 @@ import { PairedMartialAnimator } from "./PairedMartialAnimator";
 import { FighterCollisionRig, firstHitRegion } from "./FighterCollisionRig";
 import { ProceduralHitReactionAnimator } from "./ProceduralHitReactionAnimator";
 import { ProceduralKnockdownAnimator } from "./ProceduralKnockdownAnimator";
+import { CollisionDebugView } from "./CollisionDebugView";
 import { CharacterController } from "../game/CharacterController";
 import { InputController } from "../game/InputController";
 import { Opponent } from "./Opponent";
@@ -77,6 +78,7 @@ export class GameScene {
   private opponentCollision: FighterCollisionRig | null = null;
   private opponentReactions: ProceduralHitReactionAnimator | null = null;
   private opponentKnockdown: ProceduralKnockdownAnimator | null = null;
+  private collisionDebug: CollisionDebugView | null = null;
   /** Play area inside the ropes, derived from the ring geometry. */
   private bounds: RingBounds | null = null;
   private ringReady: Promise<void>;
@@ -109,6 +111,7 @@ export class GameScene {
     this.shadows = this.createLighting();
     this.createGround();
     this.input = new InputController(this.scene);
+    if (import.meta.env.DEV) this.collisionDebug = new CollisionDebugView(this.scene);
     // A missing or malformed ring must not stop the match starting; the
     // controller falls back to a flat arena when bounds are unavailable.
     this.ringReady = this.loadRing().catch((err) => {
@@ -124,6 +127,7 @@ export class GameScene {
       this.opponent?.update(dt, this.playerRoot?.position ?? null);
       // Ropes keep oscillating after the wrestler has left them.
       this.ropes?.update(dt);
+      this.collisionDebug?.update(this.playerCollision, this.opponentCollision);
 
       // ...while combat advances on a fixed clock, so hit frames and reversal
       // windows are counted in equal, reproducible steps.
@@ -159,6 +163,14 @@ export class GameScene {
 
   get playerRigUnresolvedBones(): string[] {
     return this.playerRig?.unresolvedBoneIds ?? [];
+  }
+
+  setCollisionDebug(enabled: boolean): void {
+    this.collisionDebug?.setEnabled(enabled);
+  }
+
+  get collisionDebugEnabled(): boolean {
+    return this.collisionDebug?.isEnabled ?? false;
   }
 
   playDebugThrow(id: "osoto_gari" | "harai_goshi" | "seoi_nage"): boolean {
@@ -837,6 +849,8 @@ export class GameScene {
 
   dispose(): void {
     window.removeEventListener("resize", this.onResize);
+    this.collisionDebug?.dispose();
+    this.collisionDebug = null;
     this.disposeCharacter();
     this.input.dispose();
     this.scene.dispose();
