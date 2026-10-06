@@ -181,6 +181,106 @@ export class GameScene {
     return true;
   }
 
+  tryEnterClinch(
+    position:
+      | "single_collar_tie"
+      | "thai_plum"
+      | "over_under"
+      | "double_underhooks"
+      | "rear_clinch"
+      | "front_headlock" = "over_under"
+  ): boolean {
+    if (!this.match || !this.playerRoot || !this.opponent) return false;
+    const dx = this.opponent.position.x - this.playerRoot.position.x;
+    const dz = this.opponent.position.z - this.playerRoot.position.z;
+    if (Math.hypot(dx, dz) > 1.05) return false;
+    return this.match.enterClinch("player", position);
+  }
+
+  exitClinch(): boolean {
+    return this.match?.exitClinch() ?? false;
+  }
+
+  technicalStandup(side: CombatSide = "player"): boolean {
+    const stood = this.match?.requestTechnicalStandup(side) ?? false;
+    if (stood && side === "opponent") {
+      this.opponent?.playReaction("STATE_TECHNICAL_STANDUP");
+    }
+    return stood;
+  }
+
+  tryPlayerTechnique(techniqueId: string): boolean {
+    if (!this.match || !this.animations) return false;
+    const technique = techniqueById(techniqueId);
+    if (!technique) return false;
+
+    const playerStyle = this.match.player.loadout.styleId;
+    const styleRecord = styleById(playerStyle);
+    const familyText = [playerStyle, ...(styleRecord?.family ?? [])]
+      .join(" ")
+      .toLowerCase();
+    const preferredMotionFamily =
+      familyText.includes("muay") ? "muay_thai" :
+      familyText.includes("taekwondo") ? "taekwondo" :
+      familyText.includes("karate") ? "karate" :
+      familyText.includes("boxing") ? "boxing" :
+      undefined;
+
+    let animationName: string | null = null;
+
+    if (
+      techniqueId === "osoto_gari" ||
+      techniqueId === "harai_goshi" ||
+      techniqueId === "seoi_nage"
+    ) {
+      const group = this.pairedProcedural?.buildThrow(techniqueId);
+      if (group) {
+        this.animations.register(group);
+        animationName = group.name;
+      }
+    } else {
+      const group = this.playerProcedural?.buildTechnique(
+        techniqueId,
+        preferredMotionFamily
+      );
+      if (group) {
+        this.animations.register(group);
+        animationName = group.name;
+      }
+    }
+
+    const relativeVelocityMps =
+      technique.weapon.includes("leg") || technique.weapon.includes("knee")
+        ? 8.0
+        : technique.weapon.includes("elbow")
+          ? 7.0
+          : 6.2;
+
+    const queued = this.match.throwTechnique(
+      "player",
+      technique,
+      this.clock.frame,
+      {
+        relativeVelocityMps,
+        contactQuality: "clean",
+        guard: "none",
+      }
+    );
+
+    if (!queued) return false;
+
+    if (animationName) {
+      this.animations.play(animationName, {
+        loop: false,
+        restart: true,
+      });
+    }
+
+    this.inputBuffer.press("strike", this.clock.frame);
+    this.inputBuffer.release("strike", this.clock.frame);
+    return true;
+  }
+
   /** Player world position. Used by tests. */
   get playerPosition(): { x: number; y: number; z: number } | null {
     if (!this.playerRoot) return null;
