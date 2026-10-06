@@ -854,7 +854,8 @@ export class GameScene {
     playerSetup?: FighterSetupInput,
     opponentSetup?: FighterSetupInput,
     botDifficulty: BotDifficultyId = "club",
-    playerCondition?: FighterCondition
+    playerCondition?: FighterCondition,
+    rulesetId = "may_quv_standard"
   ): Promise<string[]> {
     this.disposeCharacter();
 
@@ -1008,7 +1009,8 @@ export class GameScene {
       normalizedSetup ?? undefined,
       normalizedOpponentSetup ?? undefined,
       botDifficulty,
-      playerCondition
+      playerCondition,
+      rulesetId
     );
 
     // The camera is deliberately not re-aimed at the character: it stays on
@@ -1050,7 +1052,8 @@ export class GameScene {
     playerOverride?: FighterLoadout,
     opponentOverride?: FighterLoadout,
     botDifficulty: BotDifficultyId = "club",
-    playerCondition?: FighterCondition
+    playerCondition?: FighterCondition,
+    rulesetId = "may_quv_standard"
   ): void {
     this.clock.reset();
     this.inputBuffer.clear();
@@ -1062,7 +1065,9 @@ export class GameScene {
       player,
       opponent,
       0x4d415951,
-      playerCondition
+      playerCondition,
+      undefined,
+      rulesetId
     );
     this.playerMoveset = listMovesets(player.styleId)[0] ?? createDefaultMoveset(player.styleId);
     this.botBrain = new BotBrain(
