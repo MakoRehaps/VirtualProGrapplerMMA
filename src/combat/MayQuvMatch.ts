@@ -153,7 +153,7 @@ export class MayQuvMatch {
       | "rear_clinch"
       | "front_headlock" = "over_under"
   ): boolean {
-    if (this.winner) return false;
+    if (this.finish) return false;
 
     const other: CombatSide = initiator === "player" ? "opponent" : "player";
     const initiatorState = this.stateOf(initiator);
@@ -213,7 +213,7 @@ export class MayQuvMatch {
     currentFrame: number,
     sample: ImpactSample
   ): boolean {
-    if (this.winner) return false;
+    if (this.finish) return false;
     const state = this.stateOf(attacker);
     if (!styleAllowsTechnique(state.loadout.styleId, technique.techniqueId)) return false;
     if (!isTechniqueActive(technique)) return false;
