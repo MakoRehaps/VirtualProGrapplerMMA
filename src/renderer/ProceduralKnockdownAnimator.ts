@@ -23,6 +23,7 @@ function delta(pitch = 0, yaw = 0, roll = 0): Quaternion {
 export class ProceduralKnockdownAnimator {
   private knockdown: AnimationGroup | null = null;
   private standup: AnimationGroup | null = null;
+  private knockout: AnimationGroup | null = null;
 
   constructor(
     private readonly scene: Scene,
@@ -82,6 +83,59 @@ export class ProceduralKnockdownAnimator {
     }
 
     this.knockdown = group;
+    return group;
+  }
+
+  buildKnockout(): AnimationGroup | null {
+    if (this.knockout) return this.knockout;
+
+    const group = new AnimationGroup("STATE_KNOCKOUT", this.scene);
+    this.add(group, "chest", [
+      { t: 0, pitch: 0 },
+      { t: 0.22, pitch: 10, roll: -6 },
+      { t: 0.50, pitch: 42, roll: -18 },
+      { t: 0.78, pitch: 76, roll: -34 },
+      { t: 1, pitch: 88, roll: -42 },
+    ]);
+    this.add(group, "hips", [
+      { t: 0, pitch: 0 },
+      { t: 0.30, pitch: 18 },
+      { t: 0.60, pitch: 54, roll: -12 },
+      { t: 1, pitch: 78, roll: -28 },
+    ]);
+    this.add(group, "head", [
+      { t: 0, pitch: 0 },
+      { t: 0.34, pitch: 18, roll: -12 },
+      { t: 0.70, pitch: 34, roll: -24 },
+      { t: 1, pitch: 42, roll: -30 },
+    ]);
+    this.add(group, "leftUpperArm", [
+      { t: 0, pitch: 0 },
+      { t: 0.45, pitch: 28, roll: -36 },
+      { t: 1, pitch: 58, roll: -62 },
+    ]);
+    this.add(group, "rightUpperArm", [
+      { t: 0, pitch: 0 },
+      { t: 0.45, pitch: 24, roll: 34 },
+      { t: 1, pitch: 52, roll: 58 },
+    ]);
+    this.add(group, "leftThigh", [
+      { t: 0, pitch: 0 },
+      { t: 0.45, pitch: 18, roll: -8 },
+      { t: 1, pitch: 36, roll: -18 },
+    ]);
+    this.add(group, "rightThigh", [
+      { t: 0, pitch: 0 },
+      { t: 0.45, pitch: 12, roll: 10 },
+      { t: 1, pitch: 30, roll: 18 },
+    ]);
+
+    if (!group.targetedAnimations.length) {
+      group.dispose();
+      return null;
+    }
+
+    this.knockout = group;
     return group;
   }
 
@@ -171,7 +225,9 @@ export class ProceduralKnockdownAnimator {
   dispose(): void {
     this.knockdown?.dispose();
     this.standup?.dispose();
+    this.knockout?.dispose();
     this.knockdown = null;
     this.standup = null;
+    this.knockout = null;
   }
 }
