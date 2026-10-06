@@ -5,6 +5,10 @@
     <!-- Character selection overlay, shown until a character is chosen. -->
     <div v-if="!started" class="overlay">
       <h1 class="overlay__title">Choose your character</h1>
+      <p class="overlay__mode">
+        {{ competitionModeName }}
+        <template v-if="eventStatusText"> · {{ eventStatusText }}</template>
+      </p>
 
       <div class="fighter-setup">
         <label>
@@ -168,7 +172,7 @@
           >
             {{ nextEventLabel }}
           </button>
-          <button @click="rematch">Rematch</button>
+          <button v-if="canRematch" @click="rematch">Rematch</button>
           <button @click="reset">Change fighter</button>
           <button @click="$emit('exit')">Main menu</button>
         </div>
@@ -216,7 +220,12 @@ import type { FighterMoveset } from "@/combat/moveset";
 import { loadMoveset } from "@/combat/movesetStore";
 import type { FighterLoadout } from "@/combat/mayQuvTypes";
 import type { BotDifficultyId } from "@/ai/BotBrain";
-import { BODY_PHYSICS, STYLES, styleById } from "@/data/combatCatalog";
+import {
+  BODY_PHYSICS,
+  STYLES,
+  competitionModeById,
+  styleById,
+} from "@/data/combatCatalog";
 import {
   COMPETITION_SESSION,
   modeForRoute,
@@ -312,6 +321,50 @@ export default defineComponent({
           this.bodyBounds.max_reach_to_height_ratio *
           100
       ) / 100;
+    },
+
+    competitionModeName(): string {
+      return (
+        competitionModeById(this.competitionMode)?.name ??
+        this.competitionMode
+      );
+    },
+
+    eventStatusText(): string {
+      const status = COMPETITION_SESSION.snapshot();
+
+      if (
+        this.competitionMode === "weekly_qualifier" ||
+        this.competitionMode === "weekly_tournament"
+      ) {
+        return status.weeklyQualified
+          ? "Weekly qualified"
+          : "Weekly qualifier required";
+      }
+
+      if (
+        this.competitionMode === "monthly_qualifier_one" ||
+        this.competitionMode === "monthly_qualifier_two" ||
+        this.competitionMode === "monthly_grand_tournament"
+      ) {
+        if (status.monthlyQualifierTwoWon) {
+          return "Monthly qualifiers complete";
+        }
+        if (status.monthlyQualifierOneWon) {
+          return "Monthly Qualifier I complete";
+        }
+        return "Monthly qualification not started";
+      }
+
+      return "";
+    },
+
+    canRematch(): boolean {
+      return (
+        this.competitionMode === "normal_mp" ||
+        this.competitionMode === "local_vs" ||
+        this.competitionMode === "practice_coach"
+      );
     },
 
     nextEventRoute(): string | null {
@@ -590,6 +643,12 @@ export default defineComponent({
   margin: 0;
   font-size: clamp(1.4rem, 4vw, 2.2rem);
   letter-spacing: 0.02em;
+}
+
+.overlay__mode {
+  margin: -1rem 0 0;
+  opacity: 0.72;
+  font-size: 0.85rem;
 }
 
 .saved-fighters {
