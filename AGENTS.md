@@ -44,9 +44,9 @@ Authoritative new data:
 - data/game/rulesets.json
 
 Combat state flow:
-standing -> clinch -> takedown transition -> ground position -> submission / ground striking / stand-up / KO.
+standing -> clinch -> throw/takedown -> brief grounded-opponent window -> stand-up / KO.
 
-Grounded PRIDE/Kumite offense may include soccer kicks, stomps and knees to the head when the active ruleset permits them.
+Grounded PRIDE/Kumite offense may include soccer kicks, stomps and knees to the head during the brief grounded window. Sustained guard, mount, passing and submission chains are not part of the default competitive mode.
 
 Damage comes through deterministic combat events. Do not hardcode unrelated damage systems per move.
 
@@ -58,6 +58,8 @@ FighterBody + Stance + Style + CurrentCondition = actual physical behavior.
 Mass influences inertia, acceleration, push resistance and effective impact mass, but must not become a direct linear damage multiplier.
 
 HP max remains 100 regardless of weight.
+
+There are no weight classes. Legal fighter bodies use one continuous envelope: 45-160 kg and 1.50-2.10 m, with continuous physics and bounded reach/body proportions.
 
 ## Practice coach
 
