@@ -173,6 +173,37 @@ export class GameScene {
         }
       }
 
+      if (this.humanOpponent && this.match) {
+        const p2Frame = this.opponentGamepadTechnique?.update();
+        for (const button of p2Frame?.buttons ?? []) {
+          this.tryOpponentMovesetButton(button);
+        }
+
+        if (p2Frame?.clinchToggle) {
+          const position = this.match.opponent.positionId;
+          const clinchPositions = new Set([
+            "single_collar_tie",
+            "thai_plum",
+            "over_under",
+            "double_underhooks",
+            "rear_clinch",
+            "front_headlock",
+          ]);
+
+          if (position === "seated_guard") {
+            this.technicalStandup("opponent");
+          } else if (clinchPositions.has(position)) {
+            this.exitClinch();
+          } else if (this.playerRoot && this.opponent) {
+            const dx = this.playerRoot.position.x - this.opponent.position.x;
+            const dz = this.playerRoot.position.z - this.opponent.position.z;
+            if (Math.hypot(dx, dz) <= 1.05) {
+              this.match.enterClinch("opponent", "over_under");
+            }
+          }
+        }
+      }
+
       if (this.match) {
         this.controller?.setConditionMovementScale(
           regionConsequences(this.match.player.condition).movementScale
@@ -184,22 +215,39 @@ export class GameScene {
         this.input.swayVertical
       );
       const botDefense = this.botBrain?.defenseState(this.clock.frame);
+      const opponentSway = this.humanOpponent && this.opponentInput
+        ? {
+            horizontal: this.opponentInput.swayHorizontal,
+            vertical: this.opponentInput.swayVertical,
+          }
+        : botDefense?.evasion ?? { horizontal: 0, vertical: 0 };
       this.opponentDefensiveOverlay?.apply(
-        botDefense?.evasion.horizontal ?? 0,
-        botDefense?.evasion.vertical ?? 0
+        opponentSway.horizontal,
+        opponentSway.vertical
       );
-      const opponentPosition = this.match?.opponent.positionId ?? "standing_open";
-      const botPressure =
-        opponentPosition === "standing_open" ||
-        opponentPosition === "standing_close";
-      this.opponent?.update(
-        dt,
-        this.playerRoot?.position ?? null,
-        botPressure ? 1.0 : null,
-        this.match
-          ? regionConsequences(this.match.opponent.condition).movementScale
-          : 1
-      );
+
+      if (this.humanOpponent) {
+        if (this.match) {
+          this.opponentController?.setConditionMovementScale(
+            regionConsequences(this.match.opponent.condition).movementScale
+          );
+        }
+        this.opponentController?.update(dt);
+      } else {
+        const opponentPosition =
+          this.match?.opponent.positionId ?? "standing_open";
+        const botPressure =
+          opponentPosition === "standing_open" ||
+          opponentPosition === "standing_close";
+        this.opponent?.update(
+          dt,
+          this.playerRoot?.position ?? null,
+          botPressure ? 1.0 : null,
+          this.match
+            ? regionConsequences(this.match.opponent.condition).movementScale
+            : 1
+        );
+      }
       // Ropes keep oscillating after the wrestler has left them.
       this.ropes?.update(dt);
       this.collisionDebug?.update(this.playerCollision, this.opponentCollision);
