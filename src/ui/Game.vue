@@ -30,6 +30,19 @@
         </label>
 
         <label v-if="competitionMode === 'local_vs'">
+          P2 model
+          <select v-model="opponentCharacterId">
+            <option
+              v-for="character in characters"
+              :key="`p2-model-${character.id}`"
+              :value="character.id"
+            >
+              {{ character.label }}
+            </option>
+          </select>
+        </label>
+
+        <label v-if="competitionMode === 'local_vs'">
           P2 saved build
           <select v-model="opponentPresetName" @change="applyOpponentPreset">
             <option value="">Custom</option>
@@ -341,6 +354,7 @@ export default defineComponent({
       fighterName: "Fighter",
       fighterStyle: "boxing",
       opponentStyle: "combat_sambo",
+      opponentCharacterId: CHARACTERS[1]?.id ?? CHARACTERS[0].id,
       opponentName: "P2",
       opponentPresetName: "",
       opponentMovesetName: "",
@@ -359,6 +373,7 @@ export default defineComponent({
       warning: "" as string,
       movesetOpen: false,
       selectedCharacter: null as CharacterDefinition | null,
+      selectedOpponentCharacter: null as CharacterDefinition | null,
       selectedSetup: null as
         | (Pick<FighterLoadout, "styleId" | "stanceId" | "body"> & {
             name?: string;
@@ -533,6 +548,7 @@ export default defineComponent({
       );
       if (!preset) return;
 
+      this.opponentCharacterId = preset.characterId;
       this.opponentName = preset.setup.name ?? preset.name;
       this.opponentStyle = preset.setup.styleId;
       this.opponentHeight = preset.setup.body.heightM;
@@ -655,6 +671,12 @@ export default defineComponent({
         };
         const startingCondition =
           COMPETITION_SESSION.startCondition(this.competitionMode);
+        const opponentCharacter =
+          this.competitionMode === "local_vs"
+            ? this.characters.find(
+                (x) => x.id === this.opponentCharacterId
+              )
+            : undefined;
         const missing = await this.game!.loadCharacter(
           character,
           setup,
@@ -663,7 +685,8 @@ export default defineComponent({
           startingCondition,
           competitionModeById(this.competitionMode)?.ruleset_id ??
             "may_quv_standard",
-          this.competitionMode === "local_vs"
+          this.competitionMode === "local_vs",
+          opponentCharacter
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
@@ -679,6 +702,7 @@ export default defineComponent({
           if (p2Moveset) this.game?.setOpponentMoveset(p2Moveset);
         }
         this.selectedCharacter = character;
+        this.selectedOpponentCharacter = opponentCharacter ?? null;
         this.selectedSetup = {
           ...setup,
           body: { ...setup.body },
@@ -730,7 +754,8 @@ export default defineComponent({
           startingCondition,
           competitionModeById(this.competitionMode)?.ruleset_id ??
             "may_quv_standard",
-          this.competitionMode === "local_vs"
+          this.competitionMode === "local_vs",
+          this.selectedOpponentCharacter ?? undefined
         );
         if (missing.length) {
           this.warning = `Missing animation clips: ${missing.join(", ")}`;
