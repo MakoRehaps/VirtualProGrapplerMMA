@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "profile_id",
+    "name",
+    "active_positions",
+    "disabled_positions",
+    "allowed_technique_contexts",
+    "disabled_technique_types",
+    "disabled_technique_ids",
+    "grounded_window",
+    "takedown_resolution",
+    "finishes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "profile_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "active_positions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "disabled_positions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_technique_contexts": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "disabled_technique_types": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "disabled_technique_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "grounded_window": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "max_seconds",
+        "defender_can_technical_stand",
+        "attacker_can_disengage",
+        "allowed_attacks",
+        "prohibited_actions",
+        "timeout_result"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "const": true
+        },
+        "max_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 10
+        },
+        "defender_can_technical_stand": {
+          "type": "boolean"
+        },
+        "attacker_can_disengage": {
+          "type": "boolean"
+        },
+        "allowed_attacks": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "timeout_result": {
+          "type": "string"
+        }
+      }
+    },
+    "takedown_resolution": {
+      "type": "object"
+    },
+    "finishes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
