@@ -30,6 +30,20 @@
         </label>
 
         <label v-if="competitionMode === 'local_vs'">
+          P2 saved build
+          <select v-model="opponentPresetName" @change="applyOpponentPreset">
+            <option value="">Custom</option>
+            <option
+              v-for="preset in fighterPresets"
+              :key="`p2-build-${preset.name}`"
+              :value="preset.name"
+            >
+              {{ preset.name }}
+            </option>
+          </select>
+        </label>
+
+        <label v-if="competitionMode === 'local_vs'">
           P2 name
           <input v-model.trim="opponentName" maxlength="24" />
         </label>
@@ -328,6 +342,7 @@ export default defineComponent({
       fighterStyle: "boxing",
       opponentStyle: "combat_sambo",
       opponentName: "P2",
+      opponentPresetName: "",
       opponentMovesetName: "",
       opponentHeight: 1.82,
       opponentMass: 82,
@@ -509,6 +524,21 @@ export default defineComponent({
   methods: {
     refreshFighterPresets() {
       this.fighterPresets = listFighterPresets();
+    },
+
+    applyOpponentPreset() {
+      if (!this.opponentPresetName) return;
+      const preset = this.fighterPresets.find(
+        (x) => x.name === this.opponentPresetName
+      );
+      if (!preset) return;
+
+      this.opponentName = preset.setup.name ?? preset.name;
+      this.opponentStyle = preset.setup.styleId;
+      this.opponentHeight = preset.setup.body.heightM;
+      this.opponentMass = preset.setup.body.massKg;
+      this.opponentReach = preset.setup.body.reachM;
+      this.opponentMovesetName = preset.movesetName ?? "";
     },
 
     async loadFighterPreset(preset: FighterPreset) {
