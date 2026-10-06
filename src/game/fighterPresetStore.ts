@@ -9,6 +9,7 @@ export interface FighterPreset {
   version: 1;
   name: string;
   characterId: string;
+  movesetName?: string;
   setup: FighterSetupInput;
 }
 
@@ -92,6 +93,7 @@ export function saveFighterPreset(preset: FighterPreset): void {
     version: 1,
     name: preset.name.trim() || normalized.name,
     characterId: preset.characterId,
+    movesetName: preset.movesetName?.trim() || undefined,
     setup: {
       name: normalized.name,
       styleId: normalized.styleId,
