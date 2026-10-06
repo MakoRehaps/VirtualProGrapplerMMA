@@ -11,12 +11,16 @@
     "styles_free": true,
     "techniques_free": true,
     "stances_free": true,
-    "fighter_reroll_free": true
+    "fighter_reroll_free": true,
+    "weight_classes": false,
+    "body_bounds_enforced": true
   },
   "player_choice": [
     "appearance",
     "clothing",
-    "body dimensions within legal simulation bounds",
+    "height within global legal bounds",
+    "weight within global legal bounds",
+    "body proportions within global legal bounds",
     "body mass",
     "style",
     "stance where style permits",
@@ -33,5 +37,5 @@
     "movement_stamina_cost",
     "reach"
   ],
-  "principle": "Style decides tools. Body physics decides physical behavior. Player decisions decide outcomes."
+  "principle": "No weight classes. Style decides tools, continuous body physics decides physical behavior, and player decisions decide outcomes."
 }
