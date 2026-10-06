@@ -63,6 +63,8 @@ export class ProceduralMartialAnimator {
       "crescent_kick",
       "question_mark_kick",
       "leg_kick_grounded",
+      "flying_knee",
+      "headbutt",
       "lead_knee",
       "rear_knee",
       "knee_head",
@@ -112,6 +114,10 @@ export class ProceduralMartialAnimator {
       this.buildHandVariant(group, profile, techniqueId);
     } else if (["front_kick", "teep", "calf_kick", "spinning_back_kick", "axe_kick", "hook_kick", "crescent_kick", "question_mark_kick", "leg_kick_grounded"].includes(techniqueId)) {
       this.buildKickVariant(group, profile, techniqueId);
+    } else if (techniqueId === "flying_knee") {
+      this.buildFlyingKnee(group, profile);
+    } else if (techniqueId === "headbutt") {
+      this.buildHeadbutt(group, profile);
     } else if (["lead_knee", "rear_knee", "knee_head"].includes(techniqueId)) {
       this.buildKnee(group, profile, techniqueId);
     } else if (["lead_elbow", "rear_elbow", "spinning_elbow"].includes(techniqueId)) {
@@ -519,6 +525,92 @@ export class ProceduralMartialAnimator {
     ]));
     this.addBone(group, "rightShin", this.normalizedKeys(profile, [
       [0,0,0,0],[0.30,82,0,0],[0.58,front?42:94,0,0],[0.80,front?8:(axe?6:18),0,0],[1,0,0,0],
+    ]));
+  }
+
+  private buildFlyingKnee(group: AnimationGroup, profile: any): void {
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.22,-10,-8,0],
+      [0.46,-22,-16,0],
+      [0.68,-12,-22,0],
+      [0.84,6,-14,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "chest", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.24,8,-6,0],
+      [0.50,20,-12,0],
+      [0.72,26,-18,0],
+      [0.86,14,-10,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "rightThigh", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.24,-38,0,4],
+      [0.50,-88,0,8],
+      [0.72,-116,0,10],
+      [0.86,-86,0,6],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "rightShin", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.24,66,0,0],
+      [0.50,104,0,0],
+      [0.72,114,0,0],
+      [0.86,88,0,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "leftThigh", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.28,20,0,-4],
+      [0.52,34,0,-6],
+      [0.74,18,0,-4],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "leftShin", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.28,34,0,0],
+      [0.52,54,0,0],
+      [0.74,28,0,0],
+      [1,0,0,0],
+    ]));
+  }
+
+  private buildHeadbutt(group: AnimationGroup, profile: any): void {
+    this.addBone(group, "hips", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.28,8,0,0],
+      [0.52,-8,0,0],
+      [0.76,-14,0,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "chest", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.26,16,0,0],
+      [0.50,-12,0,0],
+      [0.76,-24,0,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "head", this.normalizedKeys(profile, [
+      [0,0,0,0],
+      [0.26,18,0,0],
+      [0.48,-16,0,0],
+      [0.72,-30,0,0],
+      [0.86,-18,0,0],
+      [1,0,0,0],
+    ]));
+    this.addBone(group, "leftUpperArm", this.normalizedKeys(profile, [
+      [0,-18,0,-18],
+      [0.50,-28,-8,-28],
+      [0.78,-34,-10,-34],
+      [1,-18,0,-18],
+    ]));
+    this.addBone(group, "rightUpperArm", this.normalizedKeys(profile, [
+      [0,-18,0,18],
+      [0.50,-28,8,28],
+      [0.78,-34,10,34],
+      [1,-18,0,18],
     ]));
   }
 
