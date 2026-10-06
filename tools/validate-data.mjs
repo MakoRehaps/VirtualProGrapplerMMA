@@ -67,6 +67,7 @@ function schemaTargets() {
     ["data/schemas/moves.schema.json", ["data/moves/moves.json"]],
     ["data/schemas/move-slots.schema.json", ["data/moves/move-slots.json"]],
     ["data/schemas/combat-styles.schema.json", ["data/styles/styles.json"]],
+    ["data/schemas/stances.schema.json", ["data/stances/stances.json"]],
   ];
 }
 
@@ -151,6 +152,19 @@ function checkAssets(errors, notes) {
   }
 }
 
+function checkStyleStances(errors) {
+  const styles = load("data/styles/styles.json").styles;
+  const stances = load("data/stances/stances.json").stances;
+  const ids = new Set(stances.map((s) => s.stance_id));
+  for (const style of styles) {
+    if (!ids.has(style.default_stance)) {
+      errors.push(
+        `data/styles/styles.json: ${style.style_id} references missing stance "${style.default_stance}"`
+      );
+    }
+  }
+}
+
 function checkMenuTargets(errors) {
   const menu = load("data/ui/main-menu.json");
   const pages = Object.keys(menu.pages);
@@ -174,6 +188,7 @@ export function validateAll() {
   checkSchemas(errors);
   checkAssets(errors, notes);
   checkMenuTargets(errors);
+  checkStyleStances(errors);
   return { errors, notes };
 }
 
