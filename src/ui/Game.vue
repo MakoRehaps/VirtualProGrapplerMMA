@@ -120,7 +120,13 @@
           class="saved-fighters__row"
         >
           <button @click="loadFighterPreset(preset)">
-            {{ preset.name }} · {{ preset.setup.styleId }}
+            <strong>{{ preset.name }}</strong>
+            <span>
+              {{ preset.setup.styleId }}
+              · {{ preset.setup.body.heightM.toFixed(2) }} m
+              · {{ preset.setup.body.massKg.toFixed(0) }} kg
+              · moveset {{ preset.movesetName ?? 'Default' }}
+            </span>
           </button>
           <button @click="removeFighterPreset(preset.name)">Delete</button>
         </div>
@@ -528,6 +534,16 @@ export default defineComponent({
   color: inherit;
   text-align: left;
   cursor: pointer;
+}
+
+.saved-fighters__row button:first-child {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.saved-fighters__row button:first-child span {
+  opacity: 0.68;
+  font-size: 0.74rem;
 }
 
 .overlay__error {
