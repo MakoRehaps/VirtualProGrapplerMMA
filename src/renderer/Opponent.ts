@@ -42,19 +42,36 @@ export class Opponent {
     }
   }
 
-  /** Turns to face a point and advances animation blending. */
-  update(deltaSeconds: number, facePoint: Vector3 | null): void {
+  /** Turns toward the player, optionally pressures into fighting range. */
+  update(
+    deltaSeconds: number,
+    facePoint: Vector3 | null,
+    desiredDistance: number | null = null
+  ): void {
     if (this.externalPoseLock) return;
     if (facePoint) {
       const dx = facePoint.x - this.root.position.x;
       const dz = facePoint.z - this.root.position.z;
-      if (dx * dx + dz * dz > 1e-6) {
+      const distanceSq = dx * dx + dz * dz;
+      if (distanceSq > 1e-6) {
         const target = Math.atan2(dx, dz);
         this.root.rotation.y = approachAngle(
           this.root.rotation.y,
           target,
           Tuning.turnSpeed * deltaSeconds
         );
+
+        if (desiredDistance !== null) {
+          const distance = Math.sqrt(distanceSq);
+          if (distance > desiredDistance + 0.05) {
+            const travel = Math.min(
+              distance - desiredDistance,
+              1.7 * deltaSeconds
+            );
+            this.root.position.x += (dx / distance) * travel;
+            this.root.position.z += (dz / distance) * travel;
+          }
+        }
       }
     }
     this.animations.update(deltaSeconds);
