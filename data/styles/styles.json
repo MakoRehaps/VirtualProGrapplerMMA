@@ -1155,8 +1155,7 @@
         "Global"
       ],
       "family": [
-        "hybrid",
-        "modern_hybrid"
+        "hybrid"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -1252,8 +1251,7 @@
       ],
       "family": [
         "grappling",
-        "submission",
-        "modern_hybrid"
+        "submission"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -1510,8 +1508,7 @@
         "Global"
       ],
       "family": [
-        "self_defense",
-        "modern_hybrid"
+        "self_defense"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -1988,8 +1985,7 @@
         "Global"
       ],
       "family": [
-        "hybrid",
-        "modern_hybrid"
+        "hybrid"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -2472,8 +2468,7 @@
         "Global"
       ],
       "family": [
-        "hybrid",
-        "modern_hybrid"
+        "hybrid"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -3495,8 +3490,7 @@
         "Pacific"
       ],
       "family": [
-        "hybrid",
-        "modern_hybrid"
+        "hybrid"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -6694,8 +6688,7 @@
         "Mexico"
       ],
       "family": [
-        "hybrid",
-        "modern_hybrid"
+        "hybrid"
       ],
       "status": "modern_hybrid",
       "ranges": [
@@ -6774,7 +6767,7 @@
       "default_stance": "traditional_upright"
     },
     {
-      "style_id": "yağlı_güreş",
+      "style_id": "yagli_gures",
       "name": "Yağlı Güreş",
       "origin": "Türkiye",
       "regions": [
