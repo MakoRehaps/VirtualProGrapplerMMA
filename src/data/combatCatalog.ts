@@ -137,3 +137,20 @@ export function motionProfilesForTechnique(techniqueId: string) {
 export function biomechSourceById(id: string) {
   return MARTIAL_POSES.sources.find((s) => s.source_id === id) ?? null;
 }
+
+
+export function preferredBiomechPoseForStyle(styleId: string): string | null {
+  const style = styleById(styleId);
+  if (!style) return null;
+  const haystack = [styleId, style.name, ...(style.family ?? [])]
+    .join(" ")
+    .toLowerCase();
+
+  const aliases = MARTIAL_POSES.style_motion_aliases;
+  const match = aliases.find((a) => haystack.includes(a.style_family.toLowerCase()));
+  if (!match) return null;
+
+  return MARTIAL_POSES.stance_profiles.some((p) => p.pose_id === match.stance_pose)
+    ? match.stance_pose
+    : null;
+}
