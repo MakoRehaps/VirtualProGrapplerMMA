@@ -237,6 +237,21 @@ export class MayQuvMatch {
       return;
     }
 
+    if (hit.technique.type === "control") {
+      this.resolveControlTechnique(hit, defenderSide, frame);
+      return;
+    }
+
+    if (hit.technique.type === "defense") {
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: true,
+      });
+      return;
+    }
+
     const actualRegion = this.contactRegion?.(hit.attacker, hit.technique) ?? undefined;
     const result = resolveTechniqueImpact(
       this.stateOf(hit.attacker),
@@ -276,6 +291,52 @@ export class MayQuvMatch {
       this.groundedUntil[defenderSide] = frame + frames;
       this.onGroundedWindowChanged?.(defenderSide, true);
     }
+  }
+
+  private resolveControlTechnique(
+    hit: PendingTechnique,
+    defenderSide: CombatSide,
+    frame: number
+  ): void {
+    let nextPosition: FighterState["positionId"] | null = null;
+
+    switch (hit.technique.techniqueId) {
+      case "collar_tie":
+        nextPosition = "single_collar_tie";
+        break;
+      case "double_underhooks":
+        nextPosition = "double_underhooks";
+        break;
+      case "underhook":
+        nextPosition = "over_under";
+        break;
+      case "thai_plum":
+        nextPosition = "thai_plum";
+        break;
+      default:
+        break;
+    }
+
+    if (!nextPosition || !isPositionActive(nextPosition)) {
+      this.record({
+        frame,
+        attacker: hit.attacker,
+        techniqueName: hit.technique.name,
+        connected: false,
+        missReason: "unsupported control transition",
+      });
+      return;
+    }
+
+    this.stateOf(hit.attacker).positionId = nextPosition;
+    this.stateOf(defenderSide).positionId = nextPosition;
+
+    this.record({
+      frame,
+      attacker: hit.attacker,
+      techniqueName: hit.technique.name,
+      connected: true,
+    });
   }
 
   private record(entry: MayQuvExchange): void {
