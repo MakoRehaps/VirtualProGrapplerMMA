@@ -40,6 +40,17 @@ export class AnimationController {
     return this.tracks.has(name);
   }
 
+  register(group: AnimationGroup): void {
+    if (this.tracks.has(group.name)) return;
+    group.stop();
+    group.weight = 0;
+    this.tracks.set(group.name, { group, weight: 0, target: 0 });
+  }
+
+  registerMany(groups: AnimationGroup[]): void {
+    for (const group of groups) this.register(group);
+  }
+
   /** Length of a clip in seconds, or undefined if it is not loaded. */
   durationOf(name: string): number | undefined {
     const track = this.tracks.get(name);
