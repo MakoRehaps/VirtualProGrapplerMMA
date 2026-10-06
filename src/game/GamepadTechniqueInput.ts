@@ -7,10 +7,21 @@ export interface GamepadTechniqueFrame {
 
 export type GamepadProvider = () => readonly (Gamepad | null)[];
 
-const DEFAULT_PROVIDER: GamepadProvider = () => {
+export const DEFAULT_GAMEPAD_PROVIDER: GamepadProvider = () => {
   if (typeof navigator === "undefined" || !navigator.getGamepads) return [];
   return Array.from(navigator.getGamepads());
 };
+
+export function gamepadSlotConnected(
+  gamepadIndex: number,
+  provider: GamepadProvider = DEFAULT_GAMEPAD_PROVIDER
+): boolean {
+  const pad = provider()[gamepadIndex] ?? null;
+  return Boolean(
+    pad?.connected &&
+      (pad.mapping === "standard" || /xbox|xinput/i.test(pad.id))
+  );
+}
 
 const BUTTON_INDEX: Record<MovesetButton, number> = {
   a: 0,
@@ -24,7 +35,7 @@ export class GamepadTechniqueInput {
   private previousRb = false;
 
   constructor(
-    private readonly provider: GamepadProvider = DEFAULT_PROVIDER,
+    private readonly provider: GamepadProvider = DEFAULT_GAMEPAD_PROVIDER,
     private readonly gamepadIndex = 0
   ) {}
 
